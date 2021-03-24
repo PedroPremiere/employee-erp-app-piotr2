@@ -4,7 +4,8 @@ const cors = require('cors');
 const config = require('./config');
 
 const routes = require('./src/routes');
-
+const sequelize = require('./src/util/database');
+const models = require('./src/models/user');
 const app = express();
 
 app.use(helmet());
@@ -14,8 +15,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
 
-app.get('/', (req, res) => {
-    return res.json('API is working');
-});
+sequelize
+    .sync()
+    .then(result => {
+        console.log(result);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
 app.listen(config.app.port);
