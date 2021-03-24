@@ -1,10 +1,8 @@
-// /admin/contract
 const express = require('express');
 
 const router = express.Router();
 
-// get /admin/contract
-router.use('/contract', (req, res, next) => {
+router.use((req, res) => {
     return res.json({ patch: 'admin contract' });
 });
 

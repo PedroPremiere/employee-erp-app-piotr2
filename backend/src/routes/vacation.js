@@ -1,10 +1,8 @@
-// /admin/vacation
 const express = require('express');
 
 const router = express.Router();
 
-// get /admin/vacation
-router.use('/vacation', (req, res, next) => {
+router.use((req, res) => {
     return res.json({ patch: 'admin vacation' });
 });
 
