@@ -18,10 +18,8 @@ app.use(routes);
 sequelize
     .sync()
     .then(result => {
-        console.log(result);
+        app.listen(config.app.port);
     })
     .catch(err => {
         console.log(err);
     });
-
-app.listen(config.app.port);

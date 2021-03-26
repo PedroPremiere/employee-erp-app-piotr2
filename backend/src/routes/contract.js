@@ -1,9 +1,6 @@
 const express = require('express');
-
+const indexController = require('../controllers/Contract/IndexController');
 const router = express.Router();
 
-router.use((req, res) => {
-    return res.json({ patch: 'admin contract' });
-});
-
+router.get('/', indexController.getAll);
 module.exports = router;

@@ -1,15 +1,15 @@
 const models = require('../../models');
-const { Contract } = models;
+const { Role } = models;
 
 exports.getAll = async (reg, res) => {
     //temporary just for check
-    const contract = await Contract.create({
+    const role = await Role.create({
         position: 'alice123',
         startDate: new Date(),
         enddate: new Date()
     });
 
-    await Contract.findAll().then(contract => {
-        return res.json(contract);
+    Role.findAll().then(role => {
+        return res.json(role);
     });
 };

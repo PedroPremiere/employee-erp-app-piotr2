@@ -1,28 +1,26 @@
 const { Model } = require('sequelize');
 const { DataTypes } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Vacation extends Model {
+    class Role extends Model {
         static associate(models) {
             // define association here
         }
     }
-    Vacation.init(
+    Role.init(
         {
+            title: DataTypes.UUID,
             id: {
                 primaryKey: true,
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
-            },
-            startDate: DataTypes.DATEONLY,
-            endDate: DataTypes.DATEONLY,
-            confirmed: DataTypes.BOOLEAN
+            }
         },
         {
             sequelize,
-            modelName: 'Vacation',
+            modelName: 'Role',
             timestamps: true
         }
     );
 
-    return Vacation;
+    return Role;
 };

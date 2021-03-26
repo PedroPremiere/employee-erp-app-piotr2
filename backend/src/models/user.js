@@ -1,33 +1,31 @@
-const Sequelize = require('sequelize');
+const { Model } = require('sequelize');
+const { DataTypes } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+    class User extends Model {
+        static associate(models) {
+            // define association here
+        }
+    }
+    User.init(
+        {
+            id: {
+                primaryKey: true,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4
+            },
+            name: DataTypes.STRING,
+            lastName: DataTypes.STRING,
+            email: DataTypes.STRING,
+            password: DataTypes.STRING,
+            admin: DataTypes.BOOLEAN,
+            birthDate: DataTypes.DATEONLY
+        },
+        {
+            sequelize,
+            timestamps: true,
+            modelName: 'User'
+        }
+    );
 
-const sequelize = require('../util/database');
-
-const User = sequelize.define('user', {
-    id: {
-        type: Sequelize.UUID,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: 'compositeIndex'
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    admin: { type: Sequelize.BOOLEAN, allowNull: false },
-    birthDate: { type: Sequelize.DATEONLY, allowNull: false }
-});
-
-module.exports = User;
+    return User;
+};
