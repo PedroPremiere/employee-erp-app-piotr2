@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             position: DataTypes.STRING,
             startDate: DataTypes.DATEONLY,
             endDate: DataTypes.DATEONLY,
-            user: DataTypes.UUID
+            userId: DataTypes.UUID
         },
         {
             sequelize,

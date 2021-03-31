@@ -1,14 +1,12 @@
-const models = require('../../models');
-const { Vacation } = models;
+const { StatusCodes } = require('http-status-codes');
+const { Vacation } = require('../../models');
 
-exports.getAll = async (reg, res) => {
-    //temporary just for check
-    const vacation = await Vacation.create({
-        startDate: new Date(),
-        endDate: new Date()
-    });
+class IndexController {
+    static async invoke(request, response) {
+        const vacations = await Vacation.findAll();
 
-    Vacation.findAll().then(vacation => {
-        return res.json(vacation);
-    });
-};
+        return response.send(vacations);
+    }
+}
+
+module.exports = IndexController;

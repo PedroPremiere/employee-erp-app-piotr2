@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
             },
             startDate: DataTypes.DATEONLY,
             endDate: DataTypes.DATEONLY,
-            confirmed: DataTypes.BOOLEAN
+            confirmed: DataTypes.BOOLEAN,
+            userId: DataTypes.UUID
         },
         {
             sequelize,

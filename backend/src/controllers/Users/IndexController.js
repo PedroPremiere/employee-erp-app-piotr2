@@ -1,18 +1,12 @@
-const models = require('../../models');
-const { User } = models;
+const { StatusCodes } = require('http-status-codes');
+const { User } = require('../../models');
 
-exports.getAll = async (reg, res) => {
-    //temporary just for check
-    const user = await User.create({
-        name: 'alice123',
-        lastName: 'asdasd',
-        email: 'asdas@ads.com',
-        password: 'asdsafas',
-        admin: true,
-        birthDate: new Date()
-    });
+class IndexController {
+    static async invoke(request, response) {
+        const users = await User.findAll();
 
-    User.findAll().then(users => {
-        return res.json(users);
-    });
-};
+        return response.send(users);
+    }
+}
+
+module.exports = IndexController;
