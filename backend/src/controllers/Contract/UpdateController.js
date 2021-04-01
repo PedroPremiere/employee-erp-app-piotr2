@@ -12,15 +12,11 @@ class UpdateController {
             return response.sendStatus(StatusCodes.NOT_FOUND);
         }
 
-        try {
-            await contract.update({ position, startDate, endDate, userId });
+        await contract.update({ position, startDate, endDate, userId });
 
-            const contractUpdated = await Contract.findByPk(id);
+        const contractUpdated = await Contract.findByPk(id);
 
-            return response.send(contractUpdated);
-        } catch {
-            return response.sendStatus(StatusCodes.SERVICE_UNAVAILABLE);
-        }
+        return response.send(contractUpdated);
     }
 }
 

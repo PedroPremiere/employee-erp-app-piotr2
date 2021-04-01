@@ -19,22 +19,18 @@ class UpdateController {
             return response.sendStatus(StatusCodes.NOT_FOUND);
         }
 
-        try {
-            await user.update({
-                name,
-                lastName,
-                email,
-                password,
-                admin,
-                birthDate
-            });
+        await user.update({
+            name,
+            lastName,
+            email,
+            password,
+            admin,
+            birthDate
+        });
 
-            const userUpdated = await User.findByPk(id);
+        const userUpdated = await User.findByPk(id);
 
-            return response.send(userUpdated);
-        } catch {
-            return response.sendStatus(StatusCodes.SERVICE_UNAVAILABLE);
-        }
+        return response.send(userUpdated);
     }
 }
 

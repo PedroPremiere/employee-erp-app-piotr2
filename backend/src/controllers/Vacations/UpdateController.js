@@ -12,15 +12,11 @@ class UpdateController {
             return response.sendStatus(StatusCodes.NOT_FOUND);
         }
 
-        try {
-            await vacation.update({ startDate, endDate, userId });
+        await vacation.update({ startDate, endDate, userId });
 
-            const vacationUpdated = await Vacation.findByPk(id);
+        const vacationUpdated = await Vacation.findByPk(id);
 
-            return response.send(vacationUpdated);
-        } catch {
-            return response.sendStatus(StatusCodes.SERVICE_UNAVAILABLE);
-        }
+        return response.send(vacationUpdated);
     }
 }
 

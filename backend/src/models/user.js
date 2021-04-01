@@ -1,5 +1,7 @@
 const { Model } = require('sequelize');
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
+
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
@@ -20,10 +22,18 @@ module.exports = (sequelize, DataTypes) => {
             admin: DataTypes.BOOLEAN,
             birthDate: DataTypes.DATEONLY
         },
+
         {
             sequelize,
             timestamps: true,
-            modelName: 'User'
+            modelName: 'User',
+            hooks: {
+                async beforeSave(user, options) {
+                    if (options.fields && options.fields.includes('password')) {
+                        user.password = await bcrypt.hash(user.password, 8);
+                    }
+                }
+            }
         }
     );
 
