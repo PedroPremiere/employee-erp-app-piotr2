@@ -3,14 +3,7 @@ const { User } = require('../../models');
 
 class UpdateController {
     static async invoke(request, response) {
-        const {
-            name,
-            lastName,
-            email,
-            password,
-            admin,
-            birthDate
-        } = request.body;
+        const { firstName, lastName, email, admin, birthDate } = request.body;
         const { id } = request.params;
 
         const user = await User.findByPk(id);
@@ -20,10 +13,9 @@ class UpdateController {
         }
 
         await user.update({
-            name,
+            firstName,
             lastName,
             email,
-            password,
             admin,
             birthDate
         });

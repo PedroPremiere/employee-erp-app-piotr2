@@ -1,4 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
+
 const { Contract } = require('../../models');
 
 class StoreController {

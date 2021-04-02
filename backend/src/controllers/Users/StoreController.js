@@ -1,10 +1,11 @@
 const { StatusCodes } = require('http-status-codes');
+
 const { User } = require('../../models');
 
 class StoreController {
     static async invoke(request, response) {
         const {
-            name,
+            firstName,
             lastName,
             email,
             password,
@@ -13,7 +14,7 @@ class StoreController {
         } = request.body;
 
         const user = await User.create({
-            name,
+            firstName,
             lastName,
             email,
             password,
