@@ -1,11 +1,13 @@
 const { StatusCodes } = require('http-status-codes');
-const { User } = require('../../models');
 
 class ShowController {
-    static async invoke(request, response) {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async invoke(request, response) {
         const { id } = request.params;
 
-        const user = await User.findByPk(id);
+        const user = await this.userRepository.getById(id);
 
         if (!user) {
             return response.sendStatus(StatusCodes.NOT_FOUND);

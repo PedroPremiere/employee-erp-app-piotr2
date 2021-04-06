@@ -1,9 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 
-const { User } = require('../../models');
-
 class StoreController {
-    static async invoke(request, response) {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async invoke(request, response) {
         const {
             firstName,
             lastName,
@@ -13,7 +14,7 @@ class StoreController {
             birthDate
         } = request.body;
 
-        const user = await User.create({
+        const user = await this.userRepository.create({
             firstName,
             lastName,
             email,

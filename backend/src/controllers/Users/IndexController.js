@@ -1,9 +1,9 @@
-const { StatusCodes } = require('http-status-codes');
-const { User } = require('../../models');
-
 class IndexController {
-    static async invoke(request, response) {
-        const users = await User.findAll();
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async invoke(request, response) {
+        const users = await this.userRepository.getAll();
 
         return response.send(users);
     }

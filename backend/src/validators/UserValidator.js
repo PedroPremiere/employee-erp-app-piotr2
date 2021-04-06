@@ -1,10 +1,13 @@
 const { check, validationResult } = require('express-validator');
-const { User } = require('../models');
+
+const UserRepository = require('../repositories/UserRepository');
 
 async function isMailTaken(email, request) {
     const { id } = request.params;
 
-    const user = await User.findOne({ where: { email } });
+    const userRepository = new UserRepository();
+
+    const user = await userRepository.getByEmail(email);
 
     if (user && user.id !== id) {
         return Promise.reject('E-mail already in use');
