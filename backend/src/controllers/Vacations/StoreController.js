@@ -1,11 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
-const { Vacation } = require('../../models');
 
 class StoreController {
+    constructor(vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
     async invoke(request, response) {
         const { startDate, endDate, userId } = request.body;
 
-        const vacation = await Vacation.create({
+        const vacation = await this.vacationRepository.create({
             startDate,
             endDate,
             userId

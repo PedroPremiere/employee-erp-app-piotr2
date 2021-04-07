@@ -1,9 +1,10 @@
-const { StatusCodes } = require('http-status-codes');
-const { Contract } = require('../../models');
-
 class IndexController {
+    constructor(contractRepository) {
+        this.contractRepository = contractRepository;
+    }
+
     async invoke(request, response) {
-        const contracts = await Contract.findAll();
+        const contracts = await this.contractRepository.findAll();
 
         return response.send(contracts);
     }

@@ -1,11 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
-const { Vacation } = require('../../models');
 
 class ShowController {
+    constructor(vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
     async invoke(request, response) {
         const { id } = request.params;
 
-        const vacation = await Vacation.findByPk(id);
+        const vacation = await this.vacationRepository.findById(id);
 
         if (!vacation) {
             return response.sendStatus(StatusCodes.NOT_FOUND);

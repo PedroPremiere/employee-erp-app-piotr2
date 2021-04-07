@@ -1,19 +1,24 @@
 module.exports = {
     services: {
         'controllers.contract.indexController': {
-            class: '/controllers/Contract/IndexController'
+            class: '/controllers/Contract/IndexController',
+            arguments: ['@repositories.contract']
         },
         'controllers.contract.destroyController': {
-            class: '/controllers/Contract/DestroyController'
+            class: '/controllers/Contract/DestroyController',
+            arguments: ['@repositories.contract']
         },
         'controllers.contract.showController': {
-            class: '/controllers/Contract/ShowController'
+            class: '/controllers/Contract/ShowController',
+            arguments: ['@repositories.contract']
         },
         'controllers.contract.storeController': {
-            class: '/controllers/Contract/StoreController'
+            class: '/controllers/Contract/StoreController',
+            arguments: ['@repositories.contract']
         },
         'controllers.contract.updateController': {
-            class: '/controllers/Contract/UpdateController'
+            class: '/controllers/Contract/UpdateController',
+            arguments: ['@repositories.contract']
         }
     }
 };

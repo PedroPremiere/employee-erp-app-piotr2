@@ -4,7 +4,7 @@ class IndexController {
     }
 
     async invoke(request, response) {
-        const users = await this.userRepository.getAll();
+        const users = await this.userRepository.findAll();
 
         return response.send(users);
     }

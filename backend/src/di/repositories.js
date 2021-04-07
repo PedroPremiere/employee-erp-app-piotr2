@@ -8,6 +8,14 @@ module.exports = {
         'repositories.user': {
             class: 'repositories/UserRepository',
             arguments: ['%db.sequelize.models%']
+        },
+        'repositories.contract': {
+            class: 'repositories/ContractRepository',
+            arguments: ['%db.sequelize.models%']
+        },
+        'repositories.vacation': {
+            class: 'repositories/VacationRepository',
+            arguments: ['%db.sequelize.models%']
         }
     }
 };

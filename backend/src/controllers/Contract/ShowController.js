@@ -1,11 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
-const { Contract } = require('../../models');
 
 class ShowController {
+    constructor(contractRepository) {
+        this.contractRepository = contractRepository;
+    }
+
     async invoke(request, response) {
         const { id } = request.params;
 
-        const contract = await Contract.findByPk(id);
+        const contract = await this.contractRepository.findById(id);
 
         if (!contract) {
             return response.sendStatus(StatusCodes.NOT_FOUND);

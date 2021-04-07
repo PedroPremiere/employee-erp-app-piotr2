@@ -1,12 +1,15 @@
 const { StatusCodes } = require('http-status-codes');
-const { Vacation } = require('../../models');
 
 class UpdateController {
+    constructor(vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
     async invoke(request, response) {
         const { startDate, endDate, userId } = request.body;
         const { id } = request.params;
 
-        const vacation = await Vacation.findByPk(id);
+        const vacation = await this.vacationRepository.getById(id);
 
         if (!vacation) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
@@ -14,7 +17,7 @@ class UpdateController {
 
         await vacation.update({ startDate, endDate, userId });
 
-        const vacationUpdated = await Vacation.findByPk(id);
+        const vacationUpdated = await this.vacationRepository.getById(id);
 
         return response.send(vacationUpdated);
     }

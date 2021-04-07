@@ -1,15 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
-const { Contract } = require('../../models');
 
 class DestroyController {
+    constructor(contractRepository) {
+        this.contractRepository = contractRepository;
+    }
+
     async invoke(request, response) {
         const { id } = request.params;
 
-        await Contract.destroy({
-            where: {
-                id
-            }
-        });
+        await this.contractRepository.delete(id);
 
         return response.sendStatus(StatusCodes.NO_CONTENT);
     }

@@ -1,15 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
-const { Vacation } = require('../../models');
 
 class DestroyController {
+    constructor(vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
     async invoke(request, response) {
         const { id } = request.params;
 
-        await Vacation.destroy({
-            where: {
-                id
-            }
-        });
+        await this.vacationRepository.delete(id);
 
         return response.sendStatus(StatusCodes.NO_CONTENT);
     }

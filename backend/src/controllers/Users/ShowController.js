@@ -8,7 +8,7 @@ class ShowController {
     async invoke(request, response) {
         const { id } = request.params;
 
-        const user = await this.userRepository.getById(id);
+        const user = await this.userRepository.findById(id);
 
         if (!user) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
@@ -17,4 +17,5 @@ class ShowController {
         return response.send(user);
     }
 }
+
 module.exports = ShowController;

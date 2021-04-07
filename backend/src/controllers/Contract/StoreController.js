@@ -1,12 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
 
-const { Contract } = require('../../models');
-
 class StoreController {
+    constructor(contractRepository) {
+        this.contractRepository = contractRepository;
+    }
+
     async invoke(request, response) {
         const { position, startDate, endDate, userId } = request.body;
 
-        const contract = await Contract.create({
+        const contract = await this.contractRepository.create({
             position,
             startDate,
             endDate,

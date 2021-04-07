@@ -1,9 +1,10 @@
-const { StatusCodes } = require('http-status-codes');
-const { Vacation } = require('../../models');
-
 class IndexController {
+    constructor(vacationRepository) {
+        this.vacationRepository = vacationRepository;
+    }
+
     async invoke(request, response) {
-        const vacations = await Vacation.findAll();
+        const vacations = await this.vacationRepository.findAll();
 
         return response.send(vacations);
     }
