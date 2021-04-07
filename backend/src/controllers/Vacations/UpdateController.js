@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { Vacation } = require('../../models');
 
 class UpdateController {
-    static async invoke(request, response) {
+    async invoke(request, response) {
         const { startDate, endDate, userId } = request.body;
         const { id } = request.params;
 

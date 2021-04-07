@@ -1,11 +1,11 @@
 const { check, validationResult } = require('express-validator');
 
-const UserRepository = require('../repositories/UserRepository');
-
 async function isMailTaken(email, request) {
     const { id } = request.params;
 
-    const userRepository = new UserRepository();
+    const di = request.app.get('di');
+
+    const userRepository = di.get('repositories.user');
 
     const user = await userRepository.getByEmail(email);
 

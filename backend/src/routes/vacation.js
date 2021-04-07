@@ -1,16 +1,19 @@
 const express = require('express');
 
-const indexController = require('../controllers/Vacations/IndexController');
-const storeController = require('../controllers/Vacations/StoreController');
-const showController = require('../controllers/Vacations/ShowController');
-const destroyController = require('../controllers/Vacations/DestroyController');
-const updateController = require('../controllers/Vacations/UpdateController');
 const router = express.Router();
 
-router.get('/:id', showController.invoke);
-router.get('/', indexController.invoke);
-router.post('/', storeController.invoke);
-router.delete('/:id', destroyController.invoke);
-router.put('/:id', updateController.invoke);
+module.exports = di => {
+    const indexController = di.get('controllers.vacations.indexController');
+    const destroyController = di.get('controllers.vacations.destroyController');
+    const showController = di.get('controllers.vacations.showController');
+    const storeController = di.get('controllers.vacations.storeController');
+    const updateController = di.get('controllers.vacations.updateController');
 
-module.exports = router;
+    router.get('/:id', (...args) => showController.invoke(...args));
+    router.get('/', (...args) => indexController.invoke(...args));
+    router.post('/', (...args) => storeController.invoke(...args));
+    router.delete('/:id', (...args) => destroyController.invoke(...args));
+    router.put('/:id', (...args) => updateController.invoke(...args));
+
+    return router;
+};

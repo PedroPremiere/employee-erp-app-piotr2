@@ -4,6 +4,7 @@ class UpdateController {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
+
     async invoke(request, response) {
         const { firstName, lastName, email, admin, birthDate } = request.body;
         const { id } = request.params;
@@ -13,6 +14,7 @@ class UpdateController {
         if (!user) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
         }
+
         await user.update({
             firstName,
             lastName,

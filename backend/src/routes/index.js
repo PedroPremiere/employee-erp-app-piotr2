@@ -1,18 +1,23 @@
-const express = require('express');
 const fs = require('fs');
-
+const express = require('express');
 const router = express.Router();
 
-fs.readdirSync(__dirname).forEach(function (route) {
-    route = route.split('.')[0];
+module.exports = di => {
+    fs.readdirSync(__dirname).forEach(function (route) {
+        route = route.split('.')[0];
 
-    if (route === 'index') {
-        return;
-    }
-    if (route === 'default') {
-        return;
-    }
-    router.use(`/${route}`, require(`./${route}`));
-});
-router.use('/', require('./default'));
-module.exports = router;
+        if (route === 'index') {
+            return;
+        }
+
+        if (route === 'default') {
+            return;
+        }
+
+        router.use(`/${route}`, require(`./${route}`)(di));
+    });
+
+    router.use('/', require('./default'));
+
+    return router;
+};

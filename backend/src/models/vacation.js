@@ -1,11 +1,13 @@
 const { Model } = require('sequelize');
 const { DataTypes } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
     class Vacation extends Model {
         static associate(models) {
             // define association here
         }
     }
+
     Vacation.init(
         {
             id: {

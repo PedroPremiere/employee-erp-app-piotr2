@@ -1,9 +1,10 @@
-class UserRepository {
-    get model() {
-        const { User } = require('../models');
+const AbstractRepository = require('./AbstractRepository');
 
-        return User;
+class UserRepository extends AbstractRepository {
+    get model() {
+        return this.db.User;
     }
+
     async getAll() {
         const users = await this.model.findAll();
 

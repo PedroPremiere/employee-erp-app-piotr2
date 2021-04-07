@@ -1,15 +1,19 @@
 const express = require('express');
-const indexController = require('../controllers/Contract/IndexController');
-const storeController = require('../controllers/Contract/StoreController');
-const showController = require('../controllers/Contract/ShowController');
-const destroyController = require('../controllers/Contract/DestroyController');
-const updateController = require('../controllers/Contract/UpdateController');
+
 const router = express.Router();
 
-router.get('/:id', showController.invoke);
-router.get('/', indexController.invoke);
-router.post('/', storeController.invoke);
-router.delete('/:id', destroyController.invoke);
-router.put('/:id', updateController.invoke);
+module.exports = di => {
+    const indexController = di.get('controllers.contract.indexController');
+    const destroyController = di.get('controllers.contract.destroyController');
+    const showController = di.get('controllers.contract.showController');
+    const storeController = di.get('controllers.contract.storeController');
+    const updateController = di.get('controllers.contract.updateController');
 
-module.exports = router;
+    router.get('/:id', (...args) => showController.invoke(...args));
+    router.get('/', (...args) => indexController.invoke(...args));
+    router.post('/', (...args) => storeController.invoke(...args));
+    router.delete('/:id', (...args) => destroyController.invoke(...args));
+    router.put('/:id', (...args) => updateController.invoke(...args));
+
+    return router;
+};

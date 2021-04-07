@@ -1,5 +1,6 @@
 const { Model } = require('sequelize');
 const { DataTypes } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
     class Contract extends Model {
         /**
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             //});
         }
     }
+
     Contract.init(
         {
             id: {

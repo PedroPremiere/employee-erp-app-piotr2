@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { Vacation } = require('../../models');
 
 class DestroyController {
-    static async invoke(request, response) {
+    async invoke(request, response) {
         const { id } = request.params;
 
         await Vacation.destroy({

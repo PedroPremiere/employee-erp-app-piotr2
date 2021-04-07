@@ -4,8 +4,11 @@ const helmet = require('helmet');
 const cors = require('cors');
 const config = require('./config');
 
+const di = require('./src/di');
+
 const errorHandler = require('./src/plugins/errorHandler');
-const routes = require('./src/routes');
+const routes = require('./src/routes')(di);
+
 const sequelize = require('./src/util/database');
 
 const app = express();
@@ -17,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
 app.use(errorHandler);
+
+app.set('di', di);
 
 sequelize
     .sync()

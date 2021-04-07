@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 const { Contract } = require('../../models');
 
 class UpdateController {
-    static async invoke(request, response) {
+    async invoke(request, response) {
         const { position, startDate, endDate, userId } = request.body;
         const { id } = request.params;
 

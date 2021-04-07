@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { Vacation } = require('../../models');
 
 class ShowController {
-    static async invoke(request, response) {
+    async invoke(request, response) {
         const { id } = request.params;
 
         const vacation = await Vacation.findByPk(id);
