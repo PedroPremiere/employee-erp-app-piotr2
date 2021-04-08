@@ -9,7 +9,7 @@ class UpdateController {
         const { startDate, endDate, userId } = request.body;
         const { id } = request.params;
 
-        const vacation = await this.vacationRepository.getById(id);
+        const vacation = await this.vacationRepository.findById(id);
 
         if (!vacation) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
@@ -17,7 +17,7 @@ class UpdateController {
 
         await vacation.update({ startDate, endDate, userId });
 
-        const vacationUpdated = await this.vacationRepository.getById(id);
+        const vacationUpdated = await this.vacationRepository.findById(id);
 
         return response.send(vacationUpdated);
     }

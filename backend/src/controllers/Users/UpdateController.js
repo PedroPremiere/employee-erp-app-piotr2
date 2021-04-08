@@ -9,7 +9,7 @@ class UpdateController {
         const { firstName, lastName, email, admin, birthDate } = request.body;
         const { id } = request.params;
 
-        const user = await this.userRepository.getById(id);
+        const user = await this.userRepository.findById(id);
 
         if (!user) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
@@ -23,7 +23,7 @@ class UpdateController {
             birthDate
         });
 
-        const userUpdated = await this.userRepository.getById(id);
+        const userUpdated = await this.userRepository.findById(id);
 
         return response.send(userUpdated);
     }

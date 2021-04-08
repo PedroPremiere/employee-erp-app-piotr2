@@ -32,6 +32,12 @@ module.exports = {
                 type: Sequelize.DATE
             }
         });
+        await queryInterface.addIndex('Contracts', [
+            'userId',
+            'startDate',
+            'endDate'
+        ]);
+        await queryInterface.addIndex('Contracts', ['userId', 'endDate']);
     },
     down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('Contracts');
