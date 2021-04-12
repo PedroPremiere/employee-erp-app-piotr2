@@ -1,0 +1,33 @@
+const { StatusCodes } = require('http-status-codes');
+
+class LoginController {
+    constructor(userRepository, authService) {
+        this.userRepository = userRepository;
+        this.auth = authService;
+    }
+
+    async invoke(request, response) {
+        const { email, password } = request.body;
+
+        const user = await this.userRepository.getByEmail(email);
+
+        if (!user) {
+            return response.sendStatus(StatusCodes.UNAUTHORIZED);
+        }
+
+        const userPassword = await this.userRepository.getPassword(user.id);
+
+        if (await this.auth.checkCredentials(password, userPassword)) {
+            const plainUser = user.get({ plain: true });
+
+            request.session.user = plainUser;
+            request.session.isAdmin = plainUser.admin;
+
+            return response.sendStatus(StatusCodes.OK);
+        }
+
+        return response.sendStatus(StatusCodes.UNAUTHORIZED);
+    }
+}
+
+module.exports = LoginController;

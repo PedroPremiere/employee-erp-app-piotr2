@@ -26,5 +26,8 @@ module.exports = {
             collate: 'utf8mb4_unicode_ci',
             timestamps: false
         }
+    },
+    session: {
+        secret: process.env.SESSION_SECRET
     }
 };

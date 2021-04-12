@@ -10,6 +10,14 @@ class UserRepository extends AbstractRepository {
 
         return user;
     }
+
+    async getPassword(userId) {
+        const { password } = await this.model.findByPk(userId, {
+            attributes: ['password']
+        });
+
+        return password;
+    }
 }
 
 module.exports = UserRepository;
