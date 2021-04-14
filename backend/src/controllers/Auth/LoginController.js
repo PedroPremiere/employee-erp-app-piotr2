@@ -18,10 +18,7 @@ class LoginController {
         const userPassword = await this.userRepository.getPassword(user.id);
 
         if (await this.auth.checkCredentials(password, userPassword)) {
-            const plainUser = user.get({ plain: true });
-
-            request.session.user = plainUser;
-            request.session.isAdmin = plainUser.admin;
+            request.session.userId = user.id;
 
             return response.sendStatus(StatusCodes.OK);
         }

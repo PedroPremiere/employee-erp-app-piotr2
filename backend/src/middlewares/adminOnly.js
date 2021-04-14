@@ -1,10 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 
-module.exports = (request, response, next) => {
-    const session = request.session;
+module.exports = async (request, response, next) => {
+    const { loggedUser } = request;
 
-    if (!session.isAdmin) {
-        return response.sendStatus(StatusCodes.UNAUTHORIZED);
+    if (!(loggedUser && (await loggedUser.isAdmin()))) {
+        return response.sendStatus(StatusCodes.FORBIDDEN);
     }
 
     return next();

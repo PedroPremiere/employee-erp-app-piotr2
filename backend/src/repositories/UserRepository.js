@@ -6,9 +6,9 @@ class UserRepository extends AbstractRepository {
     }
 
     async getByEmail(email) {
-        const user = await this.model.findOne({ where: { email } });
-
-        return user;
+        return this.model.findOne({
+            where: { email }
+        });
     }
 
     async getPassword(userId) {

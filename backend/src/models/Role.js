@@ -3,14 +3,30 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class Role extends Model {
+        static ADMIN = 'admin';
+        static USER = 'user';
+
+        isAdmin() {
+            return this.name === Role.ADMIN;
+        }
+
         static associate(models) {
-            // define association here
+            Role.belongsToMany(models.User, {
+                as: 'users',
+                foreignKey: 'roleId',
+                sourceKey: 'id',
+                through: 'RoleUser'
+            });
         }
     }
 
     Role.init(
         {
-            title: DataTypes.UUID,
+            name: {
+                type: DataTypes.UUID,
+                unique: true,
+                allowNull: false
+            },
             id: {
                 primaryKey: true,
                 type: DataTypes.UUID,

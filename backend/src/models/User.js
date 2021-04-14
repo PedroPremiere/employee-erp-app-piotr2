@@ -4,8 +4,19 @@ const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
+        async isAdmin() {
+            const roles = await this.getRoles();
+
+            return roles.some(role => role.isAdmin());
+        }
+
         static associate(models) {
-            // define association here
+            User.belongsToMany(models.Role, {
+                as: 'roles',
+                foreignKey: 'userId',
+                sourceKey: 'id',
+                through: 'RoleUser'
+            });
         }
     }
 
@@ -16,12 +27,27 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
             },
-            firstName: DataTypes.STRING,
-            lastName: DataTypes.STRING,
-            email: DataTypes.STRING,
-            password: DataTypes.STRING,
-            admin: DataTypes.BOOLEAN,
-            birthDate: DataTypes.DATEONLY
+            firstName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            lastName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            email: {
+                type: DataTypes.STRING,
+                unique: true,
+                allowNull: false
+            },
+            password: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            birthDate: {
+                type: DataTypes.DATEONLY,
+                allowNull: false
+            }
         },
 
         {

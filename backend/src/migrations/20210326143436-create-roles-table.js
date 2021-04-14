@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('Roles', {
@@ -6,11 +5,9 @@ module.exports = {
                 type: Sequelize.UUID,
                 primaryKey: true
             },
-            title: {
-                type: Sequelize.UUID
-            },
-            id: {
-                type: Sequelize.UUID
+            name: {
+                type: Sequelize.UUID,
+                unique: true
             },
             createdAt: {
                 allowNull: false,

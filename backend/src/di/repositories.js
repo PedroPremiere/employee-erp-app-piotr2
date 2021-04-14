@@ -16,6 +16,10 @@ module.exports = {
         'repositories.vacation': {
             class: 'repositories/VacationRepository',
             arguments: ['%db.sequelize.models%']
+        },
+        'repositories.role': {
+            class: 'repositories/RoleRepository',
+            arguments: ['%db.sequelize.models%']
         }
     }
 };
