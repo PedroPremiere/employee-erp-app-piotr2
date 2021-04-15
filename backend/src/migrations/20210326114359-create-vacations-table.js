@@ -6,15 +6,14 @@ module.exports = {
                 primaryKey: true
             },
             startDate: {
-                type: Sequelize.DATEONLY
+                type: Sequelize.DATEONLY,
+                allowNull: false
             },
             endDate: {
-                type: Sequelize.DATEONLY
+                type: Sequelize.DATEONLY,
+                allowNull: false
             },
-            id: {
-                type: Sequelize.UUID
-            },
-            confirmed: {
+            isConfirmed: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false
             },

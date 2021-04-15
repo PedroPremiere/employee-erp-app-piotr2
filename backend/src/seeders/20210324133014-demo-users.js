@@ -12,27 +12,7 @@ module.exports = {
             roleRepository.model.USER
         );
 
-        const user1 = await userRepository.create({
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'example@example.com',
-            birthDate: new Date(),
-            password: 'password123'
-        });
-
-        await user1.addRole(userRole.id);
-
-        const user2 = await userRepository.create({
-            firstName: 'Robert',
-            lastName: 'Lee',
-            email: 'robert@lee.com',
-            birthDate: new Date(),
-            password: 'password123'
-        });
-
-        await user2.addRole(userRole.id);
-
-        const user3 = await userRepository.create({
+        const user = await userRepository.create({
             firstName: 'user',
             lastName: 'user',
             email: 'user@user.com',
@@ -40,9 +20,9 @@ module.exports = {
             password: 'password123'
         });
 
-        await user3.addRole(userRole.id);
+        await user.addRole(userRole.id);
 
-        const user4 = await userRepository.create({
+        const admin = await userRepository.create({
             firstName: 'admin',
             lastName: 'admin',
             email: 'admin@admin.com',
@@ -50,7 +30,7 @@ module.exports = {
             password: 'password123'
         });
 
-        await user4.addRole(adminRole.id);
+        await admin.addRole(adminRole.id);
     },
 
     down: async (queryInterface, Sequelize) => {}

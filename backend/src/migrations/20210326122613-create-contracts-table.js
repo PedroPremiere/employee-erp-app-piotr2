@@ -6,16 +6,20 @@ module.exports = {
                 primaryKey: true
             },
             position: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                allowNull: false
             },
             startDate: {
-                type: Sequelize.DATEONLY
+                type: Sequelize.DATEONLY,
+                allowNull: false
             },
             endDate: {
-                type: Sequelize.DATEONLY
+                type: Sequelize.DATEONLY,
+                allowNull: false
             },
             userId: {
                 type: Sequelize.UUID,
+                allowNull: false,
                 references: {
                     model: 'Users',
                     key: 'id'
