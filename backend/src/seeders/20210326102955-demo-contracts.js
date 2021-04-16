@@ -10,12 +10,9 @@ module.exports = {
             userRepository.getByEmail('admin@admin.com')
         ]);
 
-        const msInDaty = 24 * 60 * 60 * 1000;
-        const week = 7;
-
         await contractRepository.create({
-            startDate: new Date(Date.now() - week * msInDaty),
-            endDate: new Date(Date.now() + week * msInDaty),
+            startDate: '2021-04-08',
+            endDate: '2021-04-22',
             position: 'driver',
             userId: user.id
         });

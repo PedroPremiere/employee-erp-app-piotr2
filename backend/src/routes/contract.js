@@ -1,6 +1,6 @@
 const express = require('express');
 
-const ContractValidator = require('../validators/ContractValidator');
+const contractValidator = require('../validators/contractValidator');
 const validate = require('../middlewares/validate');
 
 const router = express.Router();
@@ -14,11 +14,11 @@ module.exports = di => {
 
     router.get('/:id', (...args) => showController.invoke(...args));
     router.get('/', (...args) => indexController.invoke(...args));
-    router.post('/', [ContractValidator.update, validate], (...args) =>
+    router.post('/', [contractValidator.update, validate], (...args) =>
         storeController.invoke(...args)
     );
     router.delete('/:id', (...args) => destroyController.invoke(...args));
-    router.put('/:id', [ContractValidator.update, validate], (...args) =>
+    router.put('/:id', [contractValidator.update, validate], (...args) =>
         updateController.invoke(...args)
     );
 

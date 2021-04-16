@@ -1,24 +1,7 @@
 const { check, validationResult } = require('express-validator');
 
-async function isStartBeforeEnd(startDate, request) {
-    const { endDate } = request.body;
-
-    if (startDate > endDate) {
-        return Promise.reject('Start Date must be before end');
-    }
-}
-
-async function isValidUser(userId, request) {
-    const di = request.app.get('di');
-
-    const userRepository = di.get('repositories.user');
-
-    const user = await userRepository.findById(userId);
-
-    if (!user) {
-        return Promise.reject('User doesnt exist');
-    }
-}
+const isValidUser = require('./custom/isValidUser');
+const isStartBeforeEnd = require('./custom/isStartBeforeEnd');
 
 async function overlapingContracts(endDate, request) {
     const di = request.app.get('di');
@@ -27,7 +10,7 @@ async function overlapingContracts(endDate, request) {
 
     const { userId, startDate } = request.body;
 
-    const contract = await contractRepository.findContractbyUserInDataRange(
+    const contract = await contractRepository.findOneByOverlapingDateAndUser(
         userId,
         startDate,
         endDate

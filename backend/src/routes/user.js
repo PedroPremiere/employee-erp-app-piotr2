@@ -1,6 +1,6 @@
 const express = require('express');
 
-const UserValidator = require('../validators/UserValidator');
+const userValidator = require('../validators/userValidator');
 const validate = require('../middlewares/validate');
 const adminOnly = require('../middlewares/adminOnly');
 const loggedIn = require('../middlewares/loggedIn');
@@ -17,7 +17,7 @@ module.exports = di => {
     router.get('/', [loggedIn, adminOnly], (...args) =>
         indexController.invoke(...args)
     );
-    router.post('/', [UserValidator.store, validate], (...args) =>
+    router.post('/', [userValidator.store, validate], (...args) =>
         storeController.invoke(...args)
     );
     router.delete('/:id', [loggedIn, adminOnly], (...args) =>
@@ -29,7 +29,7 @@ module.exports = di => {
     router.put(
         '/:id',
         [loggedIn, adminOnly],
-        [UserValidator.update, validate],
+        [userValidator.update, validate],
         (...args) => updateController.invoke(...args)
     );
 

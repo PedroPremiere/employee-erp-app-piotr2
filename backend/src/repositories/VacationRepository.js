@@ -1,6 +1,6 @@
-const AbstractRepository = require('./AbstractRepository');
+const AbstractIntervalRepository = require('./AbstractIntervalRepository');
 
-class VacationRepository extends AbstractRepository {
+class VacationRepository extends AbstractIntervalRepository {
     get model() {
         return this.db.Vacation;
     }
