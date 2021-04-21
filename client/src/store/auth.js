@@ -3,30 +3,35 @@ import axios from '@/plugins/axios';
 const auth = {
     namespaced: true,
     state: () => ({
-        loggedIn: localStorage.getItem('loggedIn') === 'true'
+        user: localStorage.getItem('user')
     }),
     getters: {
-        isLoggedIn: state => state.loggedIn
+        isLoggedIn: state => !!state.user,
+        user: state => state.user
     },
     mutations: {
-        login(state) {
-            localStorage.setItem('loggedIn', true);
-            state.loggedIn = true;
+        login(state, data) {
+            localStorage.setItem('user', data);
+
+            state.user = data;
         },
         logout(state) {
             localStorage.removeItem('loggedIn');
-            state.loggedIn = false;
+            localStorage.removeItem('user');
+
+            state.user = null;
         }
     },
     actions: {
         async login({ commit }, credentials) {
             const { data } = await axios.post('/auth/login', credentials);
-            commit('login');
+            commit('login', data);
 
             return data;
         },
         async logout({ commit }) {
             await axios.post('/auth/logout');
+
             commit('logout');
         }
     }

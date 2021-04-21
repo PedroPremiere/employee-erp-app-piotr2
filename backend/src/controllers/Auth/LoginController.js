@@ -20,7 +20,7 @@ class LoginController {
         if (await this.auth.checkCredentials(password, userPassword)) {
             request.session.userId = user.id;
 
-            return response.sendStatus(StatusCodes.OK);
+            return response.send(user);
         }
 
         return response.sendStatus(StatusCodes.UNAUTHORIZED);

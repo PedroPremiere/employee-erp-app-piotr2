@@ -5,7 +5,8 @@ const isEnabled = key => env(key) && env(key) === 'true';
 
 module.exports = {
     app: {
-        port: process.env.APP_PORT
+        port: process.env.APP_PORT,
+        frontendUrl: process.env.FRONTEND_URL
     },
     db: {
         url: `mysql://${env('DATABASE_USERNAME')}:${env(

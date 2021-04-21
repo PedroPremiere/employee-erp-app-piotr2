@@ -18,7 +18,22 @@ const app = express();
 const threeHoursInMs = 3600 * 1000 * 3;
 
 app.use(helmet());
-app.use(cors());
+
+const originsWhitelist = [config.app.frontendUrl];
+
+app.use(
+    cors({
+        origin(origin, callback) {
+            if (originsWhitelist.includes(origin) || !origin) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
+        credentials: true
+    })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
