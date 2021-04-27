@@ -9,7 +9,9 @@
                     justify="center"
                     class="py-4 mx-auto"
                 >
-                    <h3 align="center" justify="center">Logout</h3>
+                    <h3 align="center" justify="center">
+                        Logout
+                    </h3>
                     <v-btn
                         class="mt-6"
                         color="primary"
@@ -27,7 +29,9 @@
                     align="center"
                     justify="center"
                 >
-                    <h3 align="center" justify="center">Login</h3>
+                    <h3 align="center" justify="center">
+                        Login
+                    </h3>
                     <v-row class="mt-6" justify="center">
                         <v-col cols="10" sm="5" md="3">
                             <v-text-field

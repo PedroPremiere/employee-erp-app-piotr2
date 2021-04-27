@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import _ from 'lodash';
 import Vuelidate from 'vuelidate';
 import vuetify from './plugins/vuetify';
 import App from './App';
@@ -7,6 +8,8 @@ import store from './store';
 
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
+
+Vue.prototype._ = _;
 
 new Vue({
     vuetify,
