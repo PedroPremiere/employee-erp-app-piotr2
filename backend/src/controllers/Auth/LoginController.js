@@ -9,7 +9,15 @@ class LoginController {
     async invoke(request, response) {
         const { email, password } = request.body;
 
-        const user = await this.userRepository.getByEmail(email);
+        const user = await this.userRepository.getByEmail(email, {
+            include: [
+                {
+                    association: 'roles',
+                    attributes: ['name', 'id'],
+                    through: { attributes: [] }
+                }
+            ]
+        });
 
         if (!user) {
             return response.sendStatus(StatusCodes.UNAUTHORIZED);

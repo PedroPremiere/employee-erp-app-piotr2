@@ -5,8 +5,9 @@ class UserRepository extends AbstractRepository {
         return this.db.User;
     }
 
-    async getByEmail(email) {
+    getByEmail(email, options = {}) {
         return this.model.findOne({
+            ...options,
             where: { email }
         });
     }

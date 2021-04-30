@@ -101,17 +101,13 @@ export default {
             this.isDeleteDialogOpen = false;
         },
 
-        onEdit(item) {
-            this.userToUpdate = item;
+        onEdit(user) {
+            this.userToUpdate = user;
             this.isUserDialogOpen = true;
         },
-        onDelete(item) {
+        onDelete(user) {
             this.isDeleteDialogOpen = true;
-            this.userToDelete = item;
-        },
-        //@todo
-        checkAdmin() {
-            return true;
+            this.userToDelete = user;
         }
     }
 };

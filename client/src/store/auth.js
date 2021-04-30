@@ -3,7 +3,7 @@ import axios from '@/plugins/axios';
 const auth = {
     namespaced: true,
     state: () => ({
-        user: localStorage.getItem('user')
+        user: JSON.parse(localStorage.getItem('user'))
     }),
     getters: {
         isLoggedIn: state => !!state.user,
@@ -11,7 +11,7 @@ const auth = {
     },
     mutations: {
         login(state, data) {
-            localStorage.setItem('user', data);
+            localStorage.setItem('user', JSON.stringify(data));
 
             state.user = data;
         },
@@ -25,6 +25,8 @@ const auth = {
     actions: {
         async login({ commit }, credentials) {
             const { data } = await axios.post('/auth/login', credentials);
+            data.isAdmin = data.roles.some(role => role.name === 'admin');
+
             commit('login', data);
 
             return data;
