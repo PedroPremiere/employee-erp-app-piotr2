@@ -11,15 +11,18 @@ const users = {
     mutations: {
         setUsers(state, data) {
             state.users = data;
-        }
-        //@todo
-        /*
+        },
+        removeUser(state, id) {
+            const index = state.users.findIndex(u => u.id === id);
+            state.users.splice(index, 1);
+        },
+        updateUser(state, newUser) {
+            const index = state.users.findIndex(u => u.id === newUser.id);
+            state.users.splice(index, 1, newUser);
+        },
         addUser(state, data) {
             state.users.push(data);
-        },
-        removeUser() { },
-        updateUser() {}
-        */
+        }
     },
     actions: {
         async index({ commit }) {
@@ -28,26 +31,22 @@ const users = {
             commit('setUsers', data);
 
             return data;
-        }
-        //@toDo
-        /*
-        async create({ commit }, user) {
-            //const { data } = await axios.post('/users', user);
-
-            commit('addUser', data);
-        },
-        async update({ commit }, user) {
-            const { data } = await axios.put('/users/' + user.id, user);
-
-            commit('updateUser');
         },
         async remove({ commit }, user) {
-            console.log(user.id);
-            const { data } = await axios.delete('/users/${user.id}');
-            console.log(data);
-            commit('removeUser');
+            axios.delete(`/users/${user.id}`);
+            commit('removeUser', user.id);
+        },
+        async save({ commit }, user) {
+            if (user.id) {
+                const { data } = await axios.put(`/users/${user.id}`, user);
+
+                commit('updateUser', data);
+            } else {
+                const { data } = await axios.post('/users', user);
+
+                commit('addUser', data);
+            }
         }
-        */
     }
 };
 

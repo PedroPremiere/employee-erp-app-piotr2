@@ -11,6 +11,15 @@
                     <v-toolbar-title>User List</v-toolbar-title>
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-spacer />
+                    <v-btn
+                        class="mx-2"
+                        @click="$emit('new')"
+                        fab
+                        dark
+                        color="indigo"
+                    >
+                        <v-icon dark> mdi-plus </v-icon>
+                    </v-btn>
                 </v-toolbar>
             </template>
             <template #[`item.actions`]="{ item }">
@@ -69,9 +78,3 @@ export default {
     }
 };
 </script>
-
-<style>
-tr.v-data-table__selected {
-    background: #7d92f5 !important;
-}
-</style>

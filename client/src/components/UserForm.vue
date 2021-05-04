@@ -24,6 +24,22 @@
                             @input="$v.user.lastName.$touch"
                         />
                     </v-col>
+                    <v-col v-if="withPassword" cols="12">
+                        <v-text-field
+                            v-model="user.password"
+                            label="Password*"
+                            type="password"
+                            :error-messages="passwordErrors"
+                            @input="$v.user.password.$touch"
+                        />
+                    </v-col>
+                    <v-col v-if="withPassword" cols="12">
+                        <v-text-field
+                            v-model="passwordRepeat"
+                            label="Password Repeat*"
+                            type="password"
+                        />
+                    </v-col>
                     <v-col cols="12">
                         <v-text-field
                             v-model="user.email"
@@ -102,16 +118,24 @@
 
 <script>
 import { validationMixin } from 'vuelidate';
-import { required, alpha, email } from 'vuelidate/lib/validators';
+import {
+    required,
+    alpha,
+    email,
+    minLength,
+    requiredIf,
+    sameAs
+} from 'vuelidate/lib/validators';
 
 export default {
     name: 'UserForm',
     mixins: [validationMixin],
     props: {
-        selectedUser: { type: Object, default: () => ({}), required: false }
+        selectedUser: { type: Object, default: () => ({}) },
+        withPassword: { type: Boolean, default: () => false, required: false }
     },
-    validations: {
-        user: {
+    validations() {
+        const user = {
             email: {
                 required,
                 email
@@ -127,7 +151,21 @@ export default {
                 required,
                 alpha
             }
+        };
+
+        if (this.withPassword) {
+            user.password = {
+                required: requiredIf(function () {
+                    return this.withPassword;
+                }),
+                minLength: minLength(8),
+                sameAs: sameAs(function () {
+                    return this.passwordRepeat;
+                })
+            };
         }
+
+        return { user };
     },
     data() {
         const defaultForm = {
@@ -141,12 +179,14 @@ export default {
         return {
             defaultForm,
             menu: false,
-            user: defaultForm
+            user: defaultForm,
+            passwordRepeat: ''
         };
     },
     computed: {
         lastNameErrors() {
             const errors = [];
+
             if (!this.$v.user.lastName.$dirty) return errors;
 
             !this.$v.user.lastName.alpha && errors.push('Must be valid name');
@@ -157,6 +197,7 @@ export default {
         },
         firstNameErrors() {
             const errors = [];
+
             if (!this.$v.user.firstName.$dirty) return errors;
 
             !this.$v.user.firstName.alpha && errors.push('Must be valid name');
@@ -167,6 +208,7 @@ export default {
         },
         emailErrors() {
             const errors = [];
+
             if (!this.$v.user.email.$dirty) return errors;
 
             !this.$v.user.email.email && errors.push('Must be valid e-mail');
@@ -176,10 +218,33 @@ export default {
         },
         birthDateErrors() {
             const errors = [];
+
             if (!this.$v.user.birthDate.$dirty) return errors;
 
             !this.$v.user.birthDate.required &&
                 errors.push('Birth Date is required');
+
+            return errors;
+        },
+        passwordErrors() {
+            const errors = [];
+
+            if (!this.withPassword) {
+                return errors;
+            }
+
+            if (!this.$v.user.password.$dirty) return errors;
+
+            !this.$v.user.password.required &&
+                errors.push('Password is required');
+
+            !this.$v.user.password.minLength &&
+                errors.push('Password must be longer than 8 characters');
+
+            !this.$v.user.password.sameAs &&
+                errors.push(
+                    'Password and password confirmation must be the same'
+                );
 
             return errors;
         }
@@ -201,7 +266,7 @@ export default {
             this.$v.$reset();
         },
         save() {
-            this.$emit('save');
+            this.$emit('save', this.user);
             this.reset();
         },
         close() {

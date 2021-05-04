@@ -7,6 +7,7 @@
                 @edit="onEdit"
                 @delete="onDelete"
                 @reset="load"
+                @new="onNew"
             />
             <v-container v-else>
                 <v-skeleton-loader
@@ -15,20 +16,34 @@
                 />
             </v-container>
         </v-row>
-
-        <v-dialog v-model="isUserDialogOpen" persistent max-width="600px">
+        <v-dialog
+            v-model="isUserDialogOpen"
+            v-if="selectedUser"
+            persistent
+            max-width="600px"
+        >
             <user-form
-                :selected-user="userToUpdate"
-                @save="confirmUserDialog"
-                @close="closeUserDialog"
+                :selected-user="selectedUser"
+                @save="onSaveUser"
+                @close="onCloseUpdateUser"
             />
         </v-dialog>
-
-        <v-dialog v-model="isDeleteDialogOpen" max-width="500px">
+        <v-dialog v-model="isNewDialogOpen" persistent max-width="600px">
+            <user-form
+                with-password
+                @save="onSaveUser"
+                @close="onCloseNewUser"
+            />
+        </v-dialog>
+        <v-dialog
+            v-model="isDeleteDialogOpen"
+            v-if="selectedUser"
+            max-width="500px"
+        >
             <delete-user-form
-                :user="userToDelete"
-                @delete="confirmUserDeleteDialog"
-                @close="closeUserDeleteDialog"
+                :user="selectedUser"
+                @delete="onDeleteUser"
+                @close="onCloseDeleteUser"
             />
         </v-dialog>
     </v-container>
@@ -52,8 +67,8 @@ export default {
             loaded: false,
             isUserDialogOpen: false,
             isDeleteDialogOpen: false,
-            userToDelete: null,
-            userToUpdate: null
+            isNewDialogOpen: false,
+            selectedUser: false
         };
     },
     computed: {
@@ -75,39 +90,40 @@ export default {
             }
         },
         ...mapActions({
-            getUsers: 'users/index'
-            //@todo
-            //remove: 'users/remove',
-            //update: 'users/update'
-            //create: 'users/create'
+            getUsers: 'users/index',
+            removeUser: 'users/remove',
+            saveUser: 'users/save'
         }),
-        confirmUserDialog() {
+        async onSaveUser(user) {
             this.isUserDialogOpen = false;
-            this.userToUpdate = null;
-            //@todo
-            //this.update(this.userToUpdate);
+            this.isNewDialogOpen = false;
+            await this.saveUser(user);
+            this.selectedUser = null;
         },
-        closeUserDialog() {
+        onCloseUpdateUser() {
             this.isUserDialogOpen = false;
-            this.userToUpdate = null;
+            this.selectedUser = null;
         },
-
-        confirmUserDeleteDialog() {
+        async onDeleteUser() {
             this.isDeleteDialogOpen = false;
-            //@todo
-            //this.remove(this.userToDelete);
+            await this.removeUser(this.selectedUser);
         },
-        closeUserDeleteDialog() {
+        onCloseDeleteUser() {
             this.isDeleteDialogOpen = false;
         },
-
         onEdit(user) {
-            this.userToUpdate = user;
+            this.selectedUser = user;
             this.isUserDialogOpen = true;
         },
         onDelete(user) {
             this.isDeleteDialogOpen = true;
-            this.userToDelete = user;
+            this.selectedUser = user;
+        },
+        onNew() {
+            this.isNewDialogOpen = true;
+        },
+        onCloseNewUser() {
+            this.isNewDialogOpen = false;
         }
     }
 };
