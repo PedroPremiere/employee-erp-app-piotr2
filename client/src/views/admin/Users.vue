@@ -7,7 +7,6 @@
                 @edit="onEdit"
                 @delete="onDelete"
                 @reset="load"
-                @new="onNew"
             />
             <v-container v-else>
                 <v-skeleton-loader
@@ -16,28 +15,16 @@
                 />
             </v-container>
         </v-row>
-        <v-dialog
-            v-model="isUserDialogOpen"
-            v-if="selectedUser"
-            persistent
-            max-width="600px"
-        >
+        <v-dialog v-model="isUserDialogOpen" persistent max-width="600px">
             <user-form
                 :selected-user="selectedUser"
                 @save="onSaveUser"
-                @close="onCloseUpdateUser"
-            />
-        </v-dialog>
-        <v-dialog v-model="isNewDialogOpen" persistent max-width="600px">
-            <user-form
-                with-password
-                @save="onSaveUser"
-                @close="onCloseNewUser"
+                @close="onCloseUserForm"
             />
         </v-dialog>
         <v-dialog
-            v-model="isDeleteDialogOpen"
             v-if="selectedUser"
+            v-model="isDeleteDialogOpen"
             max-width="500px"
         >
             <delete-user-form
@@ -67,8 +54,7 @@ export default {
             loaded: false,
             isUserDialogOpen: false,
             isDeleteDialogOpen: false,
-            isNewDialogOpen: false,
-            selectedUser: false
+            selectedUser: {}
         };
     },
     computed: {
@@ -96,13 +82,12 @@ export default {
         }),
         async onSaveUser(user) {
             this.isUserDialogOpen = false;
-            this.isNewDialogOpen = false;
             await this.saveUser(user);
-            this.selectedUser = null;
+            this.selectedUser = {};
         },
-        onCloseUpdateUser() {
+        onCloseUserForm() {
             this.isUserDialogOpen = false;
-            this.selectedUser = null;
+            this.selectedUser = {};
         },
         async onDeleteUser() {
             this.isDeleteDialogOpen = false;
@@ -118,12 +103,6 @@ export default {
         onDelete(user) {
             this.isDeleteDialogOpen = true;
             this.selectedUser = user;
-        },
-        onNew() {
-            this.isNewDialogOpen = true;
-        },
-        onCloseNewUser() {
-            this.isNewDialogOpen = false;
         }
     }
 };

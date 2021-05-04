@@ -24,7 +24,7 @@
                             @input="$v.user.lastName.$touch"
                         />
                     </v-col>
-                    <v-col v-if="withPassword" cols="12">
+                    <v-col v-if="isPasswordUsed()" cols="12">
                         <v-text-field
                             v-model="user.password"
                             label="Password*"
@@ -33,7 +33,7 @@
                             @input="$v.user.password.$touch"
                         />
                     </v-col>
-                    <v-col v-if="withPassword" cols="12">
+                    <v-col v-if="isPasswordUsed()" cols="12">
                         <v-text-field
                             v-model="passwordRepeat"
                             label="Password Repeat*"
@@ -123,7 +123,6 @@ import {
     alpha,
     email,
     minLength,
-    requiredIf,
     sameAs
 } from 'vuelidate/lib/validators';
 
@@ -131,8 +130,7 @@ export default {
     name: 'UserForm',
     mixins: [validationMixin],
     props: {
-        selectedUser: { type: Object, default: () => ({}) },
-        withPassword: { type: Boolean, default: () => false, required: false }
+        selectedUser: { type: Object, default: () => ({}) }
     },
     validations() {
         const user = {
@@ -153,11 +151,9 @@ export default {
             }
         };
 
-        if (this.withPassword) {
+        if (this.isPasswordUsed()) {
             user.password = {
-                required: requiredIf(function () {
-                    return this.withPassword;
-                }),
+                required,
                 minLength: minLength(8),
                 sameAs: sameAs(function () {
                     return this.passwordRepeat;
@@ -229,7 +225,7 @@ export default {
         passwordErrors() {
             const errors = [];
 
-            if (!this.withPassword) {
+            if (!this.isPasswordUsed()) {
                 return errors;
             }
 
@@ -272,6 +268,9 @@ export default {
         close() {
             this.$emit('close');
             this.reset();
+        },
+        isPasswordUsed() {
+            return !this.selectedUser.id;
         }
     }
 };

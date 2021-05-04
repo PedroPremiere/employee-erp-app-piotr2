@@ -13,10 +13,10 @@
                     <v-spacer />
                     <v-btn
                         class="mx-2"
-                        @click="$emit('new')"
                         fab
                         dark
                         color="indigo"
+                        @click="$emit('edit')"
                     >
                         <v-icon dark> mdi-plus </v-icon>
                     </v-btn>
