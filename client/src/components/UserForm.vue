@@ -24,7 +24,7 @@
                             @input="$v.user.lastName.$touch"
                         />
                     </v-col>
-                    <v-col v-if="isPasswordUsed()" cols="12">
+                    <v-col v-if="isPasswordRequired" cols="12">
                         <v-text-field
                             v-model="user.password"
                             label="Password*"
@@ -33,7 +33,7 @@
                             @input="$v.user.password.$touch"
                         />
                     </v-col>
-                    <v-col v-if="isPasswordUsed()" cols="12">
+                    <v-col v-if="isPasswordRequired" cols="12">
                         <v-text-field
                             v-model="passwordRepeat"
                             label="Password Repeat*"
@@ -118,51 +118,16 @@
 
 <script>
 import { validationMixin } from 'vuelidate';
-import {
-    required,
-    alpha,
-    email,
-    minLength,
-    sameAs
-} from 'vuelidate/lib/validators';
+
+import userValidatorMixin from '@/validators/user';
 
 export default {
     name: 'UserForm',
-    mixins: [validationMixin],
+    mixins: [validationMixin, userValidatorMixin],
     props: {
         selectedUser: { type: Object, default: () => ({}) }
     },
-    validations() {
-        const user = {
-            email: {
-                required,
-                email
-            },
-            birthDate: {
-                required
-            },
-            lastName: {
-                required,
-                alpha
-            },
-            firstName: {
-                required,
-                alpha
-            }
-        };
 
-        if (this.isPasswordUsed()) {
-            user.password = {
-                required,
-                minLength: minLength(8),
-                sameAs: sameAs(function () {
-                    return this.passwordRepeat;
-                })
-            };
-        }
-
-        return { user };
-    },
     data() {
         const defaultForm = {
             id: '',
@@ -178,72 +143,6 @@ export default {
             user: defaultForm,
             passwordRepeat: ''
         };
-    },
-    computed: {
-        lastNameErrors() {
-            const errors = [];
-
-            if (!this.$v.user.lastName.$dirty) return errors;
-
-            !this.$v.user.lastName.alpha && errors.push('Must be valid name');
-            !this.$v.user.lastName.required &&
-                errors.push('Last name is required');
-
-            return errors;
-        },
-        firstNameErrors() {
-            const errors = [];
-
-            if (!this.$v.user.firstName.$dirty) return errors;
-
-            !this.$v.user.firstName.alpha && errors.push('Must be valid name');
-            !this.$v.user.firstName.required &&
-                errors.push('First name is required');
-
-            return errors;
-        },
-        emailErrors() {
-            const errors = [];
-
-            if (!this.$v.user.email.$dirty) return errors;
-
-            !this.$v.user.email.email && errors.push('Must be valid e-mail');
-            !this.$v.user.email.required && errors.push('Email is required');
-
-            return errors;
-        },
-        birthDateErrors() {
-            const errors = [];
-
-            if (!this.$v.user.birthDate.$dirty) return errors;
-
-            !this.$v.user.birthDate.required &&
-                errors.push('Birth Date is required');
-
-            return errors;
-        },
-        passwordErrors() {
-            const errors = [];
-
-            if (!this.isPasswordUsed()) {
-                return errors;
-            }
-
-            if (!this.$v.user.password.$dirty) return errors;
-
-            !this.$v.user.password.required &&
-                errors.push('Password is required');
-
-            !this.$v.user.password.minLength &&
-                errors.push('Password must be longer than 8 characters');
-
-            !this.$v.user.password.sameAs &&
-                errors.push(
-                    'Password and password confirmation must be the same'
-                );
-
-            return errors;
-        }
     },
     watch: {
         selectedUser: {
@@ -268,9 +167,6 @@ export default {
         close() {
             this.$emit('close');
             this.reset();
-        },
-        isPasswordUsed() {
-            return !this.selectedUser.id;
         }
     }
 };
