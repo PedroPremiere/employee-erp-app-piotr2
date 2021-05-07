@@ -6,7 +6,7 @@ module.exports = {
         },
         'controllers.users.destroyController': {
             class: '/controllers/Users/DestroyController',
-            arguments: ['@repositories.user']
+            arguments: ['@repositories.user', '@services.file']
         },
         'controllers.users.showController': {
             class: '/controllers/Users/ShowController',
@@ -14,11 +14,11 @@ module.exports = {
         },
         'controllers.users.storeController': {
             class: '/controllers/Users/StoreController',
-            arguments: ['@repositories.user']
+            arguments: ['@repositories.user', '@services.file']
         },
         'controllers.users.updateController': {
             class: '/controllers/Users/UpdateController',
-            arguments: ['@repositories.user']
+            arguments: ['@repositories.user', '@services.file']
         }
     }
 };

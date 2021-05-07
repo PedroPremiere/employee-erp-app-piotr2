@@ -31,6 +31,10 @@ module.exports = {
                     model: 'Users',
                     key: 'id'
                 }
+            },
+            deletedAt: {
+                allowNull: true,
+                type: Sequelize.DATE
             }
         });
     },

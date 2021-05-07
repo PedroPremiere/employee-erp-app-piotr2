@@ -1,4 +1,5 @@
 const express = require('express');
+
 require('express-async-errors');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -20,6 +21,8 @@ const threeHoursInMs = 3600 * 1000 * 3;
 app.use(helmet());
 
 const originsWhitelist = [config.app.frontendUrl];
+
+app.use(express.static('public'));
 
 app.use(
     cors({

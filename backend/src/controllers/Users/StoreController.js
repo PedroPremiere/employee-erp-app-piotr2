@@ -1,8 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 
 class StoreController {
-    constructor(userRepository) {
+    constructor(userRepository, fileService) {
         this.userRepository = userRepository;
+        this.fileService = fileService;
     }
 
     async invoke(request, response) {
@@ -11,17 +12,22 @@ class StoreController {
             lastName,
             email,
             password,
-            admin,
             birthDate
         } = request.body;
+
+        let avatarFilePath = null;
+
+        if (request.files && request.files.avatar) {
+            avatarFilePath = await this.fileService.save(request.files.avatar);
+        }
 
         const user = await this.userRepository.create({
             firstName,
             lastName,
             email,
             password,
-            admin,
-            birthDate
+            birthDate,
+            avatarFilePath
         });
 
         return response.status(StatusCodes.CREATED).send(user);

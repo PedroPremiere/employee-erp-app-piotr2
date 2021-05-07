@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
             birthDate: {
                 type: DataTypes.DATEONLY,
                 allowNull: false
+            },
+            avatarFilePath: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         },
 
@@ -56,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             sequelize,
             timestamps: true,
+            paranoid: true,
             modelName: 'User',
             hooks: {
                 async beforeSave(user, options) {

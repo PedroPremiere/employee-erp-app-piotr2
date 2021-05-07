@@ -1,8 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 
 class DestroyController {
-    constructor(userRepository) {
+    constructor(userRepository, fileService) {
         this.userRepository = userRepository;
+        this.fileService = fileService;
     }
 
     async invoke(request, response) {

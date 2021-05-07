@@ -28,12 +28,20 @@ module.exports = {
                 defaultValue: false
             },
             birthDate: { type: Sequelize.DATEONLY, allowNull: false },
+            avatarFilePath: {
+                type: Sequelize.STRING,
+                allowNull: true
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
             },
             updatedAt: {
                 allowNull: false,
+                type: Sequelize.DATE
+            },
+            deletedAt: {
+                allowNull: true,
                 type: Sequelize.DATE
             }
         });

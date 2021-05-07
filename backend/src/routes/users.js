@@ -4,6 +4,8 @@ const userValidator = require('../validators/userValidator');
 const validate = require('../middlewares/validate');
 const adminOnly = require('../middlewares/adminOnly');
 const loggedIn = require('../middlewares/loggedIn');
+const avatarValidator = require('../validators/avatarValidator');
+const fileUpload = require('express-fileupload')();
 
 const router = express.Router();
 
@@ -17,8 +19,11 @@ module.exports = di => {
     router.get('/', [loggedIn, adminOnly], (...args) =>
         indexController.invoke(...args)
     );
-    router.post('/', [userValidator.store, validate], (...args) =>
-        storeController.invoke(...args)
+    router.post(
+        '/',
+        fileUpload,
+        [userValidator.store, avatarValidator.update, validate],
+        (...args) => storeController.invoke(...args)
     );
     router.delete('/:id', [loggedIn, adminOnly], (...args) =>
         destroyController.invoke(...args)
@@ -28,8 +33,9 @@ module.exports = di => {
     );
     router.put(
         '/:id',
+        fileUpload,
         [loggedIn, adminOnly],
-        [userValidator.update, validate],
+        [userValidator.update, avatarValidator.update, validate],
         (...args) => updateController.invoke(...args)
     );
 
