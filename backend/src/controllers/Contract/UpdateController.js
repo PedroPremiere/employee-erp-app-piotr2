@@ -17,7 +17,14 @@ class UpdateController {
 
         await contract.update({ position, startDate, endDate, userId });
 
-        const contractUpdated = await this.contractRepository.findById(id);
+        const contractUpdated = await this.contractRepository.findById(id, {
+            include: [
+                {
+                    association: 'user',
+                    attributes: ['lastName', 'firstName', 'email', 'id']
+                }
+            ]
+        });
 
         return response.send(contractUpdated);
     }

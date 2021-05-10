@@ -2,6 +2,8 @@ const express = require('express');
 
 const contractValidator = require('../validators/contractValidator');
 const validate = require('../middlewares/validate');
+const adminOnly = require('../middlewares/adminOnly');
+const loggedIn = require('../middlewares/loggedIn');
 
 const router = express.Router();
 
@@ -13,13 +15,23 @@ module.exports = di => {
     const updateController = di.get('controllers.contract.updateController');
 
     router.get('/:id', (...args) => showController.invoke(...args));
-    router.get('/', (...args) => indexController.invoke(...args));
-    router.post('/', [contractValidator.update, validate], (...args) =>
-        storeController.invoke(...args)
+    router.get('/', [loggedIn, adminOnly], (...args) =>
+        indexController.invoke(...args)
     );
-    router.delete('/:id', (...args) => destroyController.invoke(...args));
-    router.put('/:id', [contractValidator.update, validate], (...args) =>
-        updateController.invoke(...args)
+    router.post(
+        '/',
+        [loggedIn, adminOnly],
+        [contractValidator.update, validate],
+        (...args) => storeController.invoke(...args)
+    );
+    router.delete('/:id', [loggedIn, adminOnly], (...args) =>
+        destroyController.invoke(...args)
+    );
+    router.put(
+        '/:id',
+        [loggedIn, adminOnly],
+        [contractValidator.update, validate],
+        (...args) => updateController.invoke(...args)
     );
 
     return router;

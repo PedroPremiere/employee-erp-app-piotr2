@@ -15,7 +15,19 @@ class StoreController {
             userId
         });
 
-        return response.status(StatusCodes.CREATED).send(contract);
+        const addedContract = await this.contractRepository.findById(
+            contract.id,
+            {
+                include: [
+                    {
+                        association: 'user',
+                        attributes: ['lastName', 'firstName', 'email', 'id']
+                    }
+                ]
+            }
+        );
+
+        return response.status(StatusCodes.CREATED).send(addedContract);
     }
 }
 

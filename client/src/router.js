@@ -6,6 +6,7 @@ const HelloWorld = () => import('@/views/HelloWorld');
 const Main = () => import('@/views/Main');
 const Login = () => import('@/views/Login');
 const Users = () => import('@/views/admin/Users');
+const Contracts = () => import('@/views/admin/Contracts');
 
 Vue.use(Router);
 
@@ -31,6 +32,15 @@ const router = new Router({
             path: '/users',
             name: 'users',
             component: Users,
+            meta: {
+                auth: true,
+                adminOnly: true
+            }
+        },
+        {
+            path: '/contracts',
+            name: 'contracts',
+            component: Contracts,
             meta: {
                 auth: true,
                 adminOnly: true

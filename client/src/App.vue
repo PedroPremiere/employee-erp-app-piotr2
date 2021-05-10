@@ -28,6 +28,7 @@
         <v-main>
             <router-view :key="$route.fullPath" />
         </v-main>
+        <notifications group="errors" />
     </v-app>
 </template>
 

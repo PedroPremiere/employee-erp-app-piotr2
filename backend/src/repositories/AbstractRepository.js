@@ -3,12 +3,12 @@ class AbstractRepository {
         this.db = db;
     }
 
-    findAll() {
-        return this.model.findAll();
+    findAll(options = {}) {
+        return this.model.findAll(options);
     }
 
-    findById(id) {
-        return this.model.findByPk(id);
+    findById(id, options = {}) {
+        return this.model.findByPk(id, options);
     }
 
     create(options = {}) {

@@ -13,11 +13,11 @@ const users = {
             state.users = data;
         },
         removeUser(state, id) {
-            const index = state.users.findIndex(u => u.id === id);
+            const index = state.users.findIndex(user => user.id === id);
             state.users.splice(index, 1);
         },
         updateUser(state, newUser) {
-            const index = state.users.findIndex(u => u.id === newUser.id);
+            const index = state.users.findIndex(user => user.id === newUser.id);
             state.users.splice(index, 1, newUser);
         },
         addUser(state, data) {
@@ -27,6 +27,13 @@ const users = {
     actions: {
         async index({ commit }) {
             const { data } = await axios.get('/users');
+
+            commit('setUsers', data);
+
+            return data;
+        },
+        async filter({ commit }, query) {
+            const { data } = await axios.get(`/users?query=${query}`);
 
             commit('setUsers', data);
 
