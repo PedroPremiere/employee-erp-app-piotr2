@@ -22,10 +22,9 @@
                             <v-icon color="error" v-text="'mdi-alert'" />
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title
-                                color="error"
-                                v-text="item.message"
-                            />
+                            <v-list-item-title color="error">
+                                {{ item.message }}
+                            </v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list-item-group>

@@ -13,7 +13,12 @@
                 type="table-heading, list-item-two-line, image, table-tfoot"
             />
         </v-container>
-        <v-dialog v-model="isContractDialogOpen" persistent max-width="600px">
+        <v-dialog
+            v-model="isContractDialogOpen"
+            persistent
+            max-width="600px"
+            transition="dialog-bottom-transition"
+        >
             <contract-form
                 :selected-contract="selectedContract"
                 @save="onSaveContract"
@@ -23,6 +28,7 @@
         <v-dialog
             v-if="selectedContract"
             v-model="isDeleteDialogOpen"
+            transition="dialog-bottom-transition"
             max-width="500px"
         >
             <delete-contract-form
@@ -54,7 +60,7 @@ export default {
             isDeleteDialogOpen: false,
             isContractDialogOpen: false,
             isErrorDialogOpen: false,
-            error: {}
+            error: new Error()
         };
     },
     computed: {
@@ -90,11 +96,11 @@ export default {
 
             try {
                 await this.saveContracts(contract);
+                this.selectedContract = {};
             } catch (error) {
                 console.error(error);
                 this.error = error;
                 this.isErrorDialogOpen = true;
-
                 this.$notify({
                     group: 'errors',
                     title: 'Error',
@@ -102,8 +108,6 @@ export default {
                     type: 'error'
                 });
             }
-
-            this.selectedContract = {};
         },
         onCloseContractForm() {
             this.isContractDialogOpen = false;

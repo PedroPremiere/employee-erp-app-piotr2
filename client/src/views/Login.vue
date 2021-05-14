@@ -102,7 +102,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import loginValidatorMixin from '@/validators/login';
+import loginValidatorMixin from '@/validators/login.mixin';
 
 export default {
     name: 'Login',

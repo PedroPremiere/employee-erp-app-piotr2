@@ -119,7 +119,7 @@
 <script>
 import { validationMixin } from 'vuelidate';
 
-import userValidatorMixin from '@/validators/user';
+import userValidatorMixin from '@/validators/user.mixin';
 
 export default {
     name: 'UserForm',

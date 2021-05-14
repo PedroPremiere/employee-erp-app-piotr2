@@ -3,6 +3,7 @@
         v-model="selectedUser"
         :items="users"
         :search-input.sync="searchedWord"
+        :error-messages="errorMessages"
         label="Employee"
         value="selectedUser"
         item-text="id"
@@ -34,7 +35,8 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'UserSearchBox',
     props: {
-        value: { type: String, default: () => '' }
+        value: { type: String, default: () => '' },
+        errorMessages: { type: Array, default: () => [] }
     },
     data() {
         return {
@@ -61,8 +63,7 @@ export default {
             this.$emit('input', user ? user.id : null);
         },
         value: {
-            handler(value) {
-                this.setSelectedUserById(value);
+            handler() {
                 this.load();
             },
             immediate: true
@@ -82,6 +83,12 @@ export default {
                 this.setSelectedUserById(this.value);
             } catch (error) {
                 console.error(error);
+                this.$notify({
+                    group: 'errors',
+                    title: 'Error',
+                    text: 'Something went wrong',
+                    type: 'error'
+                });
             }
         },
         setSelectedUserById(userId) {

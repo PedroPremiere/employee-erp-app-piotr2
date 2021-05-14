@@ -4,7 +4,15 @@ class IndexController {
     }
 
     async invoke(request, response) {
+        const { userId } = request.query;
+        const where = {};
+
+        if (userId) {
+            where.userId = userId;
+        }
+
         const contracts = await this.contractRepository.findAll({
+            where,
             include: [
                 {
                     association: 'user',

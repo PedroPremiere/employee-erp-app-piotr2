@@ -1,19 +1,24 @@
 <template>
     <v-card>
-        <v-card-title>
-            <span class="headline">Contract</span>
-        </v-card-title>
+        <v-toolbar color="primary" dark> Contract </v-toolbar>
         <v-container>
-            <v-row>
+            <v-row class="py-3 px-3">
                 <v-col cols="12" sm="6" md="4">
                     <v-text-field
                         v-model="contract.position"
+                        :error-messages="contractPositionErrors"
                         label="Position*"
                         required
+                        @input="$v.contract.position.$touch"
                     />
                 </v-col>
                 <v-col cols="12">
-                    <user-search-box v-model="contract.userId" />
+                    <user-search-box
+                        v-model="contract.userId"
+                        :error-messages="userIdErrors"
+                        @input="$v.contract.userId.$touch"
+                        @blur="$v.contract.userId.$touch"
+                    />
                 </v-col>
                 <v-menu
                     ref="menuStartDate"
@@ -27,18 +32,24 @@
                     <template #[`activator`]="{ on, attrs }">
                         <v-text-field
                             v-model="contract.startDate"
+                            :error-messages="startDateErrors"
                             label="Start Date*"
                             required
                             readonly
                             v-bind="attrs"
                             prepend-icon="mdi-calendar"
                             v-on="on"
+                            @input="$v.contract.startDate.$touch"
+                            @blur="$v.contract.startDate.$touch"
                         />
                     </template>
                     <v-date-picker
+                        :key="contract.userId"
                         v-model="contract.startDate"
                         no-title
                         scrollable
+                        :allowed-dates="allowedDatesStart"
+                        :max="maxStartDate"
                     >
                         <v-spacer />
                         <v-btn
@@ -65,6 +76,7 @@
                     <template #[`activator`]="{ on, attrs }">
                         <v-text-field
                             v-model="contract.endDate"
+                            :error-messages="endDateErrors"
                             label="End Date*"
                             required
                             readonly
@@ -77,6 +89,8 @@
                         v-model="contract.endDate"
                         no-title
                         scrollable
+                        :min="minEndDate"
+                        :allowed-dates="allowedDatesEnd"
                     >
                         <v-spacer />
                         <v-btn
@@ -94,9 +108,6 @@
             </v-row>
         </v-container>
         <v-card-text>
-            <v-container>
-                <v-row> contract form </v-row>
-            </v-container>
             <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
@@ -104,7 +115,12 @@
             <v-btn color="blue darken-1" text @click="close">
                 <span> Close </span>
             </v-btn>
-            <v-btn color="blue darken-1" text @click="save">
+            <v-btn
+                color="blue darken-1"
+                text
+                :disabled="$v.$invalid"
+                @click="save"
+            >
                 <span>Save </span>
             </v-btn>
         </v-card-actions>
@@ -113,14 +129,14 @@
 
 <script>
 import { validationMixin } from 'vuelidate';
+import { mapGetters, mapActions } from 'vuex';
 import UserSearchBox from '@/components/UserSearchBox';
-
-//@todo : validation (next PR)
+import contractValidatorMixin from '@/validators/contract.mixin';
 
 export default {
     name: 'ContractForm',
     components: { UserSearchBox },
-    mixins: [validationMixin],
+    mixins: [validationMixin, contractValidatorMixin],
     props: {
         selectedContract: { type: Object, default: () => ({}) }
     },
@@ -140,17 +156,33 @@ export default {
             selectedUser: {}
         };
     },
+
+    computed: {
+        ...mapGetters({
+            userContracts: 'userContracts/items'
+        })
+    },
     watch: {
         selectedContract: {
             handler(selectedContract) {
                 if (selectedContract) {
                     this.contract = { ...selectedContract };
+
+                    if (selectedContract.userId) {
+                        this.loadContracts(selectedContract.userId);
+                    }
                 }
             },
             immediate: true
+        },
+        'contract.userId'(userId) {
+            this.loadContracts(userId);
         }
     },
     methods: {
+        ...mapActions({
+            loadContracts: 'userContracts/filterByUser'
+        }),
         setEndDate() {
             this.$refs.menuEndDate.save(this.contract.endDate);
         },
@@ -159,6 +191,7 @@ export default {
         },
         reset() {
             this.contract = { ...this.defaultForm };
+            this.$v.$reset();
         },
         save() {
             this.$emit('save', this.contract);

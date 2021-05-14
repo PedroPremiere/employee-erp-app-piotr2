@@ -5,10 +5,10 @@ const isStartBeforeEnd = require('./custom/isStartBeforeEnd');
 
 async function overlapingContracts(endDate, request) {
     const di = request.app.get('di');
-
     const contractRepository = di.get('repositories.contract');
 
     const { userId, startDate } = request.body;
+    const { id } = request.params;
 
     const contract = await contractRepository.findOneByOverlapingDateAndUser(
         userId,
@@ -16,7 +16,7 @@ async function overlapingContracts(endDate, request) {
         endDate
     );
 
-    if (contract) {
+    if (contract && contract.id !== id) {
         return Promise.reject('Contract time overlaps with other contracts');
     }
 }
