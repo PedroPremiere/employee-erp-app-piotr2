@@ -12,6 +12,7 @@
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-spacer />
                     <v-btn
+                        v-if="isAdmin"
                         class="mx-2"
                         fab
                         dark
@@ -22,7 +23,7 @@
                     </v-btn>
                 </v-toolbar>
             </template>
-            <template #[`item.actions`]="{ item }">
+            <template v-if="isAdmin" #[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="$emit('edit', item)">
                     mdi-pencil
                 </v-icon>
@@ -43,6 +44,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'ContractList',
     props: {
@@ -79,10 +82,27 @@ export default {
                 {
                     text: 'Created At',
                     value: 'createdAt'
-                },
-                { text: 'Actions', value: 'actions', sortable: false }
+                }
             ]
         };
-    }
+    },
+    computed: {
+        ...mapGetters({
+            loggedUser: 'auth/user'
+        }),
+        isAdmin() {
+            return this.loggedUser.isAdmin;
+        }
+    },
+    mounted() {
+        if (this.isAdmin) {
+            this.headers.push({
+                text: 'Actions',
+                value: 'actions',
+                sortable: false
+            });
+        }
+    },
+    methods: {}
 };
 </script>

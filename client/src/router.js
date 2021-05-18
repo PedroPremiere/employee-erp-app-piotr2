@@ -42,8 +42,7 @@ const router = new Router({
             name: 'contracts',
             component: Contracts,
             meta: {
-                auth: true,
-                adminOnly: true
+                auth: true
             }
         }
     ]

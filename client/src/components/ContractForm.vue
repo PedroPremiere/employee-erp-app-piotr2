@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-toolbar color="primary" dark> Contract </v-toolbar>
+        <v-toolbar class="px-2" color="primary" dark> Contract </v-toolbar>
         <v-container>
             <v-row class="py-3 px-3">
                 <v-col cols="12" sm="6" md="4">
@@ -20,99 +20,100 @@
                         @blur="$v.contract.userId.$touch"
                     />
                 </v-col>
-                <v-menu
-                    ref="menuStartDate"
-                    v-model="menuStartDate"
-                    :close-on-content-click="false"
-                    :return-value.sync="contract.startDate"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                >
-                    <template #[`activator`]="{ on, attrs }">
-                        <v-text-field
+                <v-col cols="12">
+                    <v-menu
+                        ref="menuStartDate"
+                        v-model="menuStartDate"
+                        :close-on-content-click="false"
+                        :return-value.sync="contract.startDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template #[`activator`]="{ on, attrs }">
+                            <v-text-field
+                                v-model="contract.startDate"
+                                :error-messages="startDateErrors"
+                                label="Start Date*"
+                                required
+                                readonly
+                                v-bind="attrs"
+                                prepend-icon="mdi-calendar"
+                                v-on="on"
+                                @input="$v.contract.startDate.$touch"
+                                @blur="$v.contract.startDate.$touch"
+                            />
+                        </template>
+                        <v-date-picker
+                            :key="contract.userId"
                             v-model="contract.startDate"
-                            :error-messages="startDateErrors"
-                            label="Start Date*"
-                            required
-                            readonly
-                            v-bind="attrs"
-                            prepend-icon="mdi-calendar"
-                            v-on="on"
-                            @input="$v.contract.startDate.$touch"
-                            @blur="$v.contract.startDate.$touch"
-                        />
-                    </template>
-                    <v-date-picker
-                        :key="contract.userId"
-                        v-model="contract.startDate"
-                        no-title
-                        scrollable
-                        :allowed-dates="allowedDatesStart"
-                        :max="maxStartDate"
-                    >
-                        <v-spacer />
-                        <v-btn
-                            text
-                            color="primary"
-                            @click="menuStartDate = false"
+                            no-title
+                            scrollable
+                            :allowed-dates="allowedDatesStart"
+                            :max="maxStartDate"
                         >
-                            Cancel
-                        </v-btn>
-                        <v-btn text color="primary" @click="setStartDate">
-                            OK
-                        </v-btn>
-                    </v-date-picker>
-                </v-menu>
-                <v-menu
-                    ref="menuEndDate"
-                    v-model="menuEndDate"
-                    :close-on-content-click="false"
-                    :return-value.sync="contract.endDate"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                >
-                    <template #[`activator`]="{ on, attrs }">
-                        <v-text-field
+                            <v-spacer />
+                            <v-btn
+                                text
+                                color="primary"
+                                @click="menuStartDate = false"
+                            >
+                                Cancel
+                            </v-btn>
+                            <v-btn text color="primary" @click="setStartDate">
+                                OK
+                            </v-btn>
+                        </v-date-picker>
+                    </v-menu>
+                </v-col>
+                <v-col cols="12">
+                    <v-menu
+                        ref="menuEndDate"
+                        v-model="menuEndDate"
+                        :close-on-content-click="false"
+                        :return-value.sync="contract.endDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template #[`activator`]="{ on, attrs }">
+                            <v-text-field
+                                v-model="contract.endDate"
+                                :error-messages="endDateErrors"
+                                label="End Date*"
+                                required
+                                readonly
+                                v-bind="attrs"
+                                prepend-icon="mdi-calendar"
+                                v-on="on"
+                            />
+                        </template>
+                        <v-date-picker
                             v-model="contract.endDate"
-                            :error-messages="endDateErrors"
-                            label="End Date*"
-                            required
-                            readonly
-                            v-bind="attrs"
-                            prepend-icon="mdi-calendar"
-                            v-on="on"
-                        />
-                    </template>
-                    <v-date-picker
-                        v-model="contract.endDate"
-                        no-title
-                        scrollable
-                        :min="minEndDate"
-                        :allowed-dates="allowedDatesEnd"
-                    >
-                        <v-spacer />
-                        <v-btn
-                            text
-                            color="primary"
-                            @click="menuEndDate = false"
+                            no-title
+                            scrollable
+                            :min="minEndDate"
+                            :allowed-dates="allowedDatesEnd"
                         >
-                            Cancel
-                        </v-btn>
-                        <v-btn text color="primary" @click="setEndDate">
-                            OK
-                        </v-btn>
-                    </v-date-picker>
-                </v-menu>
+                            <v-spacer />
+                            <v-btn
+                                text
+                                color="primary"
+                                @click="menuEndDate = false"
+                            >
+                                Cancel
+                            </v-btn>
+                            <v-btn text color="primary" @click="setEndDate">
+                                OK
+                            </v-btn>
+                        </v-date-picker>
+                    </v-menu>
+                </v-col>
             </v-row>
         </v-container>
-        <v-card-text>
-            <small>*indicates required field</small>
-        </v-card-text>
         <v-card-actions>
             <v-spacer />
-            <v-btn color="blue darken-1" text @click="close">
+            <v-btn class="mx-5" color="blue darken-1" text @click="close">
                 <span> Close </span>
             </v-btn>
             <v-btn

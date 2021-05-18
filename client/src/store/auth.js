@@ -7,6 +7,7 @@ const auth = {
     }),
     getters: {
         isLoggedIn: state => !!state.user,
+        isAdmin: state => state.user.isAdmin,
         user: state => state.user
     },
     mutations: {

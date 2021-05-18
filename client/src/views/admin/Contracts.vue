@@ -14,6 +14,7 @@
             />
         </v-container>
         <v-dialog
+            v-if="isAdmin"
             v-model="isContractDialogOpen"
             persistent
             max-width="600px"
@@ -26,7 +27,7 @@
             />
         </v-dialog>
         <v-dialog
-            v-if="selectedContract"
+            v-if="selectedContract && isAdmin"
             v-model="isDeleteDialogOpen"
             transition="dialog-bottom-transition"
             max-width="500px"
@@ -65,7 +66,9 @@ export default {
     },
     computed: {
         ...mapGetters({
-            contracts: 'contracts/items'
+            contracts: 'contracts/items',
+            loggedUser: 'auth/user',
+            isAdmin: 'auth/isAdmin'
         })
     },
     mounted() {
