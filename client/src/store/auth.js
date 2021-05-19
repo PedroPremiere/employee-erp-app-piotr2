@@ -19,7 +19,6 @@ const auth = {
         logout(state) {
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('user');
-
             state.user = null;
         }
     },

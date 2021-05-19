@@ -57,6 +57,11 @@ export default {
             selectedUser: {}
         };
     },
+    watch: {
+        selectedUser() {
+            this.apiErrors = [];
+        }
+    },
     computed: {
         ...mapGetters({
             users: 'users/items'
@@ -80,9 +85,8 @@ export default {
             removeUser: 'users/remove',
             saveUser: 'users/save'
         }),
-        async onSaveUser(user) {
+        async onSaveUser() {
             this.isUserDialogOpen = false;
-            await this.saveUser(user);
             this.selectedUser = {};
         },
         onCloseUserForm() {

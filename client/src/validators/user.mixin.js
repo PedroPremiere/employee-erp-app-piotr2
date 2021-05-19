@@ -6,7 +6,10 @@ import {
     sameAs
 } from 'vuelidate/lib/validators';
 
+import abstractValidatorMixin from '@/validators/abstract.mixin';
+
 export default {
+    mixins: [abstractValidatorMixin],
     validations() {
         const user = {
             email: {
@@ -51,7 +54,7 @@ export default {
             !this.$v.user.lastName.required &&
                 errors.push('Last name is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.lastName);
         },
         firstNameErrors() {
             const errors = [];
@@ -62,7 +65,7 @@ export default {
             !this.$v.user.firstName.required &&
                 errors.push('First name is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.firstName);
         },
         emailErrors() {
             const errors = [];
@@ -72,7 +75,7 @@ export default {
             !this.$v.user.email.email && errors.push('Must be valid e-mail');
             !this.$v.user.email.required && errors.push('Email is required');
 
-            return errors;
+            return errors.concat(this.apiErrors['email']);
         },
         birthDateErrors() {
             const errors = [];
@@ -82,7 +85,7 @@ export default {
             !this.$v.user.birthDate.required &&
                 errors.push('Birth Date is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.birthDate);
         },
         passwordErrors() {
             const errors = [];
@@ -104,7 +107,7 @@ export default {
                     'Password and password confirmation must be the same'
                 );
 
-            return errors;
+            return errors.concat(this.apiErrors.password);
         }
     }
 };
