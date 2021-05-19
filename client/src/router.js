@@ -5,8 +5,8 @@ import store from './store';
 const HelloWorld = () => import('@/views/HelloWorld');
 const Main = () => import('@/views/Main');
 const Login = () => import('@/views/Login');
-const Users = () => import('@/views/admin/Users');
-const Contracts = () => import('@/views/admin/Contracts');
+const Users = () => import('@/views/Users');
+const Contracts = () => import('@/views/Contracts');
 
 Vue.use(Router);
 
