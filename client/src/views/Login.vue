@@ -31,9 +31,11 @@
                     <v-row class="mt-6" justify="center">
                         <v-col cols="10" sm="5" md="3">
                             <v-text-field
-                                v-model="$v.email.$model"
+                                v-model="email"
+                                :error-messages="emailErrors"
                                 label="E mail"
                                 outlined
+                                @input="$v.email.$touch"
                             />
                         </v-col>
                     </v-row>
@@ -42,9 +44,11 @@
                         <v-col cols="10" sm="5" md="3">
                             <v-text-field
                                 v-model="password"
+                                :error-messages="passwordErrors"
                                 label="Password"
                                 type="password"
                                 outlined
+                                @input="$v.password.$touch"
                             />
                         </v-col>
                     </v-row>
@@ -57,43 +61,6 @@
                     >
                         Login
                     </v-btn>
-                    <v-row class="mt-6" justify="center">
-                        <v-col cols="10" sm="5" md="3">
-                            <v-list justify="center">
-                                <v-list-item-group>
-                                    <v-list-item v-if="!$v.email.email">
-                                        <v-list-item-content>
-                                            <v-alert type="error">
-                                                Must be correct email
-                                            </v-alert>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item v-if="!$v.email.required">
-                                        <v-list-item-content>
-                                            <v-alert type="error">
-                                                Email Field is required
-                                            </v-alert>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item v-if="!$v.password.required">
-                                        <v-list-item-content>
-                                            <v-alert type="error">
-                                                Password Field is required
-                                            </v-alert>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item v-if="!$v.password.minLength">
-                                        <v-list-item-content>
-                                            <v-alert type="error">
-                                                Must be minimum 8 characters
-                                                long
-                                            </v-alert>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list-item-group>
-                            </v-list>
-                        </v-col>
-                    </v-row>
                 </v-card>
             </v-col>
         </v-row>
@@ -110,7 +77,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            wrongPasswordOrUserName: false
         };
     },
     computed: {
@@ -130,7 +98,20 @@ export default {
             };
 
             try {
+                this.$v.$touch();
+
+                if (this.$v.$invalid) {
+                    return;
+                }
+
                 await this.login(credentials);
+                this.$notify({
+                    group: 'errors',
+                    title: 'Welcome',
+                    text: 'Welcome, you are logged in',
+                    type: 'success'
+                });
+                this.$router.push('Main');
             } catch (error) {
                 if (
                     error.response &&
@@ -141,6 +122,13 @@ export default {
                 } else {
                     console.error(error);
                 }
+                this.$notify({
+                    group: 'errors',
+                    title: 'Error',
+                    text: 'Wrong Password or user name',
+                    type: 'error'
+                });
+                this.wrongPasswordOrUserName = true;
             }
         }
     }
