@@ -113,21 +113,15 @@ export default {
                 });
                 this.$router.push('Main');
             } catch (error) {
-                if (
-                    error.response &&
-                    error.response.data &&
-                    error.response.data.errors
-                ) {
-                    console.error(error.response.data.errors);
-                } else {
-                    console.error(error);
-                }
+                console.error(error);
                 this.$notify({
                     group: 'errors',
                     title: 'Error',
                     text: 'Wrong Password or user name',
                     type: 'error'
                 });
+
+                this.parseApiErrors(error);
                 this.wrongPasswordOrUserName = true;
             }
         }
