@@ -3,15 +3,23 @@ const { check, validationResult } = require('express-validator');
 const isValidUser = require('./custom/isValidUser');
 const isStartBeforeEnd = require('./custom/isStartBeforeEnd');
 
-async function overlapingContracts(endDate, request) {
+async function isNotDuringContract(endDate, request) {
     const di = request.app.get('di');
-
     const contractRepository = di.get('repositories.contract');
 
+    const { loggedUser } = request;
+    const isAdmin = await loggedUser.isAdmin();
     const { userId, startDate } = request.body;
+    let userIdQuery;
+
+    if (isAdmin) {
+        userIdQuery = userId;
+    } else {
+        userIdQuery = loggedUser.id;
+    }
 
     const contract = await contractRepository.findOneIncludesUserAndDataRange(
-        userId,
+        userIdQuery,
         startDate,
         endDate
     );
@@ -21,20 +29,29 @@ async function overlapingContracts(endDate, request) {
     }
 }
 
-async function overlapingVacation(endDate, request) {
+async function isOverlapingVacation(endDate, request) {
     const di = request.app.get('di');
-
     const vacationRepository = di.get('repositories.vacation');
 
     const { userId, startDate } = request.body;
+    const { id } = request.params;
+    const { loggedUser } = request;
+    const isAdmin = await loggedUser.isAdmin();
+    let userIdQuery;
+
+    if (isAdmin) {
+        userIdQuery = userId;
+    } else {
+        userIdQuery = loggedUser.id;
+    }
 
     const vacation = await vacationRepository.findOneByOverlapingDateAndUser(
-        userId,
+        userIdQuery,
         startDate,
         endDate
     );
 
-    if (vacation) {
+    if (vacation && vacation.id !== id) {
         return Promise.reject('vacation time overlaps with other vacations');
     }
 }
@@ -56,16 +73,15 @@ const update = [
         .isISO8601()
         .withMessage('Date must be in ISO8601 format(YYYY-MM-DD)')
         .bail()
-        .custom((endDate, { req }) => overlapingContracts(endDate, req))
+        .custom((endDate, { req }) => isNotDuringContract(endDate, req))
         .bail()
-        .custom((endDate, { req }) => overlapingVacation(endDate, req)),
+        .custom((endDate, { req }) => isOverlapingVacation(endDate, req)),
 
     check('userId')
-        .not()
-        .isEmpty()
-        .withMessage('Should not be empty')
-        .bail()
-        .custom((userId, { req }) => isValidUser(userId, req))
+        .optional({ nullable: true })
+        .custom((userId, { req }) => isValidUser(userId, req)),
+
+    check('isConfirmed').optional({ nullable: true })
 ];
 
 module.exports = { update };

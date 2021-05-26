@@ -4,7 +4,7 @@ class IndexController {
     }
 
     async invoke(request, response) {
-        const { userIdQuery } = request.query;
+        const { userId } = request.query;
         const where = {};
         const { loggedUser } = request;
         const isAdmin = await loggedUser.isAdmin();
@@ -13,8 +13,8 @@ class IndexController {
             where.userId = loggedUser.id;
         }
 
-        if (userIdQuery && isAdmin) {
-            where.userId = userIdQuery;
+        if (userId && isAdmin) {
+            where.userId = userId;
         }
 
         const contracts = await this.contractRepository.findAll({

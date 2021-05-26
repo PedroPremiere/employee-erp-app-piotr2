@@ -7,6 +7,10 @@ class AbstractRepository {
         return this.model.findAll(options);
     }
 
+    findOne(options = {}) {
+        return this.model.findOne(options);
+    }
+
     findById(id, options = {}) {
         return this.model.findByPk(id, options);
     }

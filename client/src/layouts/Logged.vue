@@ -79,6 +79,11 @@ export default {
                     title: 'Contracts',
                     icon: 'mdi-file-document',
                     link: '/contracts'
+                },
+                {
+                    title: 'Vacation',
+                    icon: 'mdi-calendar-alert',
+                    link: '/vacations'
                 }
             ];
 

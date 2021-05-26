@@ -49,7 +49,7 @@ export default {
         },
         isStartBeforeEnd() {
             if (this.contract.startDate && this.contract.endDate) {
-                return this.contract.startDate < this.contract.endDate;
+                return this.contract.startDate <= this.contract.endDate;
             }
 
             return true;

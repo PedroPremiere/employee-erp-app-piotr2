@@ -7,6 +7,7 @@ const Main = () => import('@/views/Main');
 const Login = () => import('@/views/Login');
 const Users = () => import('@/views/Users');
 const Contracts = () => import('@/views/Contracts');
+const Vacations = () => import('@/views/Vacations');
 
 Vue.use(Router);
 
@@ -41,6 +42,14 @@ const router = new Router({
             path: '/contracts',
             name: 'contracts',
             component: Contracts,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/vacations',
+            name: 'vacations',
+            component: Vacations,
             meta: {
                 auth: true
             }

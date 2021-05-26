@@ -6,15 +6,37 @@ class StoreController {
     }
 
     async invoke(request, response) {
-        const { startDate, endDate, userId } = request.body;
-
-        const vacation = await this.vacationRepository.create({
+        const {
             startDate,
             endDate,
-            userId
-        });
+            userId,
+            isConfirmed = false
+        } = request.body;
 
-        return response.status(StatusCodes.CREATED).send(vacation);
+        const options = { startDate, endDate, userId, isConfirmed };
+        const { loggedUser } = request;
+        const isAdmin = await loggedUser.isAdmin();
+
+        if (!isAdmin) {
+            options.userId = loggedUser.id;
+            options.isConfirmed = false;
+        }
+
+        const vacation = await this.vacationRepository.create(options);
+
+        const addedVacation = await this.vacationRepository.findById(
+            vacation.id,
+            {
+                include: [
+                    {
+                        association: 'user',
+                        attributes: ['lastName', 'firstName', 'email', 'id']
+                    }
+                ]
+            }
+        );
+
+        return response.status(StatusCodes.CREATED).send(addedVacation);
     }
 }
 
