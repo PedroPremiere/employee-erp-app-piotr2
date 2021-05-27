@@ -3,7 +3,7 @@
         <v-toolbar class="px-2" color="primary" dark> Contract </v-toolbar>
         <v-container>
             <v-row class="py-3 px-3">
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="6">
                     <v-text-field
                         v-model="contract.position"
                         :error-messages="contractPositionErrors"
@@ -11,6 +11,19 @@
                         required
                         @input="$v.contract.position.$touch"
                     />
+                </v-col>
+                <v-col cols="6">
+                    <v-select
+                        v-model="contract.vacationDaysPerYear"
+                        :items="availableVacationPerYear"
+                        item-text="vacation days per year"
+                        item-value="abbr"
+                        label="vacation days per year"
+                        :error-messages="vacationsErrors"
+                        return-object
+                        single-line
+                        @blur="$v.contract.vacationDaysPerYear.$touch"
+                    ></v-select>
                 </v-col>
                 <v-col cols="12">
                     <user-search-box
@@ -49,7 +62,6 @@
                             v-model="contract.startDate"
                             no-title
                             scrollable
-                            :allowed-dates="allowedDatesStart"
                             :max="maxStartDate"
                         >
                             <v-spacer />
@@ -93,7 +105,6 @@
                             no-title
                             scrollable
                             :min="minEndDate"
-                            :allowed-dates="allowedDatesEnd"
                         >
                             <v-spacer />
                             <v-btn
@@ -151,6 +162,7 @@ export default {
 
         return {
             defaultForm,
+            availableVacationPerYear: [20, 26],
             menuStartDate: false,
             menuEndDate: false,
             contract: defaultForm,

@@ -82,6 +82,14 @@ export default {
                 {
                     text: 'Created At',
                     value: 'createdAt'
+                },
+                {
+                    text: 'Vacation days per year',
+                    value: 'vacationDaysPerYear'
+                },
+                {
+                    text: 'Vacation days',
+                    value: 'vacationDays'
                 }
             ]
         };

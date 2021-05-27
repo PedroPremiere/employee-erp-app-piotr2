@@ -43,6 +43,11 @@ module.exports = {
             deletedAt: {
                 allowNull: true,
                 type: Sequelize.DATE
+            },
+            vacationDays: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0
             }
         });
     },

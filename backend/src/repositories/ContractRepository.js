@@ -12,6 +12,17 @@ class ContractRepository extends AbstractIntervalRepository {
             where: { userId, startDate, endDate }
         });
     }
+
+    getById(id) {
+        return this.model.findByPk(id, {
+            include: [
+                {
+                    association: 'user',
+                    attributes: ['lastName', 'firstName', 'email', 'id']
+                }
+            ]
+        });
+    }
 }
 
 module.exports = ContractRepository;

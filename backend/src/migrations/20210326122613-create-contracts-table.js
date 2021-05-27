@@ -25,7 +25,6 @@ module.exports = {
                     key: 'id'
                 }
             },
-
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
@@ -37,6 +36,16 @@ module.exports = {
             deletedAt: {
                 allowNull: true,
                 type: Sequelize.DATE
+            },
+            vacationDaysPerYear: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: false
+            },
+            vacationDays: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: false
             }
         });
         await queryInterface.addIndex('Contracts', [

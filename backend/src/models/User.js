@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
             avatarFilePath: {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            vacationDays: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false
             }
         },
 

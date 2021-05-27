@@ -34,6 +34,15 @@ module.exports = (sequelize, DataTypes) => {
             userId: {
                 type: DataTypes.UUID,
                 allowNull: false
+            },
+            vacationDaysPerYear: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            vacationDays: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: false
             }
         },
         {

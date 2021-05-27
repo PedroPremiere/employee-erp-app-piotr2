@@ -72,6 +72,10 @@ export default {
                     text: 'Created At',
                     value: 'createdAt'
                 },
+                {
+                    text: 'Vacation days',
+                    value: 'vacationDays'
+                },
                 { text: 'Actions', value: 'actions', sortable: false }
             ]
         };

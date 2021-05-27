@@ -14,16 +14,13 @@ export default {
                 required,
                 isStartBeforeEnd() {
                     return this.isStartBeforeEnd;
-                },
-                isStartDateOverlapping() {
-                    return this.isStartDateAllowed(this.contract.startDate);
                 }
             },
             endDate: {
-                required,
-                isEndDateOverlapping() {
-                    return this.isEndDateAllowed(this.contract.endDate);
-                }
+                required
+            },
+            vacationDaysPerYear: {
+                required
             }
         }
     },
@@ -72,12 +69,6 @@ export default {
             !this.$v.contract.userId.required &&
                 errors.push('User is required');
 
-            !this.$v.contract.endDate.isEndDateOverlapping &&
-                errors.push('End Date overlaps with other contracts');
-
-            !this.$v.contract.startDate.isStartDateOverlapping &&
-                errors.push('Start Date overlaps with other contracts');
-
             return errors;
         },
         startDateErrors() {
@@ -87,9 +78,6 @@ export default {
 
             !this.$v.contract.startDate.required &&
                 errors.push('Start Date is required');
-
-            !this.$v.contract.startDate.isStartDateOverlapping &&
-                errors.push('Start Date overlaps with other contracts');
 
             return errors;
         },
@@ -101,71 +89,17 @@ export default {
             !this.$v.contract.endDate.required &&
                 errors.push('End Date is required');
 
-            !this.$v.contract.endDate.isEndDateOverlapping &&
-                errors.push('End Date overlaps with other contracts');
+            return errors;
+        },
+        vacationDaysPerYear() {
+            const errors = [];
+
+            if (!this.$v.contract.vacationDaysPerYear.$dirty) return errors;
+
+            !this.$v.contract.vacationDaysPerYear.required &&
+                errors.push('Vacation days per year is required');
 
             return errors;
-        }
-    },
-    methods: {
-        allowedDatesStart(startDate) {
-            if (this.isStartDateAllowed(startDate)) {
-                return startDate;
-            }
-        },
-        allowedDatesEnd(endDate) {
-            if (this.isEndDateAllowed(endDate)) {
-                return endDate;
-            }
-        },
-
-        isStartDateAllowed(startDate) {
-            const userContracts = this.userContracts.filter(
-                contract => contract.id != this.contract.id
-            );
-
-            for (let contract of userContracts) {
-                if (
-                    startDate >= contract.startDate &&
-                    startDate <= contract.endDate
-                ) {
-                    return false;
-                }
-
-                if (
-                    this.contract.endDate &&
-                    startDate < contract.startDate &&
-                    this.contract.endDate >= contract.endDate
-                ) {
-                    return false;
-                }
-            }
-
-            return true;
-        },
-        isEndDateAllowed(endDate) {
-            const userContracts = this.userContracts.filter(
-                contract => contract.id !== this.contract.id
-            );
-
-            for (let contract of userContracts) {
-                if (
-                    endDate >= contract.startDate &&
-                    endDate <= contract.endDate
-                ) {
-                    return false;
-                }
-
-                if (
-                    this.contract.startDate &&
-                    this.contract.startDate < contract.startDate &&
-                    endDate >= contract.endDate
-                ) {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 };

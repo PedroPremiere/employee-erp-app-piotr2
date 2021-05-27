@@ -52,7 +52,12 @@ const update = [
         .isISO8601()
         .withMessage('Date must be in ISO8601 format(YYYY-MM-DD)')
         .bail()
-        .custom((endDate, { req }) => overlapingContracts(endDate, req))
+        .custom((endDate, { req }) => overlapingContracts(endDate, req)),
+
+    check('vacationDaysPerYear')
+        .not()
+        .isEmpty()
+        .withMessage('Vacation days per year should not be empty')
 ];
 
 module.exports = { update };

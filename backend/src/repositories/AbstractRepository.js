@@ -15,8 +15,10 @@ class AbstractRepository {
         return this.model.findByPk(id, options);
     }
 
-    create(options = {}) {
-        return this.model.create(options);
+    create(options = {}, transaction) {
+        return this.model.create(options, {
+            transaction
+        });
     }
 
     delete(id) {

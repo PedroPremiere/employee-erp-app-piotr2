@@ -14,6 +14,8 @@ module.exports = {
             startDate: '2021-04-08',
             endDate: '2021-04-22',
             position: 'driver',
+            vacationDaysPerYear: 20,
+            vacationDays: 1,
             userId: user.id
         });
 
@@ -21,6 +23,8 @@ module.exports = {
             startDate: '2021-10-16',
             endDate: '2021-12-25',
             position: 'driver',
+            vacationDaysPerYear: 20,
+            vacationDays: 1,
             userId: user.id
         });
 
@@ -28,6 +32,8 @@ module.exports = {
             startDate: '2021-01-01',
             endDate: '2021-12-25',
             position: 'admin',
+            vacationDaysPerYear: 26,
+            vacationDays: 1,
             userId: admin.id
         });
     },

@@ -1,12 +1,21 @@
 const { StatusCodes } = require('http-status-codes');
+const sequelize = require('../../util/database');
 
 class UpdateController {
-    constructor(contractRepository) {
+    constructor(
+        contractRepository,
+        vacationService,
+        calculateContractVacationDaysOnUser
+    ) {
         this.contractRepository = contractRepository;
+        this.vacationService = vacationService;
+        this.calculateContractVacationDaysOnUser =
+            calculateContractVacationDaysOnUser;
     }
 
     async invoke(request, response) {
-        const { position, startDate, endDate, userId } = request.body;
+        const { vacationDaysPerYear, position, startDate, endDate, userId } =
+            request.body;
         const { id } = request.params;
 
         const contract = await this.contractRepository.findById(id);
@@ -15,16 +24,40 @@ class UpdateController {
             return response.sendStatus(StatusCodes.NOT_FOUND);
         }
 
-        await contract.update({ position, startDate, endDate, userId });
+        const transaction = await sequelize.transaction();
 
-        const contractUpdated = await this.contractRepository.findById(id, {
-            include: [
+        try {
+            const vacationDays = await this.vacationService.vacationDaysPerYear(
+                vacationDaysPerYear,
+                startDate,
+                endDate
+            );
+
+            await this.calculateContractVacationDaysOnUser.update(
+                contract,
+                vacationDays,
+                transaction
+            );
+
+            await contract.update(
                 {
-                    association: 'user',
-                    attributes: ['lastName', 'firstName', 'email', 'id']
-                }
-            ]
-        });
+                    vacationDaysPerYear,
+                    position,
+                    startDate,
+                    endDate,
+                    userId
+                },
+                { transaction }
+            );
+
+            await transaction.commit();
+        } catch (error) {
+            await transaction.rollback();
+
+            throw new Error(error);
+        }
+
+        const contractUpdated = await this.contractRepository.getById(id);
 
         return response.send(contractUpdated);
     }

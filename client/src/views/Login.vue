@@ -23,11 +23,13 @@
                 <v-card
                     v-else
                     elevation="2"
-                    class="py-4 mx-auto"
+                    class="pb-4 mx-auto"
                     align="center"
                     justify="center"
                 >
-                    <h3 align="center" justify="center"> Login </h3>
+                    <v-toolbar class="px-2" color="primary" dark>
+                        <h3> Login </h3>
+                    </v-toolbar>
                     <v-row class="mt-6" justify="center">
                         <v-col cols="10" sm="5" md="3">
                             <v-text-field
