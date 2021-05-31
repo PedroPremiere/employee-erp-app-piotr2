@@ -1,12 +1,14 @@
-const map = require('lodash/map');
-const models = require('../models/index');
+const sequelize = require('../util/database');
 
 module.exports = async () => {
-    return await Promise.all(
-        map(Object.keys(models), key => {
-            if (['sequelize', 'Sequelize'].includes(key)) return null;
+    console.log('Truncate database running...');
 
-            return models[key].destroy({ where: {}, force: true });
-        })
-    );
+    const models = Object.keys(sequelize.models);
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+
+    for (const model of models) {
+        await sequelize.models[model].truncate({ force: true });
+    }
+
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 };

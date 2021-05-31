@@ -1,4 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({
+    path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+});
 
 const env = (key, defaultValue = null) => process.env[key] || defaultValue;
 const isEnabled = key => env(key) && env(key) === 'true';
