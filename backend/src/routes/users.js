@@ -22,6 +22,7 @@ module.exports = di => {
     router.post(
         '/',
         fileUpload,
+        [loggedIn, adminOnly],
         [userValidator.store, avatarValidator.update, validate],
         (...args) => storeController.invoke(...args)
     );

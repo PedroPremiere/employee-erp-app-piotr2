@@ -1,10 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const app = require('../../../index');
-const supertest = require('supertest');
-const request = supertest(app);
-
-const userFactory = require('../../factories/user');
-
+const request = require('supertest-session')(app);
+const userFactory = require('../../factories/User');
 const truncateDatabase = require('../../helpers/truncate');
 
 let userData;
@@ -14,11 +11,15 @@ describe('Auth', () => {
         await truncateDatabase();
 
         userData = await userFactory.generate();
-        await userFactory.create(userData);
+        userFactory.create(userData);
+    });
+
+    afterEach(async () => {
+        request.post('/auth/logout');
     });
 
     describe('POST /auth/login', () => {
-        it('returns SUCCESS when sending proper data', async () => {
+        it('returns OK when sending proper data', async () => {
             const { email, password } = userData;
 
             const response = await request
@@ -66,7 +67,7 @@ describe('Auth', () => {
             expect(response.status).toBe(StatusCodes.BAD_REQUEST);
         });
 
-        it('returns BAD_REQUEST when sending wrong data', async () => {
+        it('returns UNAUTHORIZED when sending wrong data', async () => {
             const { email } = userData;
             const password = 'wrongPassword';
 

@@ -2,6 +2,7 @@ const express = require('express');
 
 const validate = require('../middlewares/validate');
 const authValidator = require('../validators/authValidator');
+const loggedIn = require('../middlewares/loggedIn');
 
 const router = express.Router();
 
@@ -12,7 +13,9 @@ module.exports = di => {
     router.post('/login', [authValidator.login, validate], (...args) =>
         loginController.invoke(...args)
     );
-    router.post('/logout', (...args) => logoutController.invoke(...args));
+    router.post('/logout', [loggedIn], (...args) =>
+        logoutController.invoke(...args)
+    );
 
     return router;
 };

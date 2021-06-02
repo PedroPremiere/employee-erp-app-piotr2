@@ -1,14 +1,15 @@
-const sequelize = require('../util/database');
+const models = require('../models/index');
 
 module.exports = async () => {
-    console.log('Truncate database running...');
+    await models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', null, {
+        raw: true
+    });
 
-    const models = Object.keys(sequelize.models);
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-
-    for (const model of models) {
-        await sequelize.models[model].truncate({ force: true });
+    for (const model in models.sequelize.models) {
+        await models.sequelize.models[model].truncate({ force: true });
     }
 
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    await models.sequelize.query('SET FOREIGN_KEY_CHECKS = 1', null, {
+        raw: true
+    });
 };

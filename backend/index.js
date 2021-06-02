@@ -57,13 +57,8 @@ app.use(errorHandler);
 app.set('session', session);
 app.set('di', di);
 
-sequelize
-    .sync()
-    .then(result => {
-        app.listen(config.app.port);
-    })
-    .catch(err => {
-        console.log(err);
-    });
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(config.app.port);
+}
 
 module.exports = app;

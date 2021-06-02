@@ -6,7 +6,7 @@ class LogoutController {
 
         session.destroy();
 
-        return response.sendStatus(StatusCodes.OK);
+        return response.sendStatus(StatusCodes.NO_CONTENT);
     }
 }
 
