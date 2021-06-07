@@ -180,21 +180,14 @@ export default {
             handler(selectedContract) {
                 if (selectedContract) {
                     this.contract = { ...selectedContract };
-
-                    if (selectedContract.userId) {
-                        this.loadContracts(selectedContract.userId);
-                    }
                 }
             },
             immediate: true
-        },
-        'contract.userId'(userId) {
-            this.loadContracts(userId);
         }
     },
     methods: {
         ...mapActions({
-            loadContracts: 'userContracts/filterByUser'
+            saveContract: 'contracts/save'
         }),
         setEndDate() {
             this.$refs.menuEndDate.save(this.contract.endDate);
@@ -206,7 +199,37 @@ export default {
             this.contract = { ...this.defaultForm };
             this.$v.$reset();
         },
-        save() {
+        async save() {
+            try {
+                this.$v.$touch();
+
+                if (this.$v.$invalid) {
+                    return;
+                }
+
+                await this.saveContract(this.contract);
+
+                this.$notify({
+                    group: 'errors',
+                    title: 'success',
+                    text: 'Contract has been saved',
+                    type: 'success'
+                });
+
+                this.$emit('close');
+            } catch (error) {
+                console.error(error);
+
+                this.$notify({
+                    group: 'errors',
+                    title: 'Error',
+                    text: 'Something went wrong',
+                    type: 'error'
+                });
+
+                this.parseApiErrors(error);
+            }
+
             this.$emit('save', this.contract);
             this.reset();
         },

@@ -33,7 +33,7 @@
             <v-btn color="blue darken-1" text @click="$emit('close')">
                 Cancel
             </v-btn>
-            <v-btn color="blue darken-1" text @click="$emit('delete')">
+            <v-btn color="blue darken-1" text @click="deleteContract">
                 OK
             </v-btn>
             <v-spacer />
@@ -42,10 +42,37 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     name: 'DeleteContractForm',
     props: {
         contract: { type: Object, required: true }
+    },
+    methods: {
+        ...mapActions({
+            removeContract: 'contracts/remove'
+        }),
+        deleteContract() {
+            try {
+                this.removeContract(this.contract);
+                this.$emit('close');
+
+                this.$notify({
+                    group: 'errors',
+                    title: 'Deleted',
+                    text: 'Item has been removed',
+                    type: 'success'
+                });
+            } catch (error) {
+                console.error(error);
+                this.$notify({
+                    group: 'errors',
+                    title: 'Error',
+                    text: 'Something went wrong',
+                    type: 'error'
+                });
+            }
+        }
     }
 };
 </script>

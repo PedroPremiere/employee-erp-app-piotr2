@@ -22,7 +22,6 @@
         >
             <contract-form
                 :selected-contract="selectedContract"
-                @save="onSaveContract"
                 @close="onCloseContractForm"
             />
         </v-dialog>
@@ -34,7 +33,6 @@
         >
             <delete-contract-form
                 :contract="selectedContract"
-                @delete="onDeleteContract"
                 @close="onCloseDeleteContract"
             />
         </v-dialog>
@@ -76,9 +74,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            getContracts: 'contracts/index',
-            removeContracts: 'contracts/remove',
-            saveContracts: 'contracts/save'
+            getContracts: 'contracts/index'
         }),
         async load() {
             try {
@@ -94,42 +90,9 @@ export default {
                 });
             }
         },
-        async onSaveContract(contract) {
-            this.isContractDialogOpen = false;
-
-            try {
-                await this.saveContracts(contract);
-                this.selectedContract = {};
-            } catch (error) {
-                console.error(error);
-                this.error = error;
-                this.isErrorDialogOpen = true;
-                this.$notify({
-                    group: 'errors',
-                    title: 'Error',
-                    text: 'Something went wrong',
-                    type: 'error'
-                });
-            }
-        },
         onCloseContractForm() {
             this.isContractDialogOpen = false;
             this.selectedContract = {};
-        },
-        async onDeleteContract() {
-            this.isDeleteDialogOpen = false;
-
-            try {
-                await this.removeContracts(this.selectedContract);
-            } catch (error) {
-                console.error(error);
-                this.$notify({
-                    group: 'errors',
-                    title: 'Error',
-                    text: 'Something went wrong',
-                    type: 'error'
-                });
-            }
         },
         onCloseDeleteContract() {
             this.isDeleteDialogOpen = false;

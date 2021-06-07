@@ -1,7 +1,20 @@
 import { required } from 'vuelidate/lib/validators';
 import dayjs from 'dayjs';
+import abstractValidatorMixin from '@/validators/abstract.mixin';
 
 export default {
+    mixins: [abstractValidatorMixin],
+    data() {
+        return {
+            apiErrors: {
+                position: [],
+                startDate: [],
+                endDate: [],
+                userId: [],
+                vacationDaysPerYear: []
+            }
+        };
+    },
     validations: {
         contract: {
             position: {
@@ -59,7 +72,7 @@ export default {
             !this.$v.contract.position.required &&
                 errors.push('Position is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.position);
         },
         userIdErrors() {
             const errors = [];
@@ -69,7 +82,7 @@ export default {
             !this.$v.contract.userId.required &&
                 errors.push('User is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.userId);
         },
         startDateErrors() {
             const errors = [];
@@ -79,7 +92,7 @@ export default {
             !this.$v.contract.startDate.required &&
                 errors.push('Start Date is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.startDate);
         },
         endDateErrors() {
             const errors = [];
@@ -89,9 +102,9 @@ export default {
             !this.$v.contract.endDate.required &&
                 errors.push('End Date is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.endDate);
         },
-        vacationDaysPerYear() {
+        vacationsErrors() {
             const errors = [];
 
             if (!this.$v.contract.vacationDaysPerYear.$dirty) return errors;
@@ -99,7 +112,7 @@ export default {
             !this.$v.contract.vacationDaysPerYear.required &&
                 errors.push('Vacation days per year is required');
 
-            return errors;
+            return errors.concat(this.apiErrors.vacationDaysPerYear);
         }
     }
 };
