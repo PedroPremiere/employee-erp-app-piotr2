@@ -7,15 +7,21 @@
                     elevation="2"
                     align="center"
                     justify="center"
-                    class="py-4 mx-auto"
+                    class="pb-4 mx-auto"
                 >
-                    <h3 align="center" justify="center"> Logout </h3>
+                    <v-toolbar class="px-2" color="primary" dark>
+                        <h3 align="center" justify="center">
+                            <v-icon large> mdi-logout </v-icon>
+                            Logout
+                        </h3>
+                    </v-toolbar>
                     <v-btn
                         class="mt-6"
                         color="primary"
                         elevation="2"
                         @click="logout"
                     >
+                        <v-icon large> mdi-logout </v-icon>
                         LogOut
                     </v-btn>
                 </v-card>
@@ -28,41 +34,48 @@
                     justify="center"
                 >
                     <v-toolbar class="px-2" color="primary" dark>
-                        <h3> Login </h3>
+                        <h3 align="center" justify="center">
+                            <v-icon large> mdi-login </v-icon>
+                            Login
+                        </h3>
                     </v-toolbar>
-                    <v-row class="mt-6" justify="center">
-                        <v-col cols="10" sm="5" md="3">
-                            <v-text-field
-                                v-model="email"
-                                :error-messages="emailErrors"
-                                label="E mail"
-                                outlined
-                                @input="$v.email.$touch"
-                            />
-                        </v-col>
-                    </v-row>
-
-                    <v-row justify="center">
-                        <v-col cols="10" sm="5" md="3">
-                            <v-text-field
-                                v-model="password"
-                                :error-messages="passwordErrors"
-                                label="Password"
-                                type="password"
-                                outlined
-                                @input="$v.password.$touch"
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-btn
-                        :disabled="$v.$invalid"
-                        class="mb-6"
-                        color="primary"
-                        elevation="2"
-                        @click="onLogin"
-                    >
-                        Login
-                    </v-btn>
+                    <form class="px-0 py-0" @submit.prevent="onSubmit">
+                        <v-row class="mt-6" justify="center">
+                            <v-col cols="10" sm="5" md="3">
+                                <v-text-field
+                                    v-model="email"
+                                    prepend-icon="mdi-card-account-mail"
+                                    :error-messages="emailErrors"
+                                    label="E mail"
+                                    outlined
+                                    @input="$v.email.$touch"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-row justify="center">
+                            <v-col cols="10" sm="5" md="3">
+                                <v-text-field
+                                    v-model="password"
+                                    prepend-icon="mdi-form-textbox-password"
+                                    :error-messages="passwordErrors"
+                                    label="Password"
+                                    type="password"
+                                    outlined
+                                    @input="$v.password.$touch"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-btn
+                            :disabled="$v.$invalid"
+                            class="mb-6"
+                            color="primary"
+                            elevation="2"
+                            @click="onLogin"
+                        >
+                            <v-icon large> mdi-login </v-icon>
+                            Login
+                        </v-btn>
+                    </form>
                 </v-card>
             </v-col>
         </v-row>

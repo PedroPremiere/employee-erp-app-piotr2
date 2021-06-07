@@ -1,20 +1,23 @@
 <template>
     <v-card>
-        <v-card-title class="headline">
-            Are you sure you want to delete this user?
-        </v-card-title>
+        <v-toolbar class="px-2 mb-5" color="pink " dark>
+            <h3 align="center" justify="center">
+                <v-icon large> mdi-account-remove </v-icon>
+                Are you sure you want to delete this user?
+            </h3>
+        </v-toolbar>
         <v-list-item-subtitle v-if="user" class="text-center">
             <p>
-                First Name :
-                <b>
-                    {{ user.firstName }}
-                </b>
+                <v-chip class="ma-2" color="red" text-color="white">
+                    First Name :
+                    <b> {{ user.firstName }} </b>
+                </v-chip>
             </p>
             <p>
-                Last Name :
-                <b>
-                    {{ user.lastName }}
-                </b>
+                <v-chip class="ma-2" color="red" text-color="white">
+                    Last Name :
+                    <b> {{ user.lastName }} </b>
+                </v-chip>
             </p>
         </v-list-item-subtitle>
         <v-card-actions>

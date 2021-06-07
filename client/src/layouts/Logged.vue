@@ -21,7 +21,7 @@
             <v-toolbar-title centered>ERP SYSTEM</v-toolbar-title>
             <v-spacer />
             <v-menu bottom min-width="200px" rounded offset-y>
-                <template v-slot:activator="{ on }">
+                <template #[`activator`]="{ on }">
                     <v-btn icon x-large v-on="on">
                         <v-avatar color="brown" size="48">
                             <span class="white--text headline">{{

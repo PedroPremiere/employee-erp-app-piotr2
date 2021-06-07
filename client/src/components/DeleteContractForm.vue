@@ -1,31 +1,41 @@
 <template>
     <v-card>
-        <v-card-title class="headline">
-            Are you sure you want to <p>delete this contract?</p>
-        </v-card-title>
+        <v-toolbar class="px-2 mb-5" color="pink " dark>
+            <h3 align="center" justify="center">
+                <v-icon large> mdi-book-remove </v-icon>
+                Are you sure you want to delete this contract?
+            </h3>
+        </v-toolbar>
         <v-list-item-subtitle v-if="contract" class="text-center">
             <p>
                 Name :
-                <b>
-                    {{ contract.user.firstName }}
-                    {{ contract.user.lastName }}
-                </b>
+
+                <v-chip class="ma-2" color="red" text-color="white">
+                    <b>
+                        {{ contract.user.firstName }}
+                        {{ contract.user.lastName }}
+                    </b>
+                </v-chip>
+
                 Position :
-                <b>
-                    {{ contract.position }}
-                </b>
+                <v-chip class="ma-2" color="red" text-color="white">
+                    <b>
+                        {{ contract.position }}
+                    </b>
+                </v-chip>
             </p>
             <p>
                 <v-divider vertical></v-divider>
                 Start Date :
-                <b>
-                    {{ contract.startDate }}
-                </b>
+                <v-chip class="ma-2" color="red" text-color="white">
+                    <b> {{ contract.startDate }} </b>
+                </v-chip>
+
                 <v-divider vertical></v-divider>
                 End Date :
-                <b>
-                    {{ contract.endDate }}
-                </b>
+                <v-chip class="ma-2" color="red" text-color="white">
+                    <b> {{ contract.endDate }} </b>
+                </v-chip>
             </p>
         </v-list-item-subtitle>
         <v-card-actions>

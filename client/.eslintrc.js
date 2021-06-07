@@ -7,7 +7,9 @@ module.exports = {
         ],
         'vue/html-indent': ['error', 4, { baseIndent: 1 }],
         'vue/max-attributes-per-line': ['off'],
-        'vue/html-self-closing': ['off']
+        'vue/html-self-closing': ['off'],
+        'vue/singleline-html-element-content-newline': 'off',
+        'vue/multiline-html-element-content-newline': 'off'
     },
     parserOptions: {
         sourceType: 'script'
