@@ -1,4 +1,4 @@
-const models = require('../models/index');
+const models = require('../../src/models');
 
 module.exports = async () => {
     await models.sequelize.query('SET FOREIGN_KEY_CHECKS = 0', null, {

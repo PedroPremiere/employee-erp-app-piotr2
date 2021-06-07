@@ -1,4 +1,4 @@
-const { Role } = require('../models');
+const { Role } = require('../../src/models');
 
 class RoleFactory {
     static create(name) {
