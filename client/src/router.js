@@ -2,12 +2,14 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from './store';
 
-const HelloWorld = () => import('@/views/HelloWorld');
 const Main = () => import('@/views/Main');
 const Login = () => import('@/views/Login');
+
 const Users = () => import('@/views/Users');
 const Contracts = () => import('@/views/Contracts');
 const Vacations = () => import('@/views/Vacations');
+const Dashboard = () => import('@/views/Dashboard');
+
 
 Vue.use(Router);
 
@@ -16,8 +18,8 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            name: 'HelloWorld',
-            component: HelloWorld
+            name: 'dashboard',
+            component: Dashboard
         },
         {
             path: '/main',
