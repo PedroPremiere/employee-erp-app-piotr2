@@ -9,7 +9,7 @@ class UserFactory {
             firstName: faker.name.firstName(null),
             lastName: faker.name.lastName(null),
             password: faker.internet.password(),
-            birthDate: faker.date.past()
+            birthDate: faker.date.past().toISOString().split('T')[0]
         };
 
         return Object.assign({}, defaultProps, props);

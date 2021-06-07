@@ -1,9 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 const app = require('../../../index');
 const request = require('supertest-session')(app);
-const userFactory = require('../../factories/User');
-const truncateDatabase = require('../../helpers/truncate');
-const roleSeeder = require('../../helpers/roleSeeder');
+const userFactory = require('../../../src/factories/User');
+const truncateDatabase = require('../../../src/helpers/truncate');
+const roleSeeder = require('../../../src/helpers/roleSeeder');
 
 let userData;
 let adminData;
@@ -30,7 +30,7 @@ describe('Users', () => {
     });
 
     describe('GET /users', () => {
-        it('returns OK logged in as admin', async () => {
+        it('returns OK logged in as ADMIN', async () => {
             const { email, password } = adminData;
 
             await request.post('/auth/login').send({ email, password });
