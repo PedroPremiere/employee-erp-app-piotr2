@@ -7,9 +7,11 @@ const roleSeeder = require('../../helpers/roleSeeder');
 
 let userData;
 let adminData;
+let admin;
+let user;
 
 describe('Users', () => {
-    describe('POST /users', () => {
+    describe('PUT /users/:id', () => {
         beforeAll(async () => {
             await truncateDatabase();
 
@@ -22,44 +24,41 @@ describe('Users', () => {
 
         beforeEach(async () => {
             userData = userFactory.generate();
+            user = await userFactory.create(userData);
         });
 
         afterEach(async () => {
             await request.post('/auth/logout');
         });
 
-        it('returns CREATED sending valid data as ADMIN', async () => {
+        it('returns OK when USER exists as ADMIN', async () => {
             const { email, password } = adminData;
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.post('/users').send(userData);
+            const newUserData = userFactory.generate();
+
+            const response = await request
+                .put(`/users/${userData.id}`)
+                .send(newUserData);
 
             expect(response.body).toEqual(
                 expect.objectContaining({
-                    email: userData.email,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName
+                    id: userData.id,
+                    email: newUserData.email,
+                    firstName: newUserData.firstName,
+                    lastName: newUserData.lastName,
+                    birthDate: newUserData.birthDate
                 })
             );
 
-            expect(response.status).toBe(StatusCodes.CREATED);
+            expect(response.status).toBe(StatusCodes.OK);
         });
 
-        it('returns BAD REQUEST when body section is empty as ADMIN', async () => {
+        it('returns BAD REQUEST when no data sent as ADMIN', async () => {
             const { email, password } = adminData;
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.post('/users');
-
-            expect(response.body.errors).toContainEqual({
-                message: 'Should not be empty',
-                param: 'password'
-            });
-
-            expect(response.body.errors).toContainEqual({
-                message: 'Password must have more than 8 characters',
-                param: 'password'
-            });
+            const response = await request.put(`/users/${userData.id}`);
 
             expect(response.body.errors).toContainEqual({
                 message: 'Should not be empty',
@@ -104,34 +103,36 @@ describe('Users', () => {
             expect(response.status).toBe(StatusCodes.BAD_REQUEST);
         });
 
-        it('returns BAD REQUEST when email is taken as ADMIN', async () => {
+        it('returns NOT_FOUND when USER does not exist as ADMIN', async () => {
             const { email, password } = adminData;
             await request.post('/auth/login').send({ email, password });
 
-            await userFactory.create(userData);
+            const newUserData = userFactory.generate();
 
-            const response = await request.post('/users').send(userData);
+            const response = await request
+                .put(`/users/${newUserData.id}`)
+                .send(newUserData);
 
-            expect(response.body.errors).toContainEqual({
-                message: 'E-mail already in use',
-                param: 'email'
-            });
-
-            expect(response.status).toBe(StatusCodes.BAD_REQUEST);
+            expect(response.status).toBe(StatusCodes.NOT_FOUND);
         });
 
         it('returns FORBIDDEN sending valid data as USER', async () => {
             const { email, password } = userData;
-            await userFactory.create(userData);
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.post('/users').send(userData);
+            const newUserData = userFactory.generate();
+            const response = await request
+                .put(`/users/${userData.id}`)
+                .send(newUserData);
 
             expect(response.status).toBe(StatusCodes.FORBIDDEN);
         });
 
-        it('returns UNAUTHORIZED as NOT LOGGED IN', async () => {
-            const response = await request.post('/users').send(userData);
+        it('returns UNAUTHORIZED as NOT-LOGGED-IN', async () => {
+            const newUserData = userFactory.generate();
+            const response = await request
+                .put(`/users/${userData.id}`)
+                .send(newUserData);
 
             expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
         });

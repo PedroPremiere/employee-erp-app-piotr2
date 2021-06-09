@@ -1,9 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 const app = require('../../../index');
 const request = require('supertest-session')(app);
-const userFactory = require('../../../src/factories/User');
-const truncateDatabase = require('../../../src/helpers/truncate');
-const roleSeeder = require('../../../src/helpers/roleSeeder');
+
+const userFactory = require('../../factories/User');
+const truncateDatabase = require('../../helpers/truncate');
+const roleSeeder = require('../../helpers/roleSeeder');
 
 let userData;
 let adminData;
@@ -60,7 +61,7 @@ describe('Users', () => {
             expect(response.status).toBe(StatusCodes.OK);
         });
 
-        it('returns FORBIDDEN when logged in as USER', async () => {
+        it('returns FORBIDDEN sending valid data as USER', async () => {
             const { email, password } = userData;
 
             await request.post('/auth/login').send({ email, password });
@@ -70,22 +71,10 @@ describe('Users', () => {
             expect(response.status).toBe(StatusCodes.FORBIDDEN);
         });
 
-        it('returns UNAUTHORIZED when not logged in', async () => {
+        it('returns UNAUTHORIZED when NOT-LOGGED-IN', async () => {
             const response = await request.get('/users');
 
             expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
-        });
-
-        //@todo move to showController.test.js
-        it('returns NOT_FOUND as Admin when USER does not exist', async () => {
-            const { email, password } = adminData;
-            await request.post('/auth/login').send({ email, password });
-
-            const wrongUserData = userFactory.generate();
-
-            const response = await request.get(`/users/wrongUserData.id`);
-
-            expect(response.status).toBe(StatusCodes.NOT_FOUND);
         });
     });
 });

@@ -4,19 +4,21 @@ const request = require('supertest-session')(app);
 const userFactory = require('../../factories/User');
 const truncateDatabase = require('../../helpers/truncate');
 const roleSeeder = require('../../helpers/roleSeeder');
+const contractFactory = require('../../factories/Contract');
 
 let userData;
 let user;
-let userToDelete;
 let adminData;
 let admin;
+let contract;
+let contractData;
+let adminContract;
 
-afterAll(() => {
-    request.post('/auth/logout');
-});
+const di = app.get('di');
+const userRepository = di.get('repositories.user');
 
-describe('Users', () => {
-    describe('DELETE /users/:id', () => {
+describe('Contracts', () => {
+    describe('DELETE /contracts/:id', () => {
         beforeAll(async () => {
             await truncateDatabase();
 
@@ -26,34 +28,47 @@ describe('Users', () => {
             user = await userFactory.create(userData);
             user.addRole(userRole.id);
 
-            userToDelete = await userFactory.create();
-
             adminData = userFactory.generate();
             admin = await userFactory.create(adminData);
             admin.addRole(adminRole.id);
+
+            contractData = await contractFactory.generate(user.id);
+            contract = await contractFactory.create(contractData);
+
+            adminContractData = await contractFactory.generate(admin.id);
+            adminContract = await contractFactory.create(adminContractData);
         });
 
         afterEach(async () => {
             await request.post('/auth/logout');
         });
 
-        it('returns NO CONTENT deleting existing user as ADMIN', async () => {
+        it('returns NO CONTENT deleting existing CONTRACT as ADMIN', async () => {
             const { email, password } = adminData;
 
             await request.post('/auth/login').send({ email, password });
 
             const deleteResponse = await request.delete(
-                `/users/${userToDelete.id}`
+                `/contracts/${contract.id}`
             );
 
             expect(deleteResponse.status).toBe(StatusCodes.NO_CONTENT);
 
-            const getResponse = await request.get(`/users/${userToDelete.id}`);
+            const getResponseContract = await request.get(
+                `/contracts/${contract.id}`
+            );
 
-            expect(getResponse.status).toBe(StatusCodes.NOT_FOUND);
+            expect(getResponseContract.status).toBe(StatusCodes.NOT_FOUND);
+
+            const newUserDate = await userRepository.findById(user.id);
+            const newVacationDays = newUserDate.vacationDays;
+
+            expect(newVacationDays).toBe(
+                user.vacationDays - contract.vacationDays
+            );
         });
 
-        it('returns NO CONTENT deleting non-existing user as ADMIN', async () => {
+        it('returns NO CONTENT deleting non-existing CONTRACT as ADMIN', async () => {
             const { email, password } = adminData;
 
             await request.post('/auth/login').send({ email, password });
@@ -61,7 +76,7 @@ describe('Users', () => {
             const wrongUserData = userFactory.generate();
 
             const deleteResponse = await request.delete(
-                `/users/${wrongUserData.id}`
+                `/contracts/${wrongUserData.id}`
             );
 
             expect(deleteResponse.status).toBe(StatusCodes.NO_CONTENT);
@@ -72,13 +87,13 @@ describe('Users', () => {
 
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.delete(`/users/${userToDelete.id}`);
+            const response = await request.delete(`/contracts/${contract.id}`);
 
             expect(response.status).toBe(StatusCodes.FORBIDDEN);
         });
 
         it('returns UNAUTHORIZED as NOT LOGGED IN', async () => {
-            const response = await request.delete(`/users/${userToDelete.id}`);
+            const response = await request.delete(`/contracts/${contract.id}`);
 
             expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
         });

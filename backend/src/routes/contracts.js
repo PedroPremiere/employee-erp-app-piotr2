@@ -14,7 +14,7 @@ module.exports = di => {
     const storeController = di.get('controllers.contract.storeController');
     const updateController = di.get('controllers.contract.updateController');
 
-    router.get('/:id', (...args) => showController.invoke(...args));
+    router.get('/:id', [loggedIn], (...args) => showController.invoke(...args));
     router.get('/', [loggedIn], (...args) => indexController.invoke(...args));
     router.post(
         '/',

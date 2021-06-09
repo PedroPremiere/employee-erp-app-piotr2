@@ -45,7 +45,8 @@ class UpdateController {
                     position,
                     startDate,
                     endDate,
-                    userId
+                    userId,
+                    vacationDays
                 },
                 { transaction }
             );

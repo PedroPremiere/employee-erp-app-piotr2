@@ -6,17 +6,12 @@ const truncateDatabase = require('../../helpers/truncate');
 const roleSeeder = require('../../helpers/roleSeeder');
 
 let userData;
-let user;
-let userToDelete;
 let adminData;
 let admin;
-
-afterAll(() => {
-    request.post('/auth/logout');
-});
+let user;
 
 describe('Users', () => {
-    describe('DELETE /users/:id', () => {
+    describe('GET /users/:id ', () => {
         beforeAll(async () => {
             await truncateDatabase();
 
@@ -25,8 +20,6 @@ describe('Users', () => {
             userData = userFactory.generate();
             user = await userFactory.create(userData);
             user.addRole(userRole.id);
-
-            userToDelete = await userFactory.create();
 
             adminData = userFactory.generate();
             admin = await userFactory.create(adminData);
@@ -37,48 +30,45 @@ describe('Users', () => {
             await request.post('/auth/logout');
         });
 
-        it('returns NO CONTENT deleting existing user as ADMIN', async () => {
+        it('returns OK when USER exists as Admin', async () => {
             const { email, password } = adminData;
-
             await request.post('/auth/login').send({ email, password });
 
-            const deleteResponse = await request.delete(
-                `/users/${userToDelete.id}`
+            const response = await request.get(`/users/${userData.id}`);
+
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    id: userData.id,
+                    email: userData.email,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    birthDate: userData.birthDate
+                })
             );
 
-            expect(deleteResponse.status).toBe(StatusCodes.NO_CONTENT);
-
-            const getResponse = await request.get(`/users/${userToDelete.id}`);
-
-            expect(getResponse.status).toBe(StatusCodes.NOT_FOUND);
+            expect(response.status).toBe(StatusCodes.OK);
         });
 
-        it('returns NO CONTENT deleting non-existing user as ADMIN', async () => {
+        it('returns NOT_FOUND when USER does not exist as ADMIN', async () => {
             const { email, password } = adminData;
-
             await request.post('/auth/login').send({ email, password });
 
-            const wrongUserData = userFactory.generate();
+            const response = await request.get('/users/not-found');
 
-            const deleteResponse = await request.delete(
-                `/users/${wrongUserData.id}`
-            );
-
-            expect(deleteResponse.status).toBe(StatusCodes.NO_CONTENT);
+            expect(response.status).toBe(StatusCodes.NOT_FOUND);
         });
 
-        it('returns FORBIDDEN sending valid data as USER', async () => {
+        it('returns FORBIDDEN sending request as USER', async () => {
             const { email, password } = userData;
-
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.delete(`/users/${userToDelete.id}`);
+            const response = await request.get(`/users/${userData.id}`);
 
             expect(response.status).toBe(StatusCodes.FORBIDDEN);
         });
 
-        it('returns UNAUTHORIZED as NOT LOGGED IN', async () => {
-            const response = await request.delete(`/users/${userToDelete.id}`);
+        it('returns UNAUTHORIZED as NOT-LOGGED-IN', async () => {
+            const response = await request.get(`/users/${userData.id}`);
 
             expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
         });

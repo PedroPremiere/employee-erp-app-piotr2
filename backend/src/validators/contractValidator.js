@@ -58,6 +58,8 @@ const update = [
         .not()
         .isEmpty()
         .withMessage('Vacation days per year should not be empty')
+        .isInt({ min: 0 })
+        .withMessage('Vacation days per year should be positive number')
 ];
 
 module.exports = { update };
