@@ -1,8 +1,14 @@
 const { StatusCodes } = require('http-status-codes');
 
 class UpdateController {
-    constructor(vacationRepository) {
+    constructor(
+        vacationRepository,
+        userRepository,
+        vacationDurationCalculator
+    ) {
         this.vacationRepository = vacationRepository;
+        this.userRepository = userRepository;
+        this.vacationDurationCalculator = vacationDurationCalculator;
     }
 
     async invoke(request, response) {
@@ -37,6 +43,29 @@ class UpdateController {
                     attributes: ['lastName', 'firstName', 'email', 'id']
                 }
             ]
+        });
+
+        const oldVacationDuration =
+            this.vacationDurationCalculator.countDurationInDays(
+                vacationUpdated.startDate,
+                vacationUpdated.endDate
+            );
+
+        const newVacationDuration =
+            this.vacationDurationCalculator.countDurationInDays(
+                vacation.startDate,
+                vacation.endDate
+            );
+
+        const vacationOwner = await this.userRepository.findById(
+            vacationUpdated.userId
+        );
+
+        vacationOwner.update({
+            vacationDays: Math.ceil(
+                vacationOwner.vacationDays -
+                    (oldVacationDuration - newVacationDuration)
+            )
         });
 
         return response.send(vacationUpdated);

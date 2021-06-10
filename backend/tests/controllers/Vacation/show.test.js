@@ -15,8 +15,8 @@ let vacationData;
 let adminVacationData;
 let adminVacation;
 
-describe('Contracts', () => {
-    describe('GET /contracts', () => {
+describe('VACATION', () => {
+    describe('GET /vacations/:id', () => {
         beforeAll(async () => {
             await truncateDatabase();
 
@@ -41,44 +41,64 @@ describe('Contracts', () => {
             await request.post('/auth/logout');
         });
 
-        it('returns OK logged in as ADMIN', async () => {
+        it('returns OK when VACATION exists as ADMIN', async () => {
             const { email, password } = adminData;
-
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.get('/vacations');
+            const response = await request.get(`/vacations/${vacation.id}`);
 
-            expect(response.body).toContainEqual(
-                expect.objectContaining(adminVacationData)
-            );
-
-            expect(response.body).toContainEqual(
+            expect(response.body).toEqual(
                 expect.objectContaining(vacationData)
             );
 
             expect(response.status).toBe(StatusCodes.OK);
         });
 
-        it('returns OK when logged in as USER', async () => {
+        it('returns OK when VACATION belongs to USER as USER', async () => {
+            const { email, password } = userData;
+            await request.post('/auth/login').send({ email, password });
+
+            const { body, status } = await request.get(
+                `/vacations/${vacation.id}`
+            );
+
+            expect(body).toEqual(expect.objectContaining(vacationData));
+
+            expect(status).toBe(StatusCodes.OK);
+        });
+
+        it('returns NOT_FOUND when VACATION does not exist as ADMIN', async () => {
+            const { email, password } = adminData;
+            await request.post('/auth/login').send({ email, password });
+
+            const response = await request.get('/vacations/not-found');
+
+            expect(response.status).toBe(StatusCodes.NOT_FOUND);
+        });
+
+        it('returns NOT_FOUND when VACATION does not exist as USER ', async () => {
             const { email, password } = userData;
 
             await request.post('/auth/login').send({ email, password });
 
-            const response = await request.get('/vacations');
+            const response = await request.get('/vacations/not-found');
 
-            expect(response.body).not.toContainEqual(
-                expect.objectContaining(adminVacationData)
-            );
-
-            expect(response.body).toContainEqual(
-                expect.objectContaining(vacationData)
-            );
-
-            expect(response.status).toBe(StatusCodes.OK);
+            expect(response.status).toBe(StatusCodes.NOT_FOUND);
         });
 
-        it('returns UNAUTHORIZED when NOT-LOGGED-IN', async () => {
-            const response = await request.get('/vacations');
+        it('returns FORBIDDEN when VACATION doesnt belong to USER as USER', async () => {
+            const { email, password } = userData;
+            await request.post('/auth/login').send({ email, password });
+
+            const response = await request.get(
+                `/vacations/${adminVacation.id}`
+            );
+
+            expect(response.status).toBe(StatusCodes.FORBIDDEN);
+        });
+
+        it('returns UNAUTHORIZED as NOT-LOGGED-IN', async () => {
+            const response = await request.get(`/vacations/${vacationData.id}`);
 
             expect(response.status).toBe(StatusCodes.UNAUTHORIZED);
         });

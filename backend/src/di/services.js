@@ -16,6 +16,9 @@ module.exports = {
                 '@repositories.user',
                 '@services.vacationDaysCalculator'
             ]
+        },
+        'services.vacationDurationCalculator': {
+            class: 'services/VacationDurationCalculator'
         }
     }
 };
