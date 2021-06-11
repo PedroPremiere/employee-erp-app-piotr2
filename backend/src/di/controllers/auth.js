@@ -6,6 +6,10 @@ module.exports = {
         },
         'controllers.auth.logoutController': {
             class: '/controllers/Auth/LogoutController'
+        },
+        'controllers.auth.meController': {
+            class: '/controllers/Auth/MeController',
+            arguments: ['@repositories.user']
         }
     }
 };
