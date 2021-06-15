@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors';
-
 export default {
     axios: {
         credentials: true,
@@ -10,16 +8,16 @@ export default {
     },
     auth: {
         redirect: {
-            login: false,
-            logout: false,
+            login: '/login',
+            logout: '/login',
             callback: false,
-            home: false
+            home: '/'
         },
         strategies: {
-            local: {
+            cookie: {
                 endpoints: {
                     login: { url: '/auth/login', method: 'post' },
-                    logout: false,
+                    logout: { url: '/auth/logout', method: 'post' },
                     user: {
                         url: '/auth/me',
                         method: 'get'
@@ -30,6 +28,10 @@ export default {
                 tokenType: false
             }
         }
+    },
+
+    router: {
+        middleware: ['auth']
     },
 
     // Global page headers: https://go.nuxtjs.dev/config-head
@@ -54,7 +56,11 @@ export default {
     css: [],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [],
+    plugins: [
+        { src: '~/plugins/vuelidate' },
+        { src: '~plugins/notify.client', mode: 'client' },
+        { src: '~plugins/notify.server', mode: 'server' }
+    ],
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
     buildModules: [
@@ -64,26 +70,7 @@ export default {
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
-    modules: [],
-
-    // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
-    vuetify: {
-        customVariables: ['~/assets/variables.scss'],
-        theme: {
-            dark: true,
-            themes: {
-                dark: {
-                    primary: colors.blue.darken2,
-                    accent: colors.grey.darken3,
-                    secondary: colors.amber.darken3,
-                    info: colors.teal.lighten1,
-                    warning: colors.amber.base,
-                    error: colors.deepOrange.accent4,
-                    success: colors.green.accent3
-                }
-            }
-        }
-    },
+    modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {}

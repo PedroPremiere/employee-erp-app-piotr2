@@ -12,7 +12,7 @@ module.exports = {
         'vue/multiline-html-element-content-newline': 'off'
     },
     parserOptions: {
-        sourceType: 'script'
+        sourceType: 'module'
     },
     overrides: [
         {
