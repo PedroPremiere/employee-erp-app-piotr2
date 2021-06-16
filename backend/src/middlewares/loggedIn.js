@@ -10,7 +10,15 @@ module.exports = async (request, response, next) => {
     const di = request.app.get('di');
     const userRepository = di.get('repositories.user');
 
-    const user = await userRepository.findById(session.userId);
+    const user = await userRepository.findById(session.userId, {
+        include: [
+            {
+                association: 'roles',
+                attributes: ['name'],
+                through: { attributes: [] }
+            }
+        ]
+    });
 
     if (!user) {
         return response.sendStatus(StatusCodes.UNAUTHORIZED);

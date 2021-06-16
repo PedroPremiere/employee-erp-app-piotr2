@@ -96,6 +96,7 @@ export default {
                         text: 'Wrong Password or email',
                         type: 'error'
                     });
+
                     this.wrongPasswordOrEmail = true;
                 } else {
                     this.$notify({

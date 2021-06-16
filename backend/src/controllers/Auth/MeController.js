@@ -1,5 +1,3 @@
-const { StatusCodes } = require('http-status-codes');
-
 class MeController {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -7,6 +5,7 @@ class MeController {
 
     async invoke(request, response) {
         const { loggedUser } = request;
+        loggedUser.isAdmin = await loggedUser.isAdmin();
 
         return response.send(loggedUser);
     }

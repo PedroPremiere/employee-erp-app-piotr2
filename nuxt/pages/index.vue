@@ -1,96 +1,111 @@
 <template>
-    <v-row justify="center" align="center">
-        <v-col cols="12" sm="8" md="6">
-            <div class="text-center">
-                <logo />
-                <vuetify-logo />
-            </div>
-            <v-card>
-                <v-card-title class="headline">
-                    Welcome to the Vuetify + Nuxt.js template
-                </v-card-title>
-                <v-card-text>
-                    <p
-                        >Vuetify is a progressive Material Design component
-                        framework for Vue.js. It was designed to empower
-                        developers to create amazing applications.</p
-                    >
-                    <p>
-                        For more information on Vuetify, check out the
-                        <a
-                            href="https://vuetifyjs.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            documentation </a
-                        >.
-                    </p>
-                    <p>
-                        If you have questions, please join the official
-                        <a
-                            href="https://chat.vuetifyjs.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="chat"
-                        >
-                            discord </a
-                        >.
-                    </p>
-                    <p>
-                        Find a bug? Report it on the github
-                        <a
-                            href="https://github.com/vuetifyjs/vuetify/issues"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="contribute"
-                        >
-                            issue board </a
-                        >.
-                    </p>
-                    <p
-                        >Thank you for developing with Vuetify and I look
-                        forward to bringing more exciting features in the
-                        future.</p
-                    >
-                    <div class="text-xs-right">
-                        <em><small>&mdash; John Leider</small></em>
-                    </div>
-                    <hr class="my-3" />
-                    <a
-                        href="https://nuxtjs.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Nuxt Documentation
-                    </a>
-                    <br />
-                    <a
-                        href="https://github.com/nuxt/nuxt.js"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Nuxt GitHub
-                    </a>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="primary" nuxt to="/inspire">
-                        Continue
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-col>
-    </v-row>
+    <v-container>
+        <p class="display-1 my-10 font-italic">
+            Welcome {{ loggedUser.firstName }}
+        </p>
+        <v-row>
+            <v-col
+                class="mt-2 rounded-t white--text"
+                :class="categories.backgound"
+                cols="12"
+            >
+                <strong class="display-1">{{ categories.title }}</strong>
+            </v-col>
+            <v-col
+                v-for="(subCategory, subIndex) in categories.subCategories"
+                :key="`${subIndex}`"
+                md="2"
+            >
+                <a :href="subCategory.link" target="_blank">
+                    <v-card :class="subCategory.background" outlined>
+                        <v-list-item three-line>
+                            <v-list-item-content>
+                                <v-list-item-subtitle
+                                    class="headline mb-1 text-center white--text"
+                                >
+                                    {{ subCategory.title }}
+                                </v-list-item-subtitle>
+                                <v-icon size="125" class="white--text">
+                                    {{ subCategory.icon }}
+                                </v-icon>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </a>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
-import Logo from '~/components/Logo';
-import VuetifyLogo from '~/components/VuetifyLogo';
-
+import { mapGetters } from 'vuex';
 export default {
-    components: {
-        Logo,
-        VuetifyLogo
+    name: 'Dashboard',
+    layout: 'logged',
+    data() {
+        return {
+            userCategories: {
+                title: 'My Profile',
+                backgound: 'green lighten-3',
+
+                subCategories: [
+                    {
+                        title: 'My data',
+                        icon: 'mdi-account',
+                        background: 'teal lighten-1',
+                        link: '/profile'
+                    },
+                    {
+                        title: 'My Contracts',
+                        icon: 'mdi-book',
+                        background: 'amber lighten-1',
+                        link: '/contracts'
+                    },
+                    {
+                        title: 'My Vacations',
+                        icon: 'mdi-calendar',
+                        background: 'deep-orange  lighten-1',
+                        link: '/vacations'
+                    }
+                ]
+            },
+            adminCategories: {
+                title: 'Admin',
+                backgound: 'red lighten-3',
+
+                subCategories: [
+                    {
+                        title: 'Users',
+                        icon: 'mdi-account-supervisor',
+                        background: 'deep-purple lighten-1',
+                        link: '/users'
+                    },
+                    {
+                        title: 'Contracts',
+                        icon: 'mdi-book-account-outline',
+                        background: 'cyan lighten-1',
+                        link: '/contracts'
+                    },
+                    {
+                        title: 'Vacations',
+                        icon: 'mdi-calendar-account',
+                        background: 'lime lighten-1',
+                        link: '/vacations'
+                    }
+                ]
+            }
+        };
+    },
+    computed: {
+        ...mapGetters({
+            isAdmin: 'roles/isAdmin'
+        }),
+        loggedUser() {
+            return this.$auth.user;
+        },
+        categories() {
+            return this.isAdmin ? this.adminCategories : this.userCategories;
+        }
     }
 };
 </script>
