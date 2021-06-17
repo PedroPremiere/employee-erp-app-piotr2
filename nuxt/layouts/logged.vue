@@ -33,7 +33,7 @@
                             </v-btn>
                         </template>
 
-                        <v-list-item-content class="justify-center" nuxt>
+                        <v-list-item-content class="justify-center white" nuxt>
                             <div class="mx-auto text-center">
                                 <v-avatar color="brown">
                                     <span class="white--text headline">{{

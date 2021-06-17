@@ -12,7 +12,7 @@ export default {
     validations: {
         vacation: {
             userId: {
-                required: requiredIf(function () {
+                required: requiredIf(function() {
                     return this.isAdmin;
                 })
             },
@@ -34,11 +34,15 @@ export default {
                     .add(1, 'day')
                     .toISOString();
             }
+            return '';
         },
         maxStartDate() {
             if (this.vacation.endDate) {
-                return dayjs(this.vacation.endDate).add(1, 'day').toISOString();
+                return dayjs(this.vacation.endDate)
+                    .add(1, 'day')
+                    .toISOString();
             }
+            return '';
         },
         isStartBeforeEnd() {
             if (this.vacation.startDate && this.vacation.endDate) {
