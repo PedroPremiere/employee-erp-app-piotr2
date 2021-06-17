@@ -176,7 +176,6 @@ export default {
         },
         reset() {
             this.resetPasswordRepeat();
-            this.apiErrors = {};
             this.$v.$reset();
         },
         close() {
