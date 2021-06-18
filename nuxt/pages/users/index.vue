@@ -45,6 +45,7 @@ import DeleteUserForm from '@/components/DeleteUserForm';
 export default {
     name: 'Users',
     layout: 'logged',
+    middleware: 'adminOnly',
     components: {
         UserList,
         UserForm,

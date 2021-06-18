@@ -51,6 +51,7 @@ import ErrorDialog from '@/components/ErrorDialog';
 
 export default {
     name: 'Contracts',
+
     components: { ContractList, DeleteContractForm, ContractForm, ErrorDialog },
     layout: 'logged',
     data() {

@@ -74,6 +74,7 @@
 import { mapGetters } from 'vuex';
 export default {
     name: 'LayoutLogged',
+    middleware: 'auth',
     data() {
         return { drawer: null };
     },
@@ -112,7 +113,7 @@ export default {
         initials() {
             const { firstName, lastName } = this.loggedUser;
 
-            return `${firstName[0]} ${lastName[0]}`;
+            return this.loggedUser ? `${firstName[0]} ${lastName[0]}` : '';
         }
     }
 };

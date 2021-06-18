@@ -34,6 +34,7 @@ export default {
                     .add(1, 'day')
                     .toISOString();
             }
+
             return '';
         },
         maxStartDate() {
@@ -42,6 +43,7 @@ export default {
                     .add(1, 'day')
                     .toISOString();
             }
+
             return '';
         },
         isStartBeforeEnd() {
