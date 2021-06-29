@@ -1,15 +1,6 @@
 const { check } = require('express-validator');
 
-async function isMailTaken(email, request, exludeId) {
-    let userId;
-
-    if (exludeId == 'params') {
-        userId = request.params.id;
-    } else if (exludeId == 'request') {
-        userId = request.loggedUser.id;
-    }
-
-    const di = request.app.get('di');
+async function isMailTaken(email, di, userId) {
     const userRepository = di.get('repositories.user');
 
     const user = await userRepository.getByEmail(email);
@@ -60,7 +51,9 @@ const update = [
         .isEmail()
         .withMessage('Mail not valid')
         .bail()
-        .custom((email, { req }) => isMailTaken(email, req, 'params'))
+        .custom((email, { req }) =>
+            isMailTaken(email, req.app.get('di'), req.params.id)
+        )
 ];
 
 const profile = [
@@ -73,7 +66,9 @@ const profile = [
         .isEmail()
         .withMessage('Mail not valid')
         .bail()
-        .custom((email, { req }) => isMailTaken(email, req, 'request'))
+        .custom((email, { req }) =>
+            isMailTaken(email, req.app.get('di'), req.loggedUser.id)
+        )
 ];
 
 const store = [...update, ...withPassword];
