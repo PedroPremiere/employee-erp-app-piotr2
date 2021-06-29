@@ -25,6 +25,7 @@
         "lodash": "^4.17.21",
         "mysql2": "^2.2.5",
         "node-dependency-injection": "^2.6.11",
+        "nodemailer": "^6.6.2",
         "nodemon": "^2.0.7",
         "sequelize": "^6.5.1",
         "supertest-session": "^4.1.0",

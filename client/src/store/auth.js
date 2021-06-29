@@ -35,6 +35,21 @@ const auth = {
             await axios.post('/auth/logout');
 
             commit('logout');
+        },
+        async passwordResetRequest(vuexContext, email) {
+            const { data } = await axios.post(`/auth/password-reset`, {
+                email
+            });
+
+            return data;
+        },
+        async passwordReset(vuexContext, { passwordAndRepeat, code }) {
+            const { data } = await axios.post(
+                `/auth/password-reset/${code}`,
+                passwordAndRepeat
+            );
+
+            return data;
         }
     }
 };

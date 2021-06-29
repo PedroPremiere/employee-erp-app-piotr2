@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
 
             return roles.some(role => role.isAdmin());
         }
-
+        isPasswordResetTokenExpired() {
+            return Date.now() > new Date(this.passwordResetTokenExpiresAt);
+        }
         static associate(models) {
             User.belongsToMany(models.Role, {
                 as: 'roles',
@@ -56,6 +58,14 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 defaultValue: false
+            },
+            passwordResetToken: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            passwordResetTokenExpiresAt: {
+                type: DataTypes.DATE,
+                allowNull: true
             }
         },
 

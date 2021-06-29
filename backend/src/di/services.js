@@ -1,4 +1,9 @@
+const config = require('../../config');
+
 module.exports = {
+    parameters: {
+        config
+    },
     services: {
         'services.auth': {
             class: 'services/Auth'
@@ -19,6 +24,13 @@ module.exports = {
         },
         'services.vacationDurationCalculator': {
             class: 'services/VacationDurationCalculator'
+        },
+        'services.passwordResetTokenGeneratorHandler': {
+            class: 'services/PasswordResetTokenGeneratorHandler'
+        },
+        'services.sendMailHandler': {
+            class: 'services/SendMailHandler',
+            arguments: ['@nodemailer', '%config%']
         }
     }
 };

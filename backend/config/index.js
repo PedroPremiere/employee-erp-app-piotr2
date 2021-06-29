@@ -32,5 +32,14 @@ module.exports = {
     },
     session: {
         secret: process.env.SESSION_SECRET
+    },
+    mail: {
+        host: env('EMAIL_HOST'),
+        port: env('EMAIL_PORT'),
+        user: env('EMAIL_AUTH_USER'),
+        password: env('EMAIL_AUTH_PASSWORD'),
+        secure: env('EMAIL_SECURE'),
+        fromAddress: env('EMAIL_FROM_ADDRESS'),
+        fromName: env('EMAIL_FROM_NAME')
     }
 };

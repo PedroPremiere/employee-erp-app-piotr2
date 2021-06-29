@@ -9,7 +9,7 @@ const Users = () => import('@/views/Users');
 const Contracts = () => import('@/views/Contracts');
 const Vacations = () => import('@/views/Vacations');
 const Dashboard = () => import('@/views/Dashboard');
-
+const PasswordReset = () => import('@/views/PasswordReset');
 
 Vue.use(Router);
 
@@ -55,6 +55,11 @@ const router = new Router({
             meta: {
                 auth: true
             }
+        },
+        {
+            path: '/password-reset/:code',
+            name: 'PasswordReset',
+            component: PasswordReset
         }
     ]
 });

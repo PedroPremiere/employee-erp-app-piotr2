@@ -76,9 +76,21 @@
                             Login
                         </v-btn>
                     </form>
+                    <v-btn
+                        class="mb-6"
+                        color="primary"
+                        elevation="2"
+                        @click="isPasswordResetOpen = true"
+                        text
+                    >
+                        Forgot Password?
+                    </v-btn>
                 </v-card>
             </v-col>
         </v-row>
+        <v-dialog v-model="isPasswordResetOpen" max-width="500px">
+            <password-reset-form @close="isPasswordResetOpen = false" />
+        </v-dialog>
     </v-container>
 </template>
 
@@ -86,11 +98,15 @@
 import { mapGetters, mapActions } from 'vuex';
 import loginValidatorMixin from '@/validators/login.mixin';
 
+import PasswordResetForm from '@/components/PasswordResetForm';
+
 export default {
     name: 'Login',
     mixins: [loginValidatorMixin],
+    components: { PasswordResetForm },
     data() {
         return {
+            isPasswordResetOpen: false,
             email: '',
             password: '',
             wrongPasswordOrUserName: false
@@ -126,6 +142,7 @@ export default {
                     text: 'Welcome, you are logged in',
                     type: 'success'
                 });
+
                 this.$router.push('Main');
             } catch (error) {
                 console.error(error);
