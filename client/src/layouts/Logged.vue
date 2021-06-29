@@ -74,7 +74,12 @@ export default {
         }),
         links() {
             const links = [
-                { title: 'Dashboard', icon: 'mdi-view-grid', link: '/main' },
+                {
+                    title: 'My Profile',
+                    icon: 'mdi-face-profile',
+                    link: '/profile'
+                },
+                { title: 'Dashboard', icon: 'mdi-view-grid', link: '/' },
                 {
                     title: 'Contracts',
                     icon: 'mdi-file-document',

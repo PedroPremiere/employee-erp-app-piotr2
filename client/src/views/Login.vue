@@ -143,7 +143,7 @@ export default {
                     type: 'success'
                 });
 
-                this.$router.push('Main');
+                this.$router.push('/');
             } catch (error) {
                 console.error(error);
                 this.$notify({

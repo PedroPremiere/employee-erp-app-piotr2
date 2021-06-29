@@ -11,6 +11,10 @@ module.exports = {
             class: '/controllers/Auth/MeController',
             arguments: ['@repositories.user']
         },
+        'controllers.auth.ProfileController': {
+            class: '/controllers/Auth/ProfileUpdateController',
+            arguments: ['@repositories.user', '@services.auth']
+        },
         'controllers.auth.passwordResetRequestController': {
             class: '/controllers/Auth/PasswordResetRequestController',
             arguments: [

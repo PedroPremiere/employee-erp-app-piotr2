@@ -1,20 +1,25 @@
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 
-async function isMailTaken(email, request) {
-    const { id } = request.params;
+async function isMailTaken(email, request, exludeId) {
+    let userId;
+
+    if (exludeId == 'params') {
+        userId = request.params.id;
+    } else if (exludeId == 'request') {
+        userId = request.loggedUser.id;
+    }
 
     const di = request.app.get('di');
-
     const userRepository = di.get('repositories.user');
 
     const user = await userRepository.getByEmail(email);
 
-    if (user && user.id !== id) {
+    if (user && user.id !== userId) {
         return Promise.reject('E-mail already in use');
     }
 }
 
-const update = [
+const basic = [
     check('firstName')
         .not()
         .isEmpty()
@@ -29,15 +34,6 @@ const update = [
         .isLength({ min: 2 })
         .withMessage('Last Name must have more than 2 characters'),
 
-    check('email')
-        .not()
-        .isEmpty()
-        .withMessage('Should not be empty')
-        .isEmail()
-        .withMessage('Mail not valid')
-        .bail()
-        .custom((email, { req }) => isMailTaken(email, req)),
-
     check('birthDate')
         .not()
         .isEmpty()
@@ -46,8 +42,7 @@ const update = [
         .withMessage('Date must be in ISO8601 format(YYYY-MM-DD)')
 ];
 
-const store = [
-    ...update,
+const withPassword = [
     check('password')
         .not()
         .isEmpty()
@@ -56,4 +51,31 @@ const store = [
         .withMessage('Password must have more than 8 characters')
 ];
 
-module.exports = { update, store };
+const update = [
+    ...basic,
+    check('email')
+        .not()
+        .isEmpty()
+        .withMessage('Should not be empty')
+        .isEmail()
+        .withMessage('Mail not valid')
+        .bail()
+        .custom((email, { req }) => isMailTaken(email, req, 'params'))
+];
+
+const profile = [
+    ...basic,
+    ...withPassword,
+    check('email')
+        .not()
+        .isEmpty()
+        .withMessage('Should not be empty')
+        .isEmail()
+        .withMessage('Mail not valid')
+        .bail()
+        .custom((email, { req }) => isMailTaken(email, req, 'request'))
+];
+
+const store = [...update, ...withPassword];
+
+module.exports = { update, store, profile };

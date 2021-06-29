@@ -11,6 +11,9 @@ const auth = {
         user: state => state.user
     },
     mutations: {
+        setUser(state, data) {
+            state.user = data;
+        },
         login(state, data) {
             localStorage.setItem('user', JSON.stringify(data));
 
@@ -35,6 +38,16 @@ const auth = {
             await axios.post('/auth/logout');
 
             commit('logout');
+        },
+        async save({ commit }, user) {
+            const { data } = await axios.put(`/auth/profile`, user);
+
+            commit('setUser', data);
+        },
+        async me({ commit }) {
+            const { data } = await axios.get('/auth/me');
+
+            commit('setUser', data);
         },
         async passwordResetRequest(vuexContext, email) {
             const { data } = await axios.post(`/auth/password-reset`, {

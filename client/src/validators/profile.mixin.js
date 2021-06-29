@@ -1,10 +1,4 @@
-import {
-    required,
-    alpha,
-    email,
-    minLength,
-    sameAs
-} from 'vuelidate/lib/validators';
+import { required, alpha, email, minLength } from 'vuelidate/lib/validators';
 
 import abstractValidatorMixin from '@/validators/abstract.mixin';
 
@@ -37,25 +31,16 @@ export default {
             firstName: {
                 required,
                 alpha
+            },
+            password: {
+                required,
+                minLength: minLength(8)
             }
         };
-
-        if (this.isPasswordRequired) {
-            user.password = {
-                required,
-                minLength: minLength(8),
-                sameAs: sameAs(function () {
-                    return this.passwordRepeat;
-                })
-            };
-        }
 
         return { user };
     },
     computed: {
-        isPasswordRequired() {
-            return !this.selectedUser.id;
-        },
         lastNameErrors() {
             const errors = [];
 
@@ -101,10 +86,6 @@ export default {
         passwordErrors() {
             const errors = [];
 
-            if (!this.isPasswordRequired) {
-                return errors;
-            }
-
             if (!this.$v.user.password.$dirty) return errors;
 
             !this.$v.user.password.required &&
@@ -112,11 +93,6 @@ export default {
 
             !this.$v.user.password.minLength &&
                 errors.push('Password must be longer than 8 characters');
-
-            !this.$v.user.password.sameAs &&
-                errors.push(
-                    'Password and password confirmation must be the same'
-                );
 
             return errors.concat(this.apiErrors.password);
         }

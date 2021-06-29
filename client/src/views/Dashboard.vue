@@ -4,18 +4,17 @@
             Welcome {{ loggedUser.firstName }}
         </p>
         <v-row>
-            <template v-for="(category, index) in categories" dark>
+            <template>
                 <v-col
-                    :key="index"
                     class="mt-2 rounded-t white--text"
-                    :class="category.backgound"
+                    :class="categories.backgound"
                     cols="12"
                 >
-                    <strong class="display-1">{{ category.title }}</strong>
+                    <strong class="display-1">{{ categories.title }}</strong>
                 </v-col>
                 <v-col
-                    v-for="(subCategory, subIndex) in category.subCategories"
-                    :key="`${index}_${subIndex}`"
+                    v-for="(subCategory, subIndex) in categories.subCategories"
+                    :key="`_${subIndex}`"
                     md="2"
                 >
                     <a :href="subCategory.link" target="_blank">
@@ -48,45 +47,7 @@ export default {
     data() {
         return {
             isAdmin: false,
-            categories: []
-        };
-    },
-    computed: {
-        ...mapGetters({
-            loggedUser: 'auth/user'
-        })
-    },
-    mounted() {
-        this.load();
-    },
-    methods: {
-        addLoginLogout() {
-            const loginLogoutCategories = {
-                title: 'Login/Logout',
-                backgound: 'amber lighten-1',
-                subCategories: []
-            };
-
-            if (this.loggedUser) {
-                loginLogoutCategories.subCategories.push({
-                    title: 'Log out',
-                    icon: 'mdi-logout',
-                    background: 'green darken-2',
-                    link: '/login'
-                });
-            } else {
-                loginLogoutCategories.subCategories.push({
-                    title: 'Log in',
-                    icon: 'mdi-login',
-                    background: 'amber darken-2',
-                    link: '/login'
-                });
-            }
-
-            this.categories.push(loginLogoutCategories);
-        },
-        addUserCategories() {
-            const userCategories = {
+            userCategories: {
                 title: 'My Profile',
                 backgound: 'green lighten-3',
 
@@ -107,17 +68,11 @@ export default {
                         title: 'My Vacations',
                         icon: 'mdi-calendar',
                         background: 'deep-orange  lighten-1',
-                        link: '/Vacations'
+                        link: '/vacations'
                     }
                 ]
-            };
-
-            this.categories.push(userCategories);
-        },
-        addAdminCategories() {
-            this.isAdmin = true;
-
-            const adminCategories = {
+            },
+            adminCategories: {
                 title: 'Admin',
                 backgound: 'red lighten-3',
 
@@ -141,22 +96,15 @@ export default {
                         link: '/vacations'
                     }
                 ]
-            };
-
-            this.categories.push(adminCategories);
-        },
-        async load() {
-            if (!this.loggedUser) {
-                this.addLoginLogout();
-
-                return;
             }
-
-            this.addUserCategories();
-
-            if (this.loggedUser.isAdmin) {
-                this.addAdminCategories();
-            }
+        };
+    },
+    computed: {
+        ...mapGetters({
+            loggedUser: 'auth/user'
+        }),
+        categories() {
+            return this.isAdmin ? this.adminCategories : this.userCategories;
         }
     }
 };

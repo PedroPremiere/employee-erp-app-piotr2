@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
 class Auth {
-    checkCredentials(password, dbPassword) {
+    comparePasswords(password, dbPassword) {
         return bcrypt.compare(password, dbPassword);
     }
 }

@@ -9,6 +9,7 @@ const Users = () => import('@/views/Users');
 const Contracts = () => import('@/views/Contracts');
 const Vacations = () => import('@/views/Vacations');
 const Dashboard = () => import('@/views/Dashboard');
+const Profile = () => import('@/views/Profile');
 const PasswordReset = () => import('@/views/PasswordReset');
 
 Vue.use(Router);
@@ -52,6 +53,14 @@ const router = new Router({
             path: '/vacations',
             name: 'vacations',
             component: Vacations,
+            meta: {
+                auth: true
+            }
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: Profile,
             meta: {
                 auth: true
             }

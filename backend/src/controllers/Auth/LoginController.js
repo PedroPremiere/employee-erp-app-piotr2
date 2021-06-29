@@ -25,7 +25,7 @@ class LoginController {
 
         const userPassword = await this.userRepository.getPassword(user.id);
 
-        if (await this.auth.checkCredentials(password, userPassword)) {
+        if (await this.auth.comparePasswords(password, userPassword)) {
             request.session.userId = user.id;
 
             return response.send(user);
