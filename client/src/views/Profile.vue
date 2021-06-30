@@ -24,6 +24,17 @@
                 >
                     <v-icon dark> mdi-account-edit </v-icon>
                 </v-btn>
+
+                <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="pink"
+                    @click="isPasswordChangeOpen = true"
+                >
+                    <v-icon dark> mdi-form-textbox-password </v-icon>
+                </v-btn>
             </div>
 
             <v-card-text>
@@ -58,18 +69,23 @@
                 @close="onIsProfileDialogClose"
             />
         </v-dialog>
+
+        <v-dialog v-model="isPasswordChangeOpen" persistent max-width="600px">
+            <password-change-form @close="isPasswordChangeOpen = false" />
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ProfileForm from '@/components/ProfileForm';
+import PasswordChangeForm from '@/components/PasswordChangeForm';
 
 export default {
     name: 'Me',
-    components: { ProfileForm },
+    components: { ProfileForm, PasswordChangeForm },
     data() {
-        return { isProfileDialogOpen: false };
+        return { isProfileDialogOpen: false, isPasswordChangeOpen: false };
     },
     computed: {
         ...mapGetters({
