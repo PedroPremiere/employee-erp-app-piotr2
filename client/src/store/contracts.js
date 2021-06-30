@@ -18,11 +18,11 @@ const contracts = {
             );
             state.contracts.splice(index, 1);
         },
-        updateContract(state, newcontract) {
+        updateContract(state, newContract) {
             const index = state.contracts.findIndex(
-                contract => contract.id === newcontract.id
+                contract => contract.id === newContract.id
             );
-            state.contracts.splice(index, 1, newcontract);
+            state.contracts.splice(index, 1, newContract);
         },
         addContract(state, data) {
             state.contracts.push(data);

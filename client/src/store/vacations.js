@@ -18,11 +18,11 @@ const vacations = {
             );
             state.vacations.splice(index, 1);
         },
-        updateVacations(state, newvacation) {
+        updateVacations(state, newVacation) {
             const index = state.vacations.findIndex(
-                vacation => vacation.id === newvacation.id
+                vacation => vacation.id === newVacation.id
             );
-            state.vacations.splice(index, 1, newvacation);
+            state.vacations.splice(index, 1, newVacation);
         },
         addVacations(state, data) {
             state.vacations.push(data);

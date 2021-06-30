@@ -93,7 +93,7 @@ export default {
         },
         setSelectedUserById(userId) {
             if (userId) {
-                this.selectedUser = this.users.find(user => user.id == userId);
+                this.selectedUser = this.users.find(user => user.id === userId);
 
                 return;
             }

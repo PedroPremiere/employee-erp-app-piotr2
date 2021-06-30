@@ -80,8 +80,8 @@
                         class="mb-6"
                         color="primary"
                         elevation="2"
-                        @click="isPasswordResetOpen = true"
                         text
+                        @click="isPasswordResetOpen = true"
                     >
                         Forgot Password?
                     </v-btn>
@@ -102,8 +102,8 @@ import PasswordResetForm from '@/components/PasswordResetForm';
 
 export default {
     name: 'Login',
-    mixins: [loginValidatorMixin],
     components: { PasswordResetForm },
+    mixins: [loginValidatorMixin],
     data() {
         return {
             isPasswordResetOpen: false,

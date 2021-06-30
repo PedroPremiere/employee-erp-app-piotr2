@@ -44,7 +44,6 @@ export default {
             email: ''
         };
     },
-    props: {},
     methods: {
         ...mapActions({
             send: 'auth/passwordResetRequest'

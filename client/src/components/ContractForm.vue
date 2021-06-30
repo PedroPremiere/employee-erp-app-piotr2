@@ -141,7 +141,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate';
-import { mapGetters, mapActions } from 'vuex';
+import {  mapActions } from 'vuex';
 import UserSearchBox from '@/components/UserSearchBox';
 import contractValidatorMixin from '@/validators/contract.mixin';
 
@@ -168,12 +168,6 @@ export default {
             contract: defaultForm,
             selectedUser: {}
         };
-    },
-
-    computed: {
-        ...mapGetters({
-            userContracts: 'userContracts/items'
-        })
     },
     watch: {
         selectedContract: {
@@ -217,6 +211,8 @@ export default {
                 });
 
                 this.$emit('close');
+
+                this.reset();
             } catch (error) {
                 console.error(error);
 
@@ -229,9 +225,6 @@ export default {
 
                 this.parseApiErrors(error);
             }
-
-            this.$emit('save', this.contract);
-            this.reset();
         },
         close() {
             this.$emit('close');

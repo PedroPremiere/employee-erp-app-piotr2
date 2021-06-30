@@ -3,7 +3,7 @@
         <v-toolbar class="px-2" color="primary" dark> Vacation </v-toolbar>
         <v-container>
             <v-row class="py-3 px-3">
-                <v-col cols="12" v-if="isAdmin">
+                <v-col v-if="isAdmin" cols="12">
                     <user-search-box
                         v-model="vacation.userId"
                         :error-messages="userIdErrors"
@@ -12,7 +12,7 @@
                     />
                 </v-col>
 
-                <v-col cols="12" v-if="isAdmin">
+                <v-col v-if="isAdmin" cols="12">
                     <v-switch
                         v-model="vacation.isConfirmed"
                         label="Is Confirmed"
@@ -208,7 +208,10 @@ export default {
                     text: 'Vacation has been saved',
                     type: 'success'
                 });
+
                 this.$emit('close');
+
+                this.reset();
             } catch (error) {
                 console.error(error);
 

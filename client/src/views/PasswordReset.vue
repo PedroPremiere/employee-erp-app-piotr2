@@ -65,6 +65,7 @@ import { validationMixin } from 'vuelidate';
 
 export default {
     name: 'PasswordReset',
+    mixins: [validationMixin, passwordValidatorMixin],
     data() {
         return {
             passwordAndRepeat: {
@@ -74,7 +75,6 @@ export default {
             code: this.$route.params.code
         };
     },
-    mixins: [validationMixin, passwordValidatorMixin],
     methods: {
         ...mapActions({
             passwordReset: 'auth/passwordReset'

@@ -57,15 +57,15 @@ export default {
             selectedUser: {}
         };
     },
-    watch: {
-        selectedUser() {
-            this.apiErrors = [];
-        }
-    },
     computed: {
         ...mapGetters({
             users: 'users/items'
         })
+    },
+    watch: {
+        selectedUser() {
+            this.apiErrors = [];
+        }
     },
     mounted() {
         this.load();
