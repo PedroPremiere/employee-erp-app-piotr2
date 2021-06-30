@@ -2,6 +2,7 @@ const express = require('express');
 
 const validate = require('../middlewares/validate');
 const authValidator = require('../validators/authValidator');
+const passwordChangeValidator = require('../validators/passwordChangeValidator');
 const loggedIn = require('../middlewares/loggedIn');
 const userValidator = require('../validators/userValidator');
 const passwordValidator = require('../validators/passwordValidator');
@@ -13,6 +14,9 @@ module.exports = di => {
     const loginController = di.get('controllers.auth.loginController');
     const logoutController = di.get('controllers.auth.logoutController');
     const meController = di.get('controllers.auth.meController');
+    const passwordChangeController = di.get(
+        'controllers.auth.passwordChangeController'
+    );
     const profileUpdateController = di.get(
         'controllers.auth.ProfileController'
     );
@@ -31,6 +35,12 @@ module.exports = di => {
     );
     router.get('/me', [loggedIn], (...args) => meController.invoke(...args));
 
+    router.post(
+        '/password-change',
+        [loggedIn],
+        [passwordChangeValidator.passwordChange, validate],
+        (...args) => passwordChangeController.invoke(...args)
+    );
     router.put(
         '/profile',
         [loggedIn],
