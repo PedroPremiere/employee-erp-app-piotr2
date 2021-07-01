@@ -9,36 +9,36 @@
                 <v-row class="mt-1">
                     <v-col cols="12">
                         <v-text-field
-                            v-model="password"
-                            :error-messages="passwordErrors"
+                            v-model="formData.currentPassword"
+                            :error-messages="currentPasswordErrors"
                             prepend-icon="mdi-form-textbox-password"
-                            label="Old password*"
+                            label="Current password*"
                             type="password"
-                            @input="$v.password.$touch"
+                            @input="$v.formData.currentPassword.$touch"
                         />
                     </v-col>
                 </v-row>
                 <v-row class="mt-1">
                     <v-col cols="12">
                         <v-text-field
-                            v-model="newPassword"
-                            :error-messages="newPasswordErrors"
+                            v-model="formData.password"
+                            :error-messages="passwordErrors"
                             prepend-icon="mdi-form-textbox-password"
                             label="New password*"
                             type="password"
-                            @input="$v.newPassword.$touch"
+                            @input="$v.formData.password.$touch"
                         />
                     </v-col>
                 </v-row>
                 <v-row class="mt-1">
                     <v-col cols="12">
                         <v-text-field
-                            v-model="newPasswordRepeat"
-                            :error-messages="newPasswordRepeatErrors"
+                            v-model="formData.passwordConfirmation"
+                            :error-messages="passwordConfirmationErrors"
                             prepend-icon="mdi-form-textbox-password"
-                            label="New password Repeat*"
+                            label="passwordConfirmation*"
                             type="password"
-                            @input="$v.newPasswordRepeat.$touch"
+                            @input="$v.formData.passwordConfirmation.$touch"
                         />
                     </v-col>
                 </v-row>
@@ -46,6 +46,10 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer />
+            <v-btn color="blue darken-1" text @click="$emit('close')">
+                <span>Close </span>
+            </v-btn>
+
             <v-btn
                 :disabled="$v.$invalid"
                 color="blue darken-1"
@@ -61,22 +65,61 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import passwordChangeMixin from '@/validators/passwordChange.mixin';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'PasswordChangeForm',
     mixins: [validationMixin, passwordChangeMixin],
     data() {
-        return {
+        const defaultForm = {
+            currentPassword: '',
             password: '',
-            newPassword: '',
-            newPasswordRepeat: ''
+            passwordConfirmation: ''
+        };
+        return {
+            defaultForm,
+            formData: { ...defaultForm }
         };
     },
     methods: {
-        async save() {
-            // to do implement this
-            console.log('save');
+        ...mapActions({
+            passwordChange: 'auth/passwordChange'
+        }),
+        reset() {
+            this.formData = { ...this.defaultForm };
             this.$emit('close');
+            this.$v.$reset();
+        },
+        async save() {
+            try {
+                this.$v.$touch();
+
+                if (this.$v.$invalid) {
+                    return;
+                }
+
+                await this.passwordChange(this.formData);
+
+                this.$notify({
+                    group: 'errors',
+                    title: 'success',
+                    text: 'Password has been changed',
+                    type: 'success'
+                });
+
+                this.reset();
+            } catch (error) {
+                console.error(error);
+
+                this.$notify({
+                    group: 'errors',
+                    title: 'Error',
+                    text: 'Something went wrong',
+                    type: 'error'
+                });
+
+                this.parseApiErrors(error);
+            }
         }
     }
 };

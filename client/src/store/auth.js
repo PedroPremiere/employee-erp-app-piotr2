@@ -63,6 +63,18 @@ const auth = {
             );
 
             return data;
+        },
+        async passwordChange(
+            vuexContext,
+            { currentPassword, password, passwordConfirmation }
+        ) {
+            const { data } = await axios.post(`/auth/password-change`, {
+                currentPassword,
+                password,
+                passwordConfirmation
+            });
+
+            return data;
         }
     }
 };

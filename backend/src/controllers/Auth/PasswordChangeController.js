@@ -21,7 +21,14 @@ class PasswordChangeController {
         if (
             !(await this.auth.comparePasswords(currentPassword, user.password))
         ) {
-            return response.sendStatus(StatusCodes.FORBIDDEN);
+            return response.status(StatusCodes.BAD_REQUEST).send({
+                errors: [
+                    {
+                        message: 'Wrong current password',
+                        param: 'currentPassword'
+                    }
+                ]
+            });
         }
 
         await user.update({ password });

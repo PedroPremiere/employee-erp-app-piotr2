@@ -5,70 +5,73 @@ import abstractValidatorMixin from '@/validators/abstract.mixin';
 export default {
     mixins: [abstractValidatorMixin],
     validations: {
-        password: {
-            required,
-            minLength: minLength(8)
-        },
-        newPassword: {
-            required,
-            minLength: minLength(8)
-        },
-        newPasswordRepeat: {
-            required,
-            sameAs: sameAs(function () {
-                return this.newPassword;
-            })
+        formData: {
+            currentPassword: {
+                required,
+                minLength: minLength(8)
+            },
+            password: {
+                required,
+                minLength: minLength(8)
+            },
+            passwordConfirmation: {
+                required,
+                sameAs: sameAs('password')
+            }
         }
     },
     data() {
         return {
             apiErrors: {
+                currentPassword: [],
                 password: [],
-                newPassword: [],
-                newPasswordRepeat: []
+                passwordConfirmation: []
             }
         };
     },
     computed: {
+        currentPasswordErrors() {
+            const errors = [];
+
+            if (!this.$v.formData.currentPassword.$dirty) return errors;
+
+            !this.$v.formData.currentPassword.required &&
+                errors.push('Current password is required');
+
+            !this.$v.formData.currentPassword.minLength &&
+                errors.push(
+                    'Current password must be longer than 8 characters'
+                );
+
+            return errors.concat(this.apiErrors.currentPassword);
+        },
         passwordErrors() {
             const errors = [];
 
-            if (!this.$v.password.$dirty) return errors;
+            if (!this.$v.formData.password.$dirty) return errors;
 
-            !this.$v.password.required && errors.push('Password is required');
+            !this.$v.formData.password.required &&
+                errors.push('New password is required');
 
-            !this.$v.password.minLength &&
-                errors.push('Password must be longer than 8 characters');
+            !this.$v.formData.password.minLength &&
+                errors.push('New password must be longer than 8 characters');
 
             return errors.concat(this.apiErrors.password);
         },
-        newPasswordErrors() {
+        passwordConfirmationErrors() {
             const errors = [];
 
-            if (!this.$v.newPassword.$dirty) return errors;
+            if (!this.$v.formData.passwordConfirmation.$dirty) return errors;
 
-            !this.$v.newPassword.required &&
-                errors.push('New password is required');
-
-            !this.$v.newPassword.minLength &&
-                errors.push('New password must be longer than 8 characters');
-
-            return errors.concat(this.apiErrors.newPassword);
-        },
-        newPasswordRepeatErrors() {
-            const errors = [];
-
-            if (!this.$v.newPasswordRepeat.$dirty) return errors;
-
-            !this.$v.newPasswordRepeat.required &&
+            !this.$v.formData.passwordConfirmation.required &&
                 errors.push('New password repeat is required');
 
-            !this.$v.newPasswordRepeat.sameAs &&
+            !this.$v.formData.passwordConfirmation.sameAs &&
                 errors.push(
                     'New password and password confirmation must be the same'
                 );
 
-            return errors.concat(this.apiErrors.newPasswordRepeat);
+            return errors.concat(this.apiErrors.passwordConfirmation);
         }
     }
 };
