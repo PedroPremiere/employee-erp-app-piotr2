@@ -11,54 +11,72 @@
                     <v-toolbar class="px-2" color="primary" dark>
                         <h3>Login</h3>
                     </v-toolbar>
-                    <v-row class="mt-6" justify="center">
-                        <v-col cols="10" sm="5" md="3">
-                            <v-text-field
-                                v-model="email"
-                                :error-messages="emailErrors"
-                                label="Email"
-                                outlined
-                                @input="$v.email.$touch"
-                            />
-                        </v-col>
-                    </v-row>
+                    <form class="px-0 py-0" @submit.prevent="onSubmit">
+                        <v-row class="mt-6" justify="center">
+                            <v-col cols="10" sm="5" md="3">
+                                <v-text-field
+                                    v-model="email"
+                                    :error-messages="emailErrors"
+                                    label="Email"
+                                    outlined
+                                    @input="$v.email.$touch"
+                                />
+                            </v-col>
+                        </v-row>
 
-                    <v-row justify="center">
-                        <v-col cols="10" sm="5" md="3">
-                            <v-text-field
-                                v-model="password"
-                                :error-messages="passwordErrors"
-                                label="Password"
-                                type="password"
-                                outlined
-                                @input="$v.password.$touch"
-                            />
-                        </v-col>
-                    </v-row>
+                        <v-row justify="center">
+                            <v-col cols="10" sm="5" md="3">
+                                <v-text-field
+                                    v-model="password"
+                                    :error-messages="passwordErrors"
+                                    label="Password"
+                                    type="password"
+                                    outlined
+                                    @input="$v.password.$touch"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-btn
+                            :disabled="$v.$invalid"
+                            class="mb-6"
+                            color="primary"
+                            elevation="2"
+                            @click="onLogin"
+                        >
+                            Login
+                        </v-btn>
+                    </form>
                     <v-btn
-                        :disabled="$v.$invalid"
                         class="mb-6"
                         color="primary"
                         elevation="2"
-                        @click="onLogin"
+                        text
+                        @click="isPasswordResetOpen = true"
                     >
-                        Login
+                        Forgot Password?
                     </v-btn>
                 </v-card>
             </v-col>
         </v-row>
+        <v-dialog v-model="isPasswordResetOpen" max-width="500px">
+            <password-reset-form @close="isPasswordResetOpen = false" />
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
 import loginValidatorMixin from '@/validators/login.mixin';
 
+import PasswordResetForm from '@/components/PasswordResetForm';
+
 export default {
     auth: 'guest',
     name: 'Login',
+    components: { PasswordResetForm },
     mixins: [loginValidatorMixin],
     data() {
         return {
+            isPasswordResetOpen: false,
             email: '',
             password: '',
             wrongPasswordOrEmail: false
