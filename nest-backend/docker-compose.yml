@@ -1,0 +1,22 @@
+version: '3'
+services:
+    db:
+        image: mysql:5.7
+        container_name: ${COMPOSE_PROJECT_NAME}.mysql.docker
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ${DATABASE_NAME}
+            MYSQL_USER: ${DATABASE_USERNAME}
+            MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+        ports:
+            - 127.0.0.1:${DATABASE_PORT}:3306
+        volumes:
+            - ~/data/mysql.erpsystem.docker:/var/lib/mysql
+        networks:
+            - global
+
+networks:
+    global:
+        external: true
