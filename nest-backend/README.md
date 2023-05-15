@@ -26,17 +26,35 @@ cp .env.example .env.test
 docker-compose up -d 
 ```
 
+## Documentation
+
+To see project documentation run
+
+```shell
+npm run docs
+```
+
+and open
+
+[http://127.0.0.1:8080](http://127.0.0.1:8080) in browser
+
+To see Swagger(OpenApi):
+
+```shell
+  npm run dev
+```
+
+And open
+[http://localhost:3000/docs#/](http://localhost:3000/docs#/)
+
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
-$ npm run start:prod
+$ npm run prod
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in browser

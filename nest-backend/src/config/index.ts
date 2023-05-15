@@ -24,6 +24,10 @@ if (!possibleEnvs.includes(currentEnv)) {
 }
 
 export default () => ({
+    info: {
+        name: env('npm_package_name'),
+        description: env('npm_package_description')
+    },
     app: {
         env: env('NODE_ENV'),
         serverPort: parseInt(env('PORT', 3001)),
