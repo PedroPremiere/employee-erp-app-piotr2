@@ -1,23 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import * as request from 'supertest';
 
 import { AppController } from './app.controller';
-import { AppService } from '@/services/app.service';
 
 describe('AppController', () => {
-    let appController: AppController;
-
-    beforeEach(async () => {
-        const app: TestingModule = await Test.createTestingModule({
-            controllers: [AppController],
-            providers: [AppService]
-        }).compile();
-
-        appController = app.get<AppController>(AppController);
-    });
-
     describe('root', () => {
         it('should return "Api is working"', () => {
-            expect(appController.getHello()).toBe('Api is working');
+            return request(app.getHttpServer())
+                .get('/api')
+                .expect(200)
+                .expect('Api is working');
         });
     });
 });

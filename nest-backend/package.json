@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js seed",
+    "seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js seed",
     "make:migration": "typeorm migration:create ./src/db/migrations/${npm_config_name}",
-    "migrate": "NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js  migration:run  -d src/ormconfig.config.ts",
+    "migrate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js  migration:run  -d src/ormconfig.config.ts",
     "docs": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {

@@ -1,5 +1,4 @@
 import { DataSource } from 'typeorm';
-
 import config from '@/config';
 
 const currentConfig = config();
@@ -13,6 +12,7 @@ export default new DataSource({
     type: currentConfig.db.dialect,
     port: currentConfig.db.port,
     charset: currentConfig.db.define.charset,
-    entities: ['./src/entities/*.ts'],
-    migrations: ['./src/db/migrations/*.ts']
+    entities: ['src/entities/*.{ts,js}'],
+    migrations: ['./src/db/migrations/*.ts'],
+    synchronize: false
 });

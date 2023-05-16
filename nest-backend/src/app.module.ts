@@ -23,7 +23,8 @@ import config from '@/config';
                     ...dbConfig,
                     entities: [__dirname + '/entities/*.{ts,js}'],
                     migrations: [__dirname + '/db/migrations/*.{ts,js}'],
-                    synchronize: false
+                    synchronize: false,
+                    autoLoadEntities: true
                 };
             }
         }),

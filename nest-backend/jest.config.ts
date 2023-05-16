@@ -13,7 +13,10 @@ const config: JestConfigWithTsJest = {
         '@/(.*)': '<rootDir>/src/$1',
         '@tests/(.*)': '<rootDir>/tests/$1'
     },
-    runner: 'groups'
+    runner: 'groups',
+    roots: ['./src/', './test/'],
+    //globalSetup: './test/bootstrap.ts',
+    setupFilesAfterEnv: ['./test/setup.ts']
 };
 
 export default config;

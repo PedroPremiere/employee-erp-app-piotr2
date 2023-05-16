@@ -91,6 +91,11 @@ src/db/seeds
 
 ## Test
 
+```shell
+# Before first run
+docker-compose --env-file .env.test  up -d
+```
+
 ```bash
 # unit tests
 $ npm run test
