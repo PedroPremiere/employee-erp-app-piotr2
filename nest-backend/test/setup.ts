@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
 import dataSource from '@/ormconfig.config';
 
-import { truncate } from '@/db/helpers/truncate';
+import { truncate } from './helpers/truncate';
 
 beforeAll(async () => {
     global.request = request;
@@ -15,6 +15,7 @@ beforeAll(async () => {
     }).compile();
 
     global.app = moduleFixture.createNestApplication();
+
     await global.app.init();
     await global.dataSource.initialize();
 

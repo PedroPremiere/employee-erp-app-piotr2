@@ -14,6 +14,7 @@ import config from '@/config';
 
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
+            imports: [ConfigModule],
 
             useFactory: async (configService: ConfigService) => {
                 const dbConfig = configService.get('db');
