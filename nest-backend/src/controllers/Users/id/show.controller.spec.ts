@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 
-import { UsersFactory } from '../../../test/factories/user.factory';
+import { UsersFactory } from '../../../../test/factories/user.factory';
 
 describe('Index User Controller (e2e)', () => {
     describe('/api/users (GET)', () => {

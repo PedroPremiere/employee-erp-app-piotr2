@@ -1,14 +1,32 @@
 import { NestFactory } from '@nestjs/core';
+import {
+    BadRequestException,
+    ValidationError,
+    ValidationPipe
+} from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-
 import config from '@/config';
 
 const currentConfig = config();
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            exceptionFactory: (validationErrors: ValidationError[] = []) => {
+                return new BadRequestException(
+                    validationErrors.map(error => ({
+                        field: error.property,
+                        error: Object.values(error.constraints).join(', ')
+                    }))
+                );
+            }
+        })
+    );
 
     const config = new DocumentBuilder()
         .setTitle(currentConfig.info.name)

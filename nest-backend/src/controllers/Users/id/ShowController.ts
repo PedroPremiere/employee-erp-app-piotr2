@@ -2,7 +2,6 @@ import { User } from '@/entities/User';
 
 import { Controller, Get, Param } from '@nestjs/common';
 
-
 import { ApiTags } from '@nestjs/swagger';
 import { ShowUsersService } from '@/services/Users/ShowUserService';
 
