@@ -10,6 +10,8 @@ import { DeleteController } from '@/controllers/Users/id/DestroyController';
 import { DeleteUsersService } from '@/services/Users/DeleteUsersService';
 import { StoreController } from '@/controllers/Users/StoreController';
 import { CreateUserService } from '@/services/Users/CreateUserService';
+import { FindByEmailService } from '@/services/Users/FindByEmailService';
+import { LoginController } from '@/controllers/Auth/LoginController';
 
 @Module({
     imports: [TypeOrmModule.forFeature([UsersRepository])],
@@ -17,14 +19,17 @@ import { CreateUserService } from '@/services/Users/CreateUserService';
         IndexController,
         ShowController,
         DeleteController,
-        StoreController
+        StoreController,
+        LoginController
     ],
     providers: [
         IndexUsersService,
         ShowUsersService,
         DeleteUsersService,
         UsersRepository,
-        CreateUserService
-    ]
+        CreateUserService,
+        FindByEmailService
+    ],
+    exports: [FindByEmailService]
 })
 export class UsersModule {}
