@@ -3,8 +3,11 @@ import {
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    BeforeInsert
 } from 'typeorm';
+
+import * as argon2 from 'argon2';
 
 @Entity()
 export class User {
@@ -22,4 +25,9 @@ export class User {
 
     @UpdateDateColumn({ type: 'timestamp' })
     updatedAt: Date;
+
+    @BeforeInsert()
+    async beforeInsert() {
+        this.password = await argon2.hash(this.password);
+    }
 }

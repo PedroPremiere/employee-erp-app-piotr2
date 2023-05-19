@@ -32,6 +32,9 @@ export default () => ({
         env: env('NODE_ENV'),
         serverPort: parseInt(env('PORT', 3001)),
         secret: env('APP_SECRET'),
+        signOptions: {
+            expiresIn: env('TOKEN_EXPIRES_IN')
+        },
         frontendUrl: env('APP_FRONTEND_URL')
     },
     db: {

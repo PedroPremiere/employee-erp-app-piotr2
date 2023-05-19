@@ -19,7 +19,13 @@ export class UsersFactory {
         const usersRepository = dataSource.getRepository(User);
         const user = UsersFactory.generate();
 
-        await usersRepository.save(user);
+        const userToSave = new User();
+
+        userToSave.id = user.id;
+        userToSave.email = user.email;
+        userToSave.password = user.password;
+
+        await usersRepository.save(userToSave);
 
         return user;
     }

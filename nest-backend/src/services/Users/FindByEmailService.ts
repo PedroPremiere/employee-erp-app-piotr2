@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { User } from '@/entities/User';
 import { UsersRepository } from '@/repositories/UsersRepository';
@@ -12,10 +12,6 @@ export class FindByEmailService {
             where: { email },
             select: ['id', 'email', 'password']
         });
-
-        if (!user) {
-            throw new NotFoundException();
-        }
 
         return user;
     }
