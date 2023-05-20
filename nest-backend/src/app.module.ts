@@ -8,6 +8,7 @@ import { UsersModule } from './modules/UsersModule';
 import { AppController } from './controllers/app.controller';
 
 import config from '@/config';
+import { MeModule } from '@/modules/MeModule';
 
 @Module({
     imports: [
@@ -32,7 +33,8 @@ import config from '@/config';
         }),
 
         UsersModule,
-        AuthModule
+        AuthModule,
+        MeModule
     ],
     controllers: [AppController],
     providers: [AppService]

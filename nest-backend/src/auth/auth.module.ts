@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '@/modules/UsersModule';
 import { LocalStrategy } from '@/auth/local.strategy';
 import { LoginController } from '@/controllers/Auth/LoginController';
+import { JwtStrategy } from '@/auth/jwt.strategy';
 
 const currentConfig = config();
 
@@ -20,6 +21,6 @@ const currentConfig = config();
         })
     ],
     controllers: [LoginController],
-    providers: [AuthService, LocalStrategy]
+    providers: [AuthService, LocalStrategy, JwtStrategy]
 })
 export class AuthModule {}
