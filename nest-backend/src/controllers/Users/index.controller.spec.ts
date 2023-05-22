@@ -1,24 +1,23 @@
-import * as request from 'supertest';
+import { get } from '@test/methods/get';
+import { Routes } from '@/types/enums/Routes';
+import { UsersFactory } from '@test/factories/user.factory';
+import { emptyListAssertion } from '@test/assertion/emptyList';
+import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-import { UsersFactory } from '../../../test/factories/user.factory';
+const url = `/api/${Routes.USERS}`;
 
 describe('Index User Controller (e2e)', () => {
-    describe('/api/users (GET)', () => {
+    describe(`${url} (GET)`, () => {
         it('Returns empty list when NO DATA', async () => {
-            const { status, body } = await request(app.getHttpServer()).get(
-                '/api/users'
-            );
+            const { status, body } = await get({ url });
 
-            expect(status).toBe(200);
-            expect(body).toEqual([]);
+            emptyListAssertion(status, body);
         });
 
         it('Returns list of users', async () => {
             const user = await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer()).get(
-                '/api/users'
-            );
+            const { status, body } = await get({ url });
 
             expect(status).toBe(200);
             expect(body).toContainEqual(
@@ -29,7 +28,7 @@ describe('Index User Controller (e2e)', () => {
             );
 
             for (const item of body) {
-                expect(item.password).toBeFalsy();
+                noPasswordAssertion(item);
             }
         });
     });

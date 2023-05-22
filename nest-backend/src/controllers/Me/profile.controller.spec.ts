@@ -1,31 +1,31 @@
-import * as request from 'supertest';
+import { get } from '@test/methods/get';
+import { post } from '@test/methods/post';
+import { Routes } from '@/types/enums/Routes';
+import { UsersFactory } from '@test/factories/user.factory';
+import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 
-import { UsersFactory } from '../../../test/factories/user.factory';
-
-const url = '/api/me';
-
-let access_token;
 let user;
-const loginUrl = '/api/auth/login';
+let token;
+
+const url = `/api/${Routes.ME}`;
+const loginUrl = `/api/${Routes.LOGIN}`;
 
 describe('User Profile Controller (e2e)', () => {
     beforeAll(async () => {
         user = await UsersFactory.create();
 
-        const { status, body } = await request(app.getHttpServer())
-            .post(loginUrl)
-            .send({ email: user.email, password: user.password });
+        const payload = { email: user.email, password: user.password };
+
+        const { status, body } = await post({ url: loginUrl, payload });
 
         expect(status).toBe(200);
 
-        access_token = body.access_token;
+        token = body.access_token;
     });
 
-    describe('/api/me (GET)', () => {
+    describe(`${url} (GET)`, () => {
         it('Returns User Data as Logged in', async () => {
-            const { status, body } = await request(app.getHttpServer())
-                .get(url)
-                .set('Authorization', 'Bearer ' + access_token);
+            const { status, body } = await get({ url, token });
 
             expect(status).toBe(200);
 
@@ -33,14 +33,9 @@ describe('User Profile Controller (e2e)', () => {
         });
 
         it('Returns Unauthorized as Not Logged in', async () => {
-            const { status, body } = await request(app.getHttpServer()).get(
-                url
-            );
+            const { status, body } = await get({ url });
 
-            expect(status).toBe(401);
-
-            expect(body.statusCode).toEqual(401);
-            expect(body.message).toEqual('Unauthorized');
+            unAuthorizedAssertion(status, body);
         });
     });
 });

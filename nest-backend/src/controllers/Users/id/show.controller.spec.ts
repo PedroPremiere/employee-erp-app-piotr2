@@ -1,15 +1,17 @@
-import * as request from 'supertest';
+import { get } from '@test/methods/get';
+import { Routes } from '@/types/enums/Routes';
+import { noFoundAssertion } from '@test/assertion/noFound';
+import { UsersFactory } from '@test/factories/user.factory';
+import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-import { UsersFactory } from '../../../../test/factories/user.factory';
+const url = `/api/${Routes.USERS}`;
 
 describe('Index User Controller (e2e)', () => {
-    describe('/api/users (GET)', () => {
+    describe(`${url} (GET)`, () => {
         it('Returns user DATA', async () => {
             const user = await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer()).get(
-                `/api/users/${user.id}`
-            );
+            const { status, body } = await get({ url: `${url}/${user.id}` });
 
             expect(status).toBe(200);
 
@@ -20,20 +22,15 @@ describe('Index User Controller (e2e)', () => {
                 })
             );
 
-            expect(body.password).toBeFalsy();
+            noPasswordAssertion(body);
         });
 
         it('Returns NO FOUND sending NON EXISTING USER ID', async () => {
             await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer()).get(
-                `/api/users/WrongId`
-            );
+            const { status, body } = await get({ url: `${url}/WrongId` });
 
-            expect(status).toBe(404);
-
-            expect(body.message).toBe('Not Found');
-            expect(body.statusCode).toBe(404);
+            noFoundAssertion(status, body);
         });
     });
 });

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 
 beforeAll(async () => {
-    global.request = request;
+    global._request = request;
     global.dataSource = dataSource;
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -37,6 +37,8 @@ beforeAll(async () => {
 
     await global.app.init();
     await global.dataSource.initialize();
+
+    global.request = request(app.getHttpServer());
 
     await truncate();
 });

@@ -1,15 +1,16 @@
-import { User } from '@/entities/User';
 import { Controller, Get } from '@nestjs/common';
 
-import { IndexUsersService } from '@/services/Users/IndexUsersService';
+import { User } from '@/entities/User';
 import { ApiTags } from '@nestjs/swagger';
+import { Routes } from '@/types/enums/Routes';
+import { IndexUsersService } from '@/services/Users/IndexUsersService';
 
-@ApiTags('users')
+@ApiTags(Routes.USERS)
 @Controller('api')
 export class IndexController {
     constructor(private usersService: IndexUsersService) {}
 
-    @Get('users')
+    @Get(Routes.USERS)
     invoke(): Promise<User[]> {
         return this.usersService.findAll();
     }

@@ -3,10 +3,11 @@ import { User } from '@/entities/User';
 import { Controller, Get, Param } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
+import { Routes } from '@/types/enums/Routes';
 import { ShowUsersService } from '@/services/Users/ShowUserService';
 
-@ApiTags('users')
-@Controller('api/users/')
+@ApiTags(Routes.USERS)
+@Controller(`/api/${Routes.USERS}`)
 export class ShowController {
     constructor(private usersService: ShowUsersService) {}
 

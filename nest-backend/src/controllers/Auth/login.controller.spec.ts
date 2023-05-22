@@ -1,17 +1,18 @@
-import * as request from 'supertest';
+import { post } from '@test/methods/post';
+import { Routes } from '@/types/enums/Routes';
+import { UsersFactory } from '@test/factories/user.factory';
+import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 
-import { UsersFactory } from '../../../test/factories/user.factory';
-
-const url = '/api/auth/login';
+const url = `/api/${Routes.LOGIN}`;
 
 describe('Login Controller (e2e)', () => {
-    describe('/api/auth/login (POST)', () => {
+    describe(`${url} (POST)`, () => {
         it('Returns OK sending CORRECT DATA', async () => {
             const user = await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer())
-                .post(url)
-                .send({ email: user.email, password: user.password });
+            const payload = { email: user.email, password: user.password };
+
+            const { status, body } = await post({ url, payload });
 
             expect(status).toBe(200);
 
@@ -26,50 +27,30 @@ describe('Login Controller (e2e)', () => {
         });
 
         it('Returns Unauthorized sending WRONG DATA', async () => {
-            const { status, body } = await request(app.getHttpServer())
-                .post(url)
-                .send({ email: 'wrong@email.com', password: 'wrong password' });
+            const payload = {
+                email: 'wrong@email.com',
+                password: 'wrong password'
+            };
 
-            expect(status).toBe(401);
+            const { status, body } = await post({ url, payload });
 
-            expect(body).toEqual(
-                expect.objectContaining({
-                    message: 'Unauthorized',
-                    statusCode: 401
-                })
-            );
+            unAuthorizedAssertion(status, body);
         });
 
         it('Returns Unauthorized sending WRONG PASSWORD', async () => {
             const user = await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer())
-                .post(url)
-                .send({ email: user.email, password: 'wrong password' });
+            const payload = { email: user.email, password: 'wrong password' };
 
-            expect(status).toBe(401);
+            const { status, body } = await post({ url, payload });
 
-            expect(body).toEqual(
-                expect.objectContaining({
-                    message: 'Unauthorized',
-                    statusCode: 401
-                })
-            );
+            unAuthorizedAssertion(status, body);
         });
 
         it('Returns Unauthorized sending NO DATA', async () => {
-            const { status, body } = await request(app.getHttpServer()).post(
-                url
-            );
+            const { status, body } = await post({ url });
 
-            expect(status).toBe(401);
-
-            expect(body).toEqual(
-                expect.objectContaining({
-                    message: 'Unauthorized',
-                    statusCode: 401
-                })
-            );
+            unAuthorizedAssertion(status, body);
         });
     });
 });

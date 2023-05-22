@@ -1,15 +1,15 @@
 import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 
+import { Routes } from '@/types/enums/Routes';
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
 
-@ApiTags('me')
+@ApiTags(Routes.ME)
 @Controller('api')
 export class ProfileController {
-    @Get('me')
+    @Get(Routes.ME)
     @UseGuards(JwtAuthGuard)
     invoke(@Request() req) {
-        //todo add user data
         return req.user;
     }
 }

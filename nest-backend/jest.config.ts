@@ -11,7 +11,7 @@ const config: JestConfigWithTsJest = {
     coverageDirectory: '../coverage',
     moduleNameMapper: {
         '@/(.*)': '<rootDir>/src/$1',
-        '@tests/(.*)': '<rootDir>/tests/$1'
+        '@test/(.*)': '<rootDir>/test/$1'
     },
     runner: 'groups',
     roots: ['./src/', './test/'],

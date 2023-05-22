@@ -1,36 +1,31 @@
-import * as request from 'supertest';
+import { Routes } from '@/types/enums/Routes';
+import { destroy } from '@test/methods/destroy';
+import { deletedAssertion } from '@test/assertion/deleted';
+import { noFoundAssertion } from '@test/assertion/noFound';
+import { UsersFactory } from '@test/factories/user.factory';
 
-import { UsersFactory } from '../../../../test/factories/user.factory';
-
-const url = '/api/users';
+const url = `/api/${Routes.USERS}`;
 
 describe('Delete User Controller (e2e)', () => {
-    describe('/api/users/:id (DELETE)', () => {
+    describe(`${url}/:id (DELETE)`, () => {
         it('Deletes user', async () => {
             const user = await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer()).delete(
-                `${url}/${user.id}`
-            );
+            const { status, body } = await destroy({
+                url: `${url}/${user.id}`
+            });
 
-            expect(status).toBe(204);
-
-            expect(body).toEqual({});
-
-            expect(body.password).toBeFalsy();
+            deletedAssertion(status, body);
         });
 
         it('Returns NO FOUND sending NON EXISTING USER ID', async () => {
             await UsersFactory.create();
 
-            const { status, body } = await request(app.getHttpServer()).delete(
-                `${url}/WrongId`
-            );
+            const { status, body } = await destroy({
+                url: `${url}/WrongId`
+            });
 
-            expect(status).toBe(404);
-
-            expect(body.message).toBe('Not Found');
-            expect(body.statusCode).toBe(404);
+            noFoundAssertion(status, body);
         });
     });
 });
