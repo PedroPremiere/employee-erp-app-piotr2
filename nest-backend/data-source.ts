@@ -1,19 +1,18 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
-import config from './src/config';
+
+import { conf } from '@/config';
 import { User } from '@/entities/User';
 
-const currentConfig = config();
-
 const options: DataSourceOptions & SeederOptions = {
-    url: currentConfig.db.url,
-    host: currentConfig.db.host,
-    database: currentConfig.db.name,
-    username: currentConfig.db.username,
-    password: currentConfig.db.password,
-    type: currentConfig.db.dialect,
-    port: currentConfig.db.port,
-    charset: currentConfig.db.define.charset,
+    url: conf.db.url,
+    host: conf.db.host,
+    database: conf.db.name,
+    username: conf.db.username,
+    password: conf.db.password,
+    type: conf.db.dialect,
+    port: conf.db.port,
+    charset: conf.db.define.charset,
 
     seeds: ['src/db/seeds/**/*{.ts,.js}'],
     factories: ['src/db/factories/**/*{.ts,.js}'],

@@ -23,7 +23,7 @@ if (!possibleEnvs.includes(currentEnv)) {
     process.exit();
 }
 
-export default () => ({
+export const conf = {
     info: {
         name: env('npm_package_name'),
         description: env('npm_package_description')
@@ -31,11 +31,14 @@ export default () => ({
     app: {
         env: env('NODE_ENV'),
         serverPort: parseInt(env('PORT', 3001)),
-        secret: env('APP_SECRET'),
+        frontendUrl: env('APP_FRONTEND_URL')
+    },
+    security: {
+        minPasswordLen: env('APP_MIN_PASSWORD_LEN', 6),
         signOptions: {
             expiresIn: env('TOKEN_EXPIRES_IN')
         },
-        frontendUrl: env('APP_FRONTEND_URL')
+        secret: env('APP_SECRET')
     },
     db: {
         url:
@@ -62,4 +65,8 @@ export default () => ({
             timestamps: true
         }
     }
-});
+};
+
+export default () => {
+    return conf;
+};

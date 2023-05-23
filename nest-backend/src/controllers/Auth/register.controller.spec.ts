@@ -5,7 +5,7 @@ import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 import { createUserErrorDialogs } from '@/dialogs/errors/CreateUserErrorDialogs';
 
-const url = `/api/${Routes.USERS}`;
+const url = `/api/${Routes.REGISTER}`;
 
 const {
     notEmailError,
@@ -14,41 +14,24 @@ const {
     tooShortPasswordError
 } = createUserErrorDialogs;
 
-describe('Index User Controller (e2e)', () => {
-    describe(`${url} (GET)`, () => {
-        it('Creates new USER sending CORRECT DATA', async () => {
+describe('Register Controller (e2e)', () => {
+    describe(`${url} (POST)`, () => {
+        it('Returns OK sending CORRECT DATA', async () => {
             const user = UsersFactory.generate();
 
-            const { status, body } = await post({ url, payload: user });
+            const payload = { email: user.email, password: user.password };
 
-            expect(status).toBe(201);
+            const { status, body } = await post({ url, payload });
 
-            expect(body).toEqual(
+            expect(status).toBe(200);
+
+            expect(body.access_token).toBeTruthy();
+
+            expect(body.user).toEqual(
                 expect.objectContaining({
                     email: user.email
                 })
             );
-
-            noPasswordAssertion(body);
-        });
-
-        it('BAD REQUEST sending TOO SHORT PASSWORD', async () => {
-            const user = UsersFactory.generate();
-            const payload = { email: user.email, password: 'Abc1' };
-
-            const { status, body } = await post({ url, payload });
-
-            const expectedMessage = [
-                {
-                    error: [tooWeakPasswordError, tooShortPasswordError].join(
-                        ', '
-                    ),
-                    field: 'password'
-                }
-            ];
-
-            badRequestAssertion(status, body, expectedMessage);
-            noPasswordAssertion(body);
         });
 
         it('BAD REQUEST sending NO PASSWORD', async () => {

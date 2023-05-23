@@ -7,9 +7,7 @@ import {
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import config from '@/config';
-
-const currentConfig = config();
+import { conf } from '@/config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -29,8 +27,8 @@ async function bootstrap() {
     );
 
     const config = new DocumentBuilder()
-        .setTitle(currentConfig.info.name)
-        .setDescription(currentConfig.info.description)
+        .setTitle(conf.info.name)
+        .setDescription(conf.info.description)
         .setVersion('1.0')
         .build();
     const document = SwaggerModule.createDocument(app, config);
