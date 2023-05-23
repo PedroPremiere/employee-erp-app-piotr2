@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Routes } from '@/types/enums/Routes';
 import { AuthService } from '@/auth/auth.service';
 
-@Controller('api')
+@Controller()
 export class LoginController {
     constructor(private authService: AuthService) {}
 

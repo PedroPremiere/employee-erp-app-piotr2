@@ -12,6 +12,8 @@ import { conf } from '@/config';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
+    app.setGlobalPrefix(conf.api.prefix);
+
     app.useGlobalPipes(
         new ValidationPipe({
             transform: true,

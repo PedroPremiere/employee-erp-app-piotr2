@@ -1,10 +1,11 @@
+import { conf } from '@/config';
 import { get } from '@test/methods/get';
 import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
 import { emptyListAssertion } from '@test/assertion/emptyList';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-const url = `/api/${Routes.USERS}`;
+const url = `/${conf.api.prefix}/${Routes.USERS}`;
 
 describe('Index User Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {

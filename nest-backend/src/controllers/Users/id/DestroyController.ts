@@ -6,11 +6,11 @@ import { Routes } from '@/types/enums/Routes';
 import { DeleteUsersService } from '@/services/Users/DeleteUsersService';
 
 @ApiTags(Routes.USERS)
-@Controller(`/api/${Routes.USERS}`)
+@Controller()
 export class DeleteController {
     constructor(private usersService: DeleteUsersService) {}
 
-    @Delete(':id')
+    @Delete(`${Routes.USERS}/:id`)
     @HttpCode(204)
     invoke(@Param() params: any): Promise<{ message: string }> {
         return this.usersService.delete(params.id);

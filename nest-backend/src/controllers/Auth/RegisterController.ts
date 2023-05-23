@@ -1,11 +1,11 @@
-import { Controller, Request, Post, HttpCode, Body } from '@nestjs/common';
+import { Controller, Post, HttpCode, Body } from '@nestjs/common';
 
 import { Routes } from '@/types/enums/Routes';
 import { AuthService } from '@/auth/auth.service';
 import { CreateUserDto } from '@/dto/User/CreateUserDto';
 import { CreateUserService } from '@/services/Users/CreateUserService';
 
-@Controller('api')
+@Controller()
 export class RegisterController {
     constructor(
         private authService: AuthService,

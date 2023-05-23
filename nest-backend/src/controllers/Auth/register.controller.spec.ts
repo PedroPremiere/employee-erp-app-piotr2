@@ -1,3 +1,4 @@
+import { conf } from '@/config';
 import { post } from '@test/methods/post';
 import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
@@ -5,7 +6,7 @@ import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 import { createUserErrorDialogs } from '@/dialogs/errors/CreateUserErrorDialogs';
 
-const url = `/api/${Routes.REGISTER}`;
+const url = `/${conf.api.prefix}/${Routes.REGISTER}`;
 
 const {
     notEmailError,

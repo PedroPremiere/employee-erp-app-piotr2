@@ -10,6 +10,7 @@ import {
     ValidationError,
     ValidationPipe
 } from '@nestjs/common';
+import { conf } from '@/config';
 
 beforeAll(async () => {
     global._request = request;
@@ -21,6 +22,7 @@ beforeAll(async () => {
 
     global.app = moduleFixture.createNestApplication();
 
+    app.setGlobalPrefix(conf.api.prefix);
     app.useGlobalPipes(
         new ValidationPipe({
             transform: true,

@@ -7,11 +7,11 @@ import { Routes } from '@/types/enums/Routes';
 import { ShowUsersService } from '@/services/Users/ShowUserService';
 
 @ApiTags(Routes.USERS)
-@Controller(`/api/${Routes.USERS}`)
+@Controller()
 export class ShowController {
     constructor(private usersService: ShowUsersService) {}
 
-    @Get(':id')
+    @Get(`${Routes.USERS}/:id`)
     invoke(@Param() params: any): Promise<User> {
         return this.usersService.findOne(params.id);
     }

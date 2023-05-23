@@ -1,3 +1,4 @@
+import { conf } from '@/config';
 import { get } from '@test/methods/get';
 import { post } from '@test/methods/post';
 import { Routes } from '@/types/enums/Routes';
@@ -7,8 +8,8 @@ import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 let user;
 let token;
 
-const url = `/api/${Routes.ME}`;
-const loginUrl = `/api/${Routes.LOGIN}`;
+const url = `/${conf.api.prefix}/${Routes.ME}`;
+const loginUrl = `/${conf.api.prefix}/${Routes.LOGIN}`;
 
 describe('User Profile Controller (e2e)', () => {
     beforeAll(async () => {

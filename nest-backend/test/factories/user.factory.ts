@@ -9,7 +9,7 @@ export class UsersFactory {
         const user = {
             id: faker.datatype.uuid(),
             email: faker.internet.email(),
-            password: `#${faker.internet.password(5)}1A`
+            password: `#${faker.internet.password(5)}a1A`
         };
 
         return user;

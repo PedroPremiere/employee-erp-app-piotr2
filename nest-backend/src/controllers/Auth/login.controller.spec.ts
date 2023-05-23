@@ -2,8 +2,9 @@ import { post } from '@test/methods/post';
 import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
 import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
+import { conf } from '@/config';
 
-const url = `/api/${Routes.LOGIN}`;
+const url = `/${conf.api.prefix}/${Routes.LOGIN}`;
 
 describe('Login Controller (e2e)', () => {
     describe(`${url} (POST)`, () => {

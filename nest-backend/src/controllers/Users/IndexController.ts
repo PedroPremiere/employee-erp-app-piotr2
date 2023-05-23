@@ -6,7 +6,7 @@ import { Routes } from '@/types/enums/Routes';
 import { IndexUsersService } from '@/services/Users/IndexUsersService';
 
 @ApiTags(Routes.USERS)
-@Controller('api')
+@Controller()
 export class IndexController {
     constructor(private usersService: IndexUsersService) {}
 

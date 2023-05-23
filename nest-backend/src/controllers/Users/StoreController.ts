@@ -7,7 +7,7 @@ import { CreateUserDto } from '@/dto/User/CreateUserDto';
 import { CreateUserService } from '@/services/Users/CreateUserService';
 
 @ApiTags(Routes.USERS)
-@Controller('api')
+@Controller()
 export class StoreController {
     constructor(private usersService: CreateUserService) {}
 

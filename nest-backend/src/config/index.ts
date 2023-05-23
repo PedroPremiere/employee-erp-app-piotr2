@@ -28,6 +28,9 @@ export const conf = {
         name: env('npm_package_name'),
         description: env('npm_package_description')
     },
+    api: {
+        prefix: env('API_PREFIX', 'api')
+    },
     app: {
         env: env('NODE_ENV'),
         serverPort: parseInt(env('PORT', 3001)),
