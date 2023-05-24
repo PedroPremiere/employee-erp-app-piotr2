@@ -9,6 +9,7 @@ import { AppController } from './controllers/app.controller';
 
 import config from '@/config';
 import { MeModule } from '@/modules/MeModule';
+import { ContractsModule } from '@/modules/ContractsModule';
 
 @Module({
     imports: [
@@ -31,7 +32,7 @@ import { MeModule } from '@/modules/MeModule';
                 };
             }
         }),
-
+        ContractsModule,
         UsersModule,
         AuthModule,
         MeModule

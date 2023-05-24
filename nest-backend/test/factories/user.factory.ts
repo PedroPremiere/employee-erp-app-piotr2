@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker';
+import { Injectable } from '@nestjs/common';
 
 import { User } from '@/entities/User';
-import { Injectable } from '@nestjs/common';
+import dataSource from '@/ormconfig.config';
 
 @Injectable()
 export class UsersFactory {

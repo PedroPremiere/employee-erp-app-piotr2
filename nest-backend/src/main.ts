@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import {
-    BadRequestException,
+    ValidationPipe,
     ValidationError,
-    ValidationPipe
+    BadRequestException
 } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 

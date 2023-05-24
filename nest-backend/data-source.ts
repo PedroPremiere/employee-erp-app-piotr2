@@ -2,7 +2,6 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 
 import { conf } from '@/config';
-import { User } from '@/entities/User';
 
 const options: DataSourceOptions & SeederOptions = {
     url: conf.db.url,
@@ -16,7 +15,7 @@ const options: DataSourceOptions & SeederOptions = {
 
     seeds: ['src/db/seeds/**/*{.ts,.js}'],
     factories: ['src/db/factories/**/*{.ts,.js}'],
-    entities: [User]
+    entities: ['src/entities/*.{ts,js}']
 };
 
 export const dataSource = new DataSource(options);

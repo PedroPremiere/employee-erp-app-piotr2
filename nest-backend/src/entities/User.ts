@@ -1,15 +1,15 @@
 import {
     Entity,
     Column,
-    PrimaryGeneratedColumn,
+    BeforeInsert,
     CreateDateColumn,
     UpdateDateColumn,
-    BeforeInsert
+    PrimaryGeneratedColumn
 } from 'typeorm';
 
 import * as argon2 from 'argon2';
 
-@Entity()
+@Entity('users')
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
