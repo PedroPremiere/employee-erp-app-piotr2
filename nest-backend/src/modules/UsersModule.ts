@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from '@/repositories/UsersRepository';
 import { ShowUsersService } from '@/services/Users/ShowUserService';
 import { StoreController } from '@/controllers/Users/StoreController';
-import { IndexController } from '@/controllers/Users/IndexController';
+import { IndexUsersController } from '@/controllers/Users/IndexUsersController';
 import { CreateUserService } from '@/services/Users/CreateUserService';
 import { IndexUsersService } from '@/services/Users/IndexUsersService';
 import { ShowController } from '@/controllers/Users/id/ShowController';
@@ -15,7 +15,7 @@ import { DeleteController } from '@/controllers/Users/id/DestroyController';
 @Module({
     imports: [TypeOrmModule.forFeature([UsersRepository])],
     controllers: [
-        IndexController,
+        IndexUsersController,
         ShowController,
         DeleteController,
         StoreController

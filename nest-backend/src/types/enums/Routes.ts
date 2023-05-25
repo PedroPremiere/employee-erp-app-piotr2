@@ -3,5 +3,6 @@ export enum Routes {
     ME = 'me',
     AUTH = 'auth',
     LOGIN = 'auth/login',
-    REGISTER = 'auth/register'
+    REGISTER = 'auth/register',
+    CONTRACTS = 'contracts'
 }

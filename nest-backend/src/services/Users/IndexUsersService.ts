@@ -7,7 +7,7 @@ import { UsersRepository } from '@/repositories/UsersRepository';
 export class IndexUsersService {
     constructor(private readonly usersRepository: UsersRepository) {}
 
-    findAll(): Promise<User[]> {
-        return this.usersRepository.find();
+    findAll(): Promise<[User[], number]> {
+        return this.usersRepository.findAndCount();
     }
 }
