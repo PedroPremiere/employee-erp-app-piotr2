@@ -9,9 +9,11 @@ import {
 } from 'typeorm';
 
 import { User } from '@/entities/User';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('contracts')
 export class Contract {
+    @ApiProperty()
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

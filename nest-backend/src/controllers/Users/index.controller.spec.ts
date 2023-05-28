@@ -34,7 +34,9 @@ describe('Index User Controller (e2e)', () => {
 
             expect(status).toBe(200);
 
-            const { data, count } = body;
+            const { data, meta } = body;
+
+            const { totalItems } = meta;
 
             for (const user of users) {
                 expect(data).toContainEqual(
@@ -45,8 +47,8 @@ describe('Index User Controller (e2e)', () => {
                 );
             }
 
-            expect(count).toEqual(data.length);
-            expect(count).toEqual(expectedCount);
+            expect(totalItems).toEqual(data.length);
+            expect(totalItems).toEqual(expectedCount);
 
             for (const item of data) {
                 noPasswordAssertion(item);

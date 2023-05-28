@@ -33,7 +33,7 @@ describe('Index Contracts Controller (e2e)', () => {
 
             expect(status).toBe(200);
 
-            const { data, count } = body;
+            const { data, meta } = body;
 
             for (const contract of contracts) {
                 expect(data).toContainEqual(
@@ -41,7 +41,10 @@ describe('Index Contracts Controller (e2e)', () => {
                         id: contract.id,
                         vacationDaysPerYear: contract.vacationDaysPerYear,
                         vacationDays: contract.vacationDays,
-                        position: contract.position
+                        position: contract.position,
+                        user: {
+                            id: contract.user.id
+                        }
                     })
                 );
 
@@ -60,8 +63,8 @@ describe('Index Contracts Controller (e2e)', () => {
                 dayjs(selectedContract.endDate).isSame(contract.endDate, 'day');
             }
 
-            expect(count).toEqual(data.length);
-            expect(count).toEqual(expectedCount);
+            expect(meta.totalItems).toEqual(data.length);
+            expect(meta.totalItems).toEqual(expectedCount);
         });
     });
 });
