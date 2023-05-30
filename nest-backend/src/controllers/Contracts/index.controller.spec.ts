@@ -1,3 +1,9 @@
+/*
+ * @group index
+ * @group contract
+ * @group contractIndex
+ */
+
 import * as dayjs from 'dayjs';
 
 import { conf } from '@/config';

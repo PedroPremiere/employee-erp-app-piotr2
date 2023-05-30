@@ -11,6 +11,7 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 import { conf } from '@/config';
+import { useContainer } from 'class-validator';
 
 beforeAll(async () => {
     global._request = request;
@@ -21,6 +22,7 @@ beforeAll(async () => {
     }).compile();
 
     global.app = moduleFixture.createNestApplication();
+    useContainer(global.app.select(AppModule), { fallbackOnErrors: true });
 
     app.setGlobalPrefix(conf.api.prefix);
     app.useGlobalPipes(

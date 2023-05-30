@@ -8,9 +8,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { conf } from '@/config';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
     app.setGlobalPrefix(conf.api.prefix);
 

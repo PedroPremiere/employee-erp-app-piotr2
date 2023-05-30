@@ -27,7 +27,7 @@ export class Contract {
     endDate: Date;
 
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({ name: 'userId' })
     user: User;
 
     @Column()
