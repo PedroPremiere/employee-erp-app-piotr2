@@ -6,10 +6,9 @@ import {
     Validate
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsTheSame } from '@/decorators/validators/IsTheSame';
 import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
 
-export class CreateUserDto {
+export class LoginDto {
     @IsNotEmpty({
         message: 'password should not be empty'
     })
@@ -26,13 +25,6 @@ export class CreateUserDto {
         example: '$passwordAa1'
     })
     password: string;
-
-    @Validate(IsTheSame, ['password'])
-    @ApiProperty({
-        description: 'User Password',
-        example: '$passwordAa1'
-    })
-    passwordRepeat: string;
 
     @IsEmail()
     @Validate(UniqueMail)

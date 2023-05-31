@@ -2,10 +2,10 @@ import { Controller, Request, Post, UseGuards, HttpCode } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
 import { Routes } from '@/types/enums/Routes';
+import { LoginDto } from '@/dto/User/LoginDto';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { AuthService } from '@/services/Auth/AuthService';
 import { LoginResponseDto } from '@/dto/Auth/LoginResponseDto';
-import { CreateUserDto } from '@/dto/User/CreateUserDto';
 
 @Controller()
 export class LoginController {
@@ -19,7 +19,7 @@ export class LoginController {
         description: 'Login success',
         type: LoginResponseDto
     })
-    @ApiBody({ type: CreateUserDto })
+    @ApiBody({ type: LoginDto })
     async invoke(@Request() req) {
         return this.authService.login(req.user);
     }
