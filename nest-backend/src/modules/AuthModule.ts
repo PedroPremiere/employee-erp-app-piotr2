@@ -4,14 +4,15 @@ import { PassportModule } from '@nestjs/passport';
 
 import { conf } from '@/config';
 
-import { AuthService } from './auth.service';
+import { JwtStrategy } from '@/auth/jwt.strategy';
 import { UsersModule } from '@/modules/UsersModule';
 import { LocalStrategy } from '@/auth/local.strategy';
-import { LoginController } from '@/controllers/Auth/LoginController';
-import { JwtStrategy } from '@/auth/jwt.strategy';
-import { RegisterController } from '@/controllers/Auth/RegisterController';
-import { CreateUserService } from '@/services/Users/CreateUserService';
+import { AuthService } from '@/services/Auth/AuthService';
 import { UsersRepository } from '@/repositories/UsersRepository';
+import { LoginController } from '@/controllers/Auth/LoginController';
+import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
+import { CreateUserService } from '@/services/Users/CreateUserService';
+import { RegisterController } from '@/controllers/Auth/RegisterController';
 
 @Module({
     imports: [
@@ -28,7 +29,8 @@ import { UsersRepository } from '@/repositories/UsersRepository';
         LocalStrategy,
         JwtStrategy,
         CreateUserService,
-        UsersRepository
+        UsersRepository,
+        UniqueMail
     ]
 })
 export class AuthModule {}

@@ -8,7 +8,7 @@ import { StoreContractController } from '@/controllers/Contracts/StoreController
 import { CreateContractService } from '@/services/Contracts/CreateContractService';
 
 import { UsersRepository } from '@/repositories/UsersRepository';
-import { DoesUserExist } from '@/decorators/validators/user/DoesUserExist';
+import { ExistingUser } from '@/decorators/validators/user/ExistingUser';
 import { IsOverLappingService } from '@/services/Contracts/IsOverLappingService';
 import { IsNotOverlapping } from '@/decorators/validators/contract/IsNotOverlapping';
 
@@ -22,7 +22,7 @@ import { IsNotOverlapping } from '@/decorators/validators/contract/IsNotOverlapp
         IndexContractService,
         ContractsRepository,
         CreateContractService,
-        DoesUserExist,
+        ExistingUser,
         UsersRepository,
         IsNotOverlapping,
         IsOverLappingService

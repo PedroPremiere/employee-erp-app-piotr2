@@ -10,6 +10,7 @@ const url = `/${conf.api.prefix}/${Routes.USERS}`;
 
 const {
     notEmailError,
+    emailTakenError,
     emptyPasswordError,
     tooWeakPasswordError,
     tooShortPasswordError
@@ -45,6 +46,24 @@ describe('Index User Controller (e2e)', () => {
                         ', '
                     ),
                     field: 'password'
+                }
+            ];
+
+            badRequestAssertion(status, body, expectedMessage);
+            noPasswordAssertion(body);
+        });
+
+        it('BAD REQUEST when EMAIL ALREADY TAKEN', async () => {
+            const user = await UsersFactory.create();
+
+            const payload = user;
+
+            const { status, body } = await post({ url, payload });
+
+            const expectedMessage = [
+                {
+                    error: [emailTakenError].join(', '),
+                    field: 'email'
                 }
             ];
 

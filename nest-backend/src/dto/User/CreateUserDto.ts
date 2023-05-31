@@ -2,9 +2,11 @@ import {
     IsEmail,
     IsNotEmpty,
     IsStrongPassword,
-    MinLength
+    MinLength,
+    Validate
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
 
 export class CreateUserDto {
     @IsNotEmpty({
@@ -25,6 +27,7 @@ export class CreateUserDto {
     password: string;
 
     @IsEmail()
+    @Validate(UniqueMail)
     @ApiProperty({
         description: 'User Email',
         example: 'example@example.com'

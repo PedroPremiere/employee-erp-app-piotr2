@@ -9,6 +9,7 @@ import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 import { ContractsFactory } from '@test/factories/contracts.factory';
 import { createContractErrorDialogs } from '@/dialogs/errors/CreateContractErrorDialogs';
+import { CountVacationDaysService } from '@/services/VacationDays/CountVacationDaysService';
 
 const url = `/${conf.api.prefix}/${Routes.CONTRACTS}`;
 
@@ -30,7 +31,11 @@ describe('Index User Controller (e2e)', () => {
                         id: user.id
                     },
                     vacationDaysPerYear: contract.vacationDaysPerYear,
-                    vacationDays: contract.vacationDays
+                    vacationDays: CountVacationDaysService.countVacationDays({
+                        vacationDaysPerYear: contract.vacationDaysPerYear,
+                        startDate: contract.startDate,
+                        endDate: contract.endDate
+                    })
                 })
             );
 
@@ -207,13 +212,6 @@ describe('Index User Controller (e2e)', () => {
                     error: [
                         createContractErrorDialogs.notEmpty,
                         `vacationDaysPerYear ${createContractErrorDialogs.mustBeInteger}`
-                    ].join(', ')
-                },
-                {
-                    field: 'vacationDays',
-                    error: [
-                        createContractErrorDialogs.notEmpty,
-                        `vacationDays ${createContractErrorDialogs.mustBeInteger}`
                     ].join(', ')
                 }
             ];

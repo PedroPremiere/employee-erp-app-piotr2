@@ -12,7 +12,8 @@ const {
     notEmailError,
     emptyPasswordError,
     tooWeakPasswordError,
-    tooShortPasswordError
+    tooShortPasswordError,
+    emailTakenError
 } = createUserErrorDialogs;
 
 describe('Register Controller (e2e)', () => {
@@ -33,6 +34,24 @@ describe('Register Controller (e2e)', () => {
                     email: user.email
                 })
             );
+        });
+
+        it('BAD REQUEST when EMAIL ALREADY TAKEN', async () => {
+            const user = await UsersFactory.create();
+
+            const payload = user;
+
+            const { status, body } = await post({ url, payload });
+
+            const expectedMessage = [
+                {
+                    error: [emailTakenError].join(', '),
+                    field: 'email'
+                }
+            ];
+
+            badRequestAssertion(status, body, expectedMessage);
+            noPasswordAssertion(body);
         });
 
         it('BAD REQUEST sending NO PASSWORD', async () => {

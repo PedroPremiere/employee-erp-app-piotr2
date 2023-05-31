@@ -3,7 +3,7 @@ import { Controller, Request, Post, UseGuards, HttpCode } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Routes } from '@/types/enums/Routes';
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { AuthService } from '@/auth/auth.service';
+import { AuthService } from '@/services/Auth/AuthService';
 import { LoginResponseDto } from '@/dto/Auth/LoginResponseDto';
 import { CreateUserDto } from '@/dto/User/CreateUserDto';
 
