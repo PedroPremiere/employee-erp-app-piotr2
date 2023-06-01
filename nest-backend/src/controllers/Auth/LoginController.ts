@@ -1,4 +1,11 @@
-import { Controller, Request, Post, UseGuards, HttpCode } from '@nestjs/common';
+import {
+    Controller,
+    Request,
+    Post,
+    UseGuards,
+    HttpCode,
+    Body
+} from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
 import { Routes } from '@/types/enums/Routes';
@@ -20,7 +27,7 @@ export class LoginController {
         type: LoginResponseDto
     })
     @ApiBody({ type: LoginDto })
-    async invoke(@Request() req) {
-        return this.authService.login(req.user);
+    async invoke(@Body() userData: LoginDto) {
+        return this.authService.login(userData);
     }
 }

@@ -25,8 +25,4 @@ export class ExistingUser implements ValidatorConstraintInterface {
 
         return !!userInDB;
     }
-
-    public defaultMessage() {
-        return "User doesn't exist";
-    }
 }

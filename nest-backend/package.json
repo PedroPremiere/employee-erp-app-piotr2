@@ -38,6 +38,7 @@
     "dayjs": "^1.11.7",
     "jest-runner-groups": "^2.2.0",
     "mysql2": "^3.3.0",
+    "nestjs-i18n": "^10.2.6",
     "nestjs-paginate": "^8.1.4",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",

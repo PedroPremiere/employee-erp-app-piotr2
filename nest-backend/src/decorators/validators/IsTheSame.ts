@@ -16,11 +16,4 @@ export class IsTheSame implements ValidatorConstraintInterface {
 
         return propertyToCompare === input;
     }
-
-    public defaultMessage(args: ValidationArguments) {
-        const inputProperty = args.constraints[0];
-        const propertyToCompare = args.property;
-
-        return `${propertyToCompare} should be the same as ${inputProperty}`;
-    }
 }

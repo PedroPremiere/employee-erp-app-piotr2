@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsInt, IsNotEmpty, Validate } from 'class-validator';
 
+import { i18nValidationMessage } from 'nestjs-i18n';
+
 import { User } from '@/entities/User';
 import { ExistingUser } from '@/decorators/validators/user/ExistingUser';
 import { IsAfterOrSame } from '@/decorators/validators/date/IsAfterOrSame';
@@ -9,7 +11,7 @@ import { IsNotOverlapping } from '@/decorators/validators/contract/IsNotOverlapp
 
 export class CreateContractDto {
     @IsNotEmpty({
-        message: 'Should not be empty'
+        message: i18nValidationMessage('errors.notEmpty')
     })
     @ApiProperty({
         description: 'Name of position',
@@ -17,38 +19,58 @@ export class CreateContractDto {
     })
     position: string;
 
-    @IsDateString()
+    @IsDateString(
+        {},
+        {
+            message: i18nValidationMessage('errors.mustBeValidDate')
+        }
+    )
     @IsNotEmpty({
-        message: 'Should not be empty'
+        message: i18nValidationMessage('errors.notEmpty')
     })
     @ApiProperty({
         description: 'Start date of contract',
         example: '2023-03-26T21:40:36.000Z'
     })
-    @Validate(IsAfterOrSame, ['endDate'])
+    @Validate(IsAfterOrSame, ['endDate'], {
+        message: i18nValidationMessage('errors.endDateShouldBeAfterStartDate')
+    })
     startDate: Date;
 
-    @IsDateString()
+    @IsDateString(
+        {},
+        {
+            message: i18nValidationMessage('errors.mustBeValidDate')
+        }
+    )
     @IsNotEmpty({
-        message: 'Should not be empty'
+        message: i18nValidationMessage('errors.notEmpty')
     })
     @ApiProperty({
         description: 'End date of contract',
         example: '2023-03-26T21:40:36.000Z'
     })
-    @Validate(IsBeforeOrSame, ['startDate'])
+    @Validate(IsBeforeOrSame, ['startDate'], {
+        message: i18nValidationMessage('errors.startDateShouldBeBeforeEndDate')
+    })
     endDate: Date;
 
     @ApiProperty({
         description: 'User Info (ID)'
     })
-    @Validate(ExistingUser)
-    @Validate(IsNotOverlapping)
+    @Validate(ExistingUser, {
+        message: i18nValidationMessage('errors.userDoesntExist')
+    })
+    @Validate(IsNotOverlapping, {
+        message: i18nValidationMessage('errors.overlappingContract')
+    })
     user: User;
 
-    @IsInt()
+    @IsInt({
+        message: i18nValidationMessage('errors.mustBeInteger')
+    })
     @IsNotEmpty({
-        message: 'Should not be empty'
+        message: i18nValidationMessage('errors.notEmpty')
     })
     @ApiProperty({
         description: 'Number of days per year',
@@ -56,9 +78,9 @@ export class CreateContractDto {
     })
     vacationDaysPerYear: number;
 
-    @IsInt()
+    @IsInt({ message: i18nValidationMessage('errors.mustBeInteger') })
     @IsNotEmpty({
-        message: 'Should not be empty'
+        message: i18nValidationMessage('errors.notEmpty')
     })
     vacationDays: number;
 }

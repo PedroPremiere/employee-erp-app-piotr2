@@ -20,8 +20,4 @@ export class UniqueMail implements ValidatorConstraintInterface {
 
         return !userInDB;
     }
-
-    public defaultMessage() {
-        return 'Email already taken';
-    }
 }

@@ -3,8 +3,8 @@ export function badRequestAssertion(status, body, message) {
 
     expect(body).toEqual(
         expect.objectContaining({
-            error: 'Bad Request',
-            message,
+            errors: message,
+            message: 'Bad Request',
             statusCode: 400
         })
     );

@@ -4,25 +4,17 @@
  * @group userStore
  */
 
+import { faker } from '@faker-js/faker';
+
 import { conf } from '@/config';
 import { post } from '@test/methods/post';
 import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
 import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
-import { createUserErrorDialogs } from '@/dialogs/errors/CreateUserErrorDialogs';
-import { faker } from '@faker-js/faker';
 
 const url = `/${conf.api.prefix}/${Routes.USERS}`;
-
-const {
-    notEmailError,
-    emailTakenError,
-    emptyPasswordError,
-    tooWeakPasswordError,
-    tooShortPasswordError,
-    passwordRepeatNotTheSame
-} = createUserErrorDialogs;
+const minPasswordLen = conf.security.minPasswordLen;
 
 describe('Index User Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {
@@ -55,7 +47,9 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: [passwordRepeatNotTheSame].join(', '),
+                    error: [
+                        i18nService.translate('errors.passwordsTheSame')
+                    ].join(', '),
                     field: 'passwordRepeat'
                 }
             ];
@@ -72,13 +66,18 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: [tooWeakPasswordError, tooShortPasswordError].join(
-                        ', '
-                    ),
+                    error: [
+                        i18nService.translate('errors.tooWeakPasswordError'),
+                        i18nService.translate('errors.tooShort', {
+                            args: { minPasswordLen }
+                        })
+                    ].join(', '),
                     field: 'password'
                 },
                 {
-                    error: [passwordRepeatNotTheSame].join(', '),
+                    error: [
+                        i18nService.translate('errors.passwordsTheSame')
+                    ].join(', '),
                     field: 'passwordRepeat'
                 }
             ];
@@ -96,7 +95,9 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: [emailTakenError].join(', '),
+                    error: [i18nService.translate('errors.emailTaken')].join(
+                        ', '
+                    ),
                     field: 'email'
                 }
             ];
@@ -115,9 +116,11 @@ describe('Index User Controller (e2e)', () => {
             const expectedMessage = [
                 {
                     error: [
-                        tooWeakPasswordError,
-                        tooShortPasswordError,
-                        emptyPasswordError
+                        i18nService.translate('errors.tooWeakPasswordError'),
+                        i18nService.translate('errors.tooShort', {
+                            args: { minPasswordLen }
+                        }),
+                        i18nService.translate('errors.notEmpty')
                     ].join(', '),
                     field: 'password'
                 }
@@ -139,7 +142,7 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: notEmailError,
+                    error: i18nService.translate('errors.notEmailError'),
                     field: 'email'
                 }
             ];
@@ -154,14 +157,16 @@ describe('Index User Controller (e2e)', () => {
             const expectedMessage = [
                 {
                     error: [
-                        tooWeakPasswordError,
-                        tooShortPasswordError,
-                        emptyPasswordError
+                        i18nService.translate('errors.tooWeakPasswordError'),
+                        i18nService.translate('errors.tooShort', {
+                            args: { minPasswordLen }
+                        }),
+                        i18nService.translate('errors.notEmpty')
                     ].join(', '),
                     field: 'password'
                 },
                 {
-                    error: notEmailError,
+                    error: i18nService.translate('errors.notEmailError'),
                     field: 'email'
                 }
             ];

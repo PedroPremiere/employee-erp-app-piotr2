@@ -3,6 +3,7 @@ import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
 import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 import { conf } from '@/config';
+import { noPasswordAssertion } from '@test/assertion/noPassword';
 
 const url = `/${conf.api.prefix}/${Routes.LOGIN}`;
 
@@ -25,6 +26,9 @@ describe('Login Controller (e2e)', () => {
                     id: user.id
                 })
             );
+
+            noPasswordAssertion(body);
+            noPasswordAssertion(body.user);
         });
 
         it('Returns Unauthorized sending WRONG DATA', async () => {

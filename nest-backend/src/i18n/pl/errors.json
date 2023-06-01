@@ -1,0 +1,6 @@
+{
+  "notEmpty": "nie może być puste",
+  "mustBeValidDate": "data powinna być w formacie ISO 8601",
+  "mustBeInteger": "powinno być liczbą",
+  "userDoesntExist": "nie ma takiego uzytkownika"
+}

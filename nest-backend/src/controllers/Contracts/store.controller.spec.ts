@@ -1,3 +1,7 @@
+/*
+ * @group createContract
+ */
+
 import * as dayjs from 'dayjs';
 import { faker } from '@faker-js/faker';
 
@@ -8,7 +12,6 @@ import { UsersFactory } from '@test/factories/user.factory';
 import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 import { ContractsFactory } from '@test/factories/contracts.factory';
-import { createContractErrorDialogs } from '@/dialogs/errors/CreateContractErrorDialogs';
 import { CountVacationDaysService } from '@/services/VacationDays/CountVacationDaysService';
 
 const url = `/${conf.api.prefix}/${Routes.CONTRACTS}`;
@@ -57,7 +60,29 @@ describe('Index User Controller (e2e)', () => {
             const expectedMessage = [
                 {
                     field: 'user',
-                    error: createContractErrorDialogs.userDoesntExist
+                    error: i18nService.translate('errors.userDoesntExist')
+                }
+            ];
+
+            badRequestAssertion(status, body, expectedMessage);
+        });
+
+        it('BAD REQUEST sending NOT EXISTING USER_ID in Selected Language', async () => {
+            const user = UsersFactory.generate();
+            const contract = ContractsFactory.generate(user);
+
+            const { status, body } = await post({
+                url: `${url}?lang=pl`,
+                payload: contract
+            });
+            expect(status).toBe(400);
+
+            const expectedMessage = [
+                {
+                    field: 'user',
+                    error: i18nService.translate('errors.userDoesntExist', {
+                        lang: 'pl'
+                    })
                 }
             ];
 
@@ -77,12 +102,16 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: 'endDate should be after or the same as startDate',
+                    error: i18nService.translate(
+                        'errors.endDateShouldBeAfterStartDate'
+                    ),
                     field: 'startDate'
                 },
                 {
                     field: 'endDate',
-                    error: 'startDate should be before or the same as endDate'
+                    error: i18nService.translate(
+                        'errors.startDateShouldBeBeforeEndDate'
+                    )
                 }
             ];
 
@@ -99,7 +128,7 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: 'User has already overlapping contract',
+                    error: i18nService.translate('errors.overlappingContract'),
                     field: 'user'
                 }
             ];
@@ -123,7 +152,7 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: 'User has already overlapping contract',
+                    error: i18nService.translate('errors.overlappingContract'),
                     field: 'user'
                 }
             ];
@@ -147,7 +176,7 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: 'User has already overlapping contract',
+                    error: i18nService.translate('errors.overlappingContract'),
                     field: 'user'
                 }
             ];
@@ -171,7 +200,7 @@ describe('Index User Controller (e2e)', () => {
 
             const expectedMessage = [
                 {
-                    error: 'User has already overlapping contract',
+                    error: i18nService.translate('errors.overlappingContract'),
                     field: 'user'
                 }
             ];
@@ -187,31 +216,90 @@ describe('Index User Controller (e2e)', () => {
             const expectedMessage = [
                 {
                     field: 'position',
-                    error: createContractErrorDialogs.notEmpty
+                    error: i18nService.translate('errors.notEmpty')
                 },
                 {
                     field: 'startDate',
                     error: [
-                        createContractErrorDialogs.notEmpty,
-                        `startDate ${createContractErrorDialogs.mustBeValidDate}`
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeValidDate')
                     ].join(', ')
                 },
                 {
                     field: 'endDate',
                     error: [
-                        createContractErrorDialogs.notEmpty,
-                        `endDate ${createContractErrorDialogs.mustBeValidDate}`
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeValidDate')
                     ].join(', ')
                 },
                 {
                     field: 'user',
-                    error: createContractErrorDialogs.userDoesntExist
+                    error: i18nService.translate('errors.userDoesntExist')
                 },
                 {
                     field: 'vacationDaysPerYear',
                     error: [
-                        createContractErrorDialogs.notEmpty,
-                        `vacationDaysPerYear ${createContractErrorDialogs.mustBeInteger}`
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeInteger')
+                    ].join(', ')
+                }
+            ];
+
+            badRequestAssertion(status, body, expectedMessage);
+        });
+
+        it('BAD REQUEST sending NO DATA, dialogs in SELECTED LANGUAGE', async () => {
+            const selectedLanguage = 'pl';
+            const { status, body } = await post({
+                url: `${url}?lang=${selectedLanguage}`
+            });
+
+            expect(status).toBe(400);
+
+            const expectedMessage = [
+                {
+                    field: 'position',
+                    error: i18nService.translate('errors.notEmpty', {
+                        lang: 'pl'
+                    })
+                },
+                {
+                    field: 'startDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeValidDate', {
+                            lang: 'pl'
+                        })
+                    ].join(', ')
+                },
+                {
+                    field: 'endDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeValidDate', {
+                            lang: 'pl'
+                        })
+                    ].join(', ')
+                },
+                {
+                    field: 'user',
+                    error: i18nService.translate('errors.userDoesntExist', {
+                        lang: 'pl'
+                    })
+                },
+                {
+                    field: 'vacationDaysPerYear',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeInteger', {
+                            lang: 'pl'
+                        })
                     ].join(', ')
                 }
             ];

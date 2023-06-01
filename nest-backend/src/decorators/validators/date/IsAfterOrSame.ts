@@ -20,11 +20,4 @@ export class IsAfterOrSame implements ValidatorConstraintInterface {
 
         return dayjs(dateToCompare).isSameOrAfter(inputDate, 'day');
     }
-
-    public defaultMessage(args: ValidationArguments) {
-        const inputProperty = args.constraints[0];
-        const propertyToCompare = args.property;
-
-        return `${inputProperty} should be after or the same as ${propertyToCompare}`;
-    }
 }

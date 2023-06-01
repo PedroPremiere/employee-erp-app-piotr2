@@ -7,4 +7,5 @@ declare global {
     var request: supertest;
     var app: INestApplication;
     var dataSource: DataSource;
+    var i18nService: I18nService;
 }

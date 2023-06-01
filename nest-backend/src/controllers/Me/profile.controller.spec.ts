@@ -4,6 +4,7 @@ import { post } from '@test/methods/post';
 import { Routes } from '@/types/enums/Routes';
 import { UsersFactory } from '@test/factories/user.factory';
 import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
+import { noPasswordAssertion } from '@test/assertion/noPassword';
 
 let user;
 let token;
@@ -22,6 +23,8 @@ describe('User Profile Controller (e2e)', () => {
         expect(status).toBe(200);
 
         token = body.access_token;
+
+        noPasswordAssertion(body);
     });
 
     describe(`${url} (GET)`, () => {

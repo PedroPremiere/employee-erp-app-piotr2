@@ -1,10 +1,12 @@
+import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppService } from './services/app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
 import { AuthModule } from './modules/AuthModule';
 import { UsersModule } from './modules/UsersModule';
+import { AppService } from './services/app.service';
 import { AppController } from './controllers/app.controller';
 
 import config from '@/config';
@@ -14,6 +16,18 @@ import { ContractsModule } from '@/modules/ContractsModule';
 @Module({
     imports: [
         ConfigModule.forRoot({ load: [config], isGlobal: true }),
+
+        I18nModule.forRoot({
+            fallbackLanguage: 'en',
+            loaderOptions: {
+                path: path.join(__dirname, '/i18n/'),
+                watch: true
+            },
+            resolvers: [
+                { use: QueryResolver, options: ['lang'] },
+                AcceptLanguageResolver
+            ]
+        }),
 
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],

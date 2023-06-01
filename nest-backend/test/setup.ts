@@ -12,6 +12,11 @@ import {
 } from '@nestjs/common';
 import { conf } from '@/config';
 import { useContainer } from 'class-validator';
+import {
+    I18nService,
+    I18nValidationExceptionFilter,
+    I18nValidationPipe
+} from 'nestjs-i18n';
 
 beforeAll(async () => {
     global._request = request;
@@ -25,16 +30,14 @@ beforeAll(async () => {
     useContainer(global.app.select(AppModule), { fallbackOnErrors: true });
 
     app.setGlobalPrefix(conf.api.prefix);
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            exceptionFactory: (validationErrors: ValidationError[] = []) => {
-                return new BadRequestException(
-                    validationErrors.map(error => ({
-                        field: error.property,
-                        error: Object.values(error.constraints).join(', ')
-                    }))
-                );
+    app.useGlobalPipes(new I18nValidationPipe({ transform: true }));
+    app.useGlobalFilters(
+        new I18nValidationExceptionFilter({
+            errorFormatter: (validationErrors: ValidationError[] = []) => {
+                return validationErrors.map(error => ({
+                    field: error.property,
+                    error: Object.values(error.constraints).join(', ')
+                }));
             }
         })
     );
@@ -43,6 +46,8 @@ beforeAll(async () => {
     await global.dataSource.initialize();
 
     global.request = request(app.getHttpServer());
+
+    global.i18nService = moduleFixture.get(I18nService);
 
     await truncate();
 });

@@ -6,9 +6,10 @@ import {
 } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-import { AppModule } from './app.module';
 import { conf } from '@/config';
+import { AppModule } from './app.module';
 import { useContainer } from 'class-validator';
+import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -17,16 +18,14 @@ async function bootstrap() {
 
     app.setGlobalPrefix(conf.api.prefix);
 
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            exceptionFactory: (validationErrors: ValidationError[] = []) => {
-                return new BadRequestException(
-                    validationErrors.map(error => ({
-                        field: error.property,
-                        error: Object.values(error.constraints).join(', ')
-                    }))
-                );
+    app.useGlobalPipes(new I18nValidationPipe({ transform: true }));
+    app.useGlobalFilters(
+        new I18nValidationExceptionFilter({
+            errorFormatter: (validationErrors: ValidationError[] = []) => {
+                return validationErrors.map(error => ({
+                    field: error.property,
+                    error: Object.values(error.constraints).join(', ')
+                }));
             }
         })
     );
