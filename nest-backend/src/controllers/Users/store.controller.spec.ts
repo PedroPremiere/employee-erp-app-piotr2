@@ -14,7 +14,7 @@ import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
 const url = `/${conf.api.prefix}/${Routes.USERS}`;
-const minPasswordLen = conf.security.minPasswordLen;
+const { minLength } = conf.security;
 
 describe('Index User Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {
@@ -69,7 +69,7 @@ describe('Index User Controller (e2e)', () => {
                     error: [
                         i18nService.translate('errors.tooWeakPasswordError'),
                         i18nService.translate('errors.tooShort', {
-                            args: { minPasswordLen }
+                            args: { minLength }
                         })
                     ].join(', '),
                     field: 'password'
@@ -118,7 +118,7 @@ describe('Index User Controller (e2e)', () => {
                     error: [
                         i18nService.translate('errors.tooWeakPasswordError'),
                         i18nService.translate('errors.tooShort', {
-                            args: { minPasswordLen }
+                            args: { minLength }
                         }),
                         i18nService.translate('errors.notEmpty')
                     ].join(', '),
@@ -159,7 +159,7 @@ describe('Index User Controller (e2e)', () => {
                     error: [
                         i18nService.translate('errors.tooWeakPasswordError'),
                         i18nService.translate('errors.tooShort', {
-                            args: { minPasswordLen }
+                            args: { minLength }
                         }),
                         i18nService.translate('errors.notEmpty')
                     ].join(', '),

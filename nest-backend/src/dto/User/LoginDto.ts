@@ -2,31 +2,23 @@ import {
     IsEmail,
     IsNotEmpty,
     IsStrongPassword,
-    MinLength,
-    Validate
+    MinLength
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-
-import { conf } from '@/config';
-import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
-const minPasswordLen = conf.security.minPasswordLen;
+import { passwordPolicy } from '@/config/passwordPolicy';
+
+const { minLength } = √;
 
 export class LoginDto {
     @IsNotEmpty({
         message: i18nValidationMessage('errors.notEmpty')
     })
-    @MinLength(minPasswordLen, {
-        message: i18nValidationMessage('errors.tooShort', { minPasswordLen })
+    @MinLength(minLength, {
+        message: i18nValidationMessage('errors.tooShort', { minLength })
     })
-    @IsStrongPassword({
-        minLength: minPasswordLen,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1
-    })
+    @IsStrongPassword(passwordPolicy)
     @ApiProperty({
         description: 'User Password',
         example: '$passwordAa1'

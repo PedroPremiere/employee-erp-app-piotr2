@@ -5,11 +5,7 @@ import { AppModule } from '@/app.module';
 import dataSource from '@/ormconfig.config';
 
 import { truncate } from './helpers/truncate';
-import {
-    BadRequestException,
-    ValidationError,
-    ValidationPipe
-} from '@nestjs/common';
+import { ValidationError } from '@nestjs/common';
 import { conf } from '@/config';
 import { useContainer } from 'class-validator';
 import {

@@ -12,7 +12,7 @@ import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
 const url = `/${conf.api.prefix}/${Routes.REGISTER}`;
-const minPasswordLen = conf.security.minPasswordLen;
+const { minLength } = conf.security;
 
 describe('Register Controller (e2e)', () => {
     describe(`${url} (POST)`, () => {
@@ -94,7 +94,7 @@ describe('Register Controller (e2e)', () => {
                     error: [
                         i18nService.translate('errors.tooWeakPasswordError'),
                         i18nService.translate('errors.tooShort', {
-                            args: { minPasswordLen }
+                            args: { minLength }
                         }),
                         i18nService.translate('errors.notEmpty')
                     ].join(', '),
@@ -135,7 +135,7 @@ describe('Register Controller (e2e)', () => {
                     error: [
                         i18nService.translate('errors.tooWeakPasswordError'),
                         i18nService.translate('errors.tooShort', {
-                            args: { minPasswordLen }
+                            args: { minLength }
                         }),
                         i18nService.translate('errors.notEmpty')
                     ].join(', '),

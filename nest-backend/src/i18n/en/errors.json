@@ -6,7 +6,7 @@
   "overlappingContract": "User has already overlapping contract",
   "endDateShouldBeAfterStartDate": "end date should be after or the same as start date",
   "startDateShouldBeBeforeEndDate": "start date should be before or the same as end date",
-  "tooShort": "should be {minPasswordLen} characters or longer",
+  "tooShort": "should be {minLength} characters or longer",
   "tooWeakPasswordError": "password is not strong enough!",
   "emailTaken": "Email already taken",
   "passwordsTheSame": "password-repeat should be the same as password",

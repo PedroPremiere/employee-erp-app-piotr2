@@ -37,7 +37,11 @@ export const conf = {
         frontendUrl: env('APP_FRONTEND_URL')
     },
     security: {
-        minPasswordLen: env('APP_MIN_PASSWORD_LEN', 6),
+        minLength: env('APP_MIN_PASSWORD_LEN', 6),
+        minPasswordLowercase: env('APP_MIN_PASSWORD_LOWERCASE', 1),
+        minPasswordUppercase: env('APP_MIN_PASSWORD_UPPERCASE', 1),
+        minPasswordNumbers: env('APP_MIN_PASSWORD_NUMBERS', 1),
+        minPasswordSymbols: env('APP_MIN_PASSWORD_SYMBOLS', 1),
         signOptions: {
             expiresIn: env('TOKEN_EXPIRES_IN')
         },

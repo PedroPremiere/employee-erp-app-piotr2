@@ -8,29 +8,22 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
-import { conf } from '@/config';
+import { passwordPolicy } from '@/config/passwordPolicy';
 import { IsTheSame } from '@/decorators/validators/IsTheSame';
 import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
 
-const minPasswordLen = conf.security.minPasswordLen;
+const { minLength } = passwordPolicy;
 
 export class CreateUserDto {
     @IsNotEmpty({
         message: i18nValidationMessage('errors.notEmpty')
     })
-    @MinLength(minPasswordLen, {
-        message: i18nValidationMessage('errors.tooShort', { minPasswordLen })
+    @MinLength(minLength, {
+        message: i18nValidationMessage('errors.tooShort', { minLength })
     })
-    @IsStrongPassword(
-        {
-            minLength: minPasswordLen,
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minSymbols: 1
-        },
-        { message: i18nValidationMessage('errors.tooWeakPasswordError') }
-    )
+    @IsStrongPassword(passwordPolicy, {
+        message: i18nValidationMessage('errors.tooWeakPasswordError')
+    })
     @ApiProperty({
         description: 'User Password',
         example: '$passwordAa1'
