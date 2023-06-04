@@ -6,10 +6,9 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { i18nValidationMessage } from 'nestjs-i18n';
-
 import { passwordPolicy } from '@/config/passwordPolicy';
 
-const { minLength } = √;
+const { minLength } = passwordPolicy;
 
 export class LoginDto {
     @IsNotEmpty({
