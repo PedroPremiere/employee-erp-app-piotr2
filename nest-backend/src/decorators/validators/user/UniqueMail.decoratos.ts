@@ -8,7 +8,7 @@ import { FindByEmailService } from '@/services/Users/FindByEmailService';
 
 @ValidatorConstraint({ name: 'UniqueMail', async: true })
 @Injectable()
-export class UniqueMail implements ValidatorConstraintInterface {
+export class UniqueMailDecoratos implements ValidatorConstraintInterface {
     constructor(protected readonly findByEmailService: FindByEmailService) {}
 
     async validate(email: string | undefined) {

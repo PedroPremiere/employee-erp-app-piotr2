@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import * as argon2 from 'argon2';
+import { Role } from '@/types/enums/Role.enum';
 
 @Entity('users')
 export class User {
@@ -30,4 +31,7 @@ export class User {
     async beforeInsert() {
         this.password = await argon2.hash(this.password);
     }
+
+    //todo read role from db
+    roles: Role.User;
 }

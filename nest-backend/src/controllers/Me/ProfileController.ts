@@ -1,14 +1,14 @@
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
 import { UserDto } from '@/dto/User/UserDto';
 
-@ApiTags(Routes.ME)
+@ApiTags(RoutesEnum.ME)
 @Controller()
 export class ProfileController {
-    @Get(Routes.ME)
+    @Get(RoutesEnum.ME)
     @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: UserDto })
     invoke(@Request() req) {

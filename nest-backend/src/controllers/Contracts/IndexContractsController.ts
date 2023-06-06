@@ -1,23 +1,36 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 
-import { Routes } from '@/types/enums/Routes';
 import { Contract } from '@/entities/Contract';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { ContractDto } from '@/dto/Contract/ContractDto';
+import { PoliciesGuard } from '@/abilities/Policies.guard';
+import { CheckPolicies } from '@/abilities/IPolicyHandler';
 import { PaginationQueryDto } from '@/dto/Page/PaginationQueryDto';
 import { ApiExtraModels, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
-import { ApiPaginatedResponse } from '@/decorators/ApiPaginatedResponse';
 import { IndexContractService } from '@/services/Contracts/IndexContractService';
+import { CanReadContract } from '@/abilities/guards/contract/CanReadContract';
+import { ApiPaginatedResponseDecoratos } from '@/decorators/ApiPaginatedResponse.decoratos';
 
-@ApiTags(Routes.CONTRACTS)
+/* todo implement guards
+example:
+@CheckPolicies(new ReadContractPolicyHandler())
+ */
+
+@ApiTags(RoutesEnum.CONTRACTS)
 @Controller()
 export class IndexContractsController {
     constructor(private indexContractService: IndexContractService) {}
 
-    @Get(Routes.CONTRACTS)
-    @ApiPaginatedResponse(ContractDto)
+    @Get(RoutesEnum.CONTRACTS)
+    @ApiPaginatedResponseDecoratos(ContractDto)
     @ApiExtraModels(ContractDto, PaginationQueryDto)
     @ApiQuery({ type: PaginationQueryDto })
+    /*
+    @UseGuards(PoliciesGuard)
+    @CheckPolicies(new CanReadContract())
+    
+     */
     invoke(@Paginate() query: PaginateQuery): Promise<Paginated<Contract>> {
         return this.indexContractService.findAll(query);
     }

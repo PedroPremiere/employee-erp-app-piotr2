@@ -8,12 +8,12 @@ import { faker } from '@faker-js/faker';
 
 import { conf } from '@/config';
 import { post } from '@test/methods/post';
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { UsersFactory } from '@test/factories/user.factory';
 import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-const url = `/${conf.api.prefix}/${Routes.USERS}`;
+const url = `/${conf.api.prefix}/${RoutesEnum.USERS}`;
 const { minLength } = conf.security;
 
 describe('Index User Controller (e2e)', () => {

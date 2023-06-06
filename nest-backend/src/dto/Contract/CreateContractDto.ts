@@ -4,10 +4,10 @@ import { IsDateString, IsInt, IsNotEmpty, Validate } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
 import { User } from '@/entities/User';
-import { ExistingUser } from '@/decorators/validators/user/ExistingUser';
-import { IsAfterOrSame } from '@/decorators/validators/date/IsAfterOrSame';
-import { IsBeforeOrSame } from '@/decorators/validators/date/IsBeforeOrSame';
-import { IsNotOverlapping } from '@/decorators/validators/contract/IsNotOverlapping';
+import { ExistingUserDecoratos } from '@/decorators/validators/user/ExistingUser.decoratos';
+import { IsAfterOrSameDecoratos } from '@/decorators/validators/date/IsAfterOrSame.decoratos';
+import { IsBeforeOrSameDecoratos } from '@/decorators/validators/date/IsBeforeOrSame.decoratos';
+import { IsNotOverlappingDecoratos } from '@/decorators/validators/contract/IsNotOverlapping.decoratos';
 
 export class CreateContractDto {
     @IsNotEmpty({
@@ -32,7 +32,7 @@ export class CreateContractDto {
         description: 'Start date of contract',
         example: '2023-03-26T21:40:36.000Z'
     })
-    @Validate(IsAfterOrSame, ['endDate'], {
+    @Validate(IsAfterOrSameDecoratos, ['endDate'], {
         message: i18nValidationMessage('errors.endDateShouldBeAfterStartDate')
     })
     startDate: Date;
@@ -50,7 +50,7 @@ export class CreateContractDto {
         description: 'End date of contract',
         example: '2023-03-26T21:40:36.000Z'
     })
-    @Validate(IsBeforeOrSame, ['startDate'], {
+    @Validate(IsBeforeOrSameDecoratos, ['startDate'], {
         message: i18nValidationMessage('errors.startDateShouldBeBeforeEndDate')
     })
     endDate: Date;
@@ -58,10 +58,10 @@ export class CreateContractDto {
     @ApiProperty({
         description: 'User Info (ID)'
     })
-    @Validate(ExistingUser, {
+    @Validate(ExistingUserDecoratos, {
         message: i18nValidationMessage('errors.userDoesntExist')
     })
-    @Validate(IsNotOverlapping, {
+    @Validate(IsNotOverlappingDecoratos, {
         message: i18nValidationMessage('errors.overlappingContract')
     })
     user: User;

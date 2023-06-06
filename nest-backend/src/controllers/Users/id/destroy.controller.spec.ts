@@ -1,11 +1,11 @@
 import { conf } from '@/config';
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { destroy } from '@test/methods/destroy';
 import { deletedAssertion } from '@test/assertion/deleted';
 import { noFoundAssertion } from '@test/assertion/noFound';
 import { UsersFactory } from '@test/factories/user.factory';
 
-const url = `/${conf.api.prefix}/${Routes.USERS}`;
+const url = `/${conf.api.prefix}/${RoutesEnum.USERS}`;
 
 describe('Delete User Controller (e2e)', () => {
     describe(`${url}/:id (DELETE)`, () => {

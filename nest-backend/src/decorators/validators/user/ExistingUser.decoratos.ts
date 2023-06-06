@@ -9,7 +9,7 @@ import { User } from '@/entities/User';
 
 @ValidatorConstraint({ name: 'DoesUserExist', async: true })
 @Injectable()
-export class ExistingUser implements ValidatorConstraintInterface {
+export class ExistingUserDecoratos implements ValidatorConstraintInterface {
     constructor(protected readonly usersRepository: UsersRepository) {}
 
     async validate(user: User | undefined) {

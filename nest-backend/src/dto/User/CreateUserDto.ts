@@ -9,8 +9,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
 import { passwordPolicy } from '@/config/passwordPolicy';
-import { IsTheSame } from '@/decorators/validators/IsTheSame';
-import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
+import { IsTheSameDecoratos } from '@/decorators/validators/IsTheSame.decoratos';
+import { UniqueMailDecoratos } from '@/decorators/validators/user/UniqueMail.decoratos';
 
 const { minLength } = passwordPolicy;
 
@@ -30,7 +30,7 @@ export class CreateUserDto {
     })
     password: string;
 
-    @Validate(IsTheSame, ['password'], {
+    @Validate(IsTheSameDecoratos, ['password'], {
         message: i18nValidationMessage('errors.passwordsTheSame')
     })
     @ApiProperty({
@@ -40,7 +40,7 @@ export class CreateUserDto {
     passwordRepeat: string;
 
     @IsEmail({}, { message: i18nValidationMessage('errors.notEmailError') })
-    @Validate(UniqueMail, {
+    @Validate(UniqueMailDecoratos, {
         message: i18nValidationMessage('errors.emailTaken')
     })
     @ApiProperty({

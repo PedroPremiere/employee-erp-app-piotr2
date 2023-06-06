@@ -10,7 +10,7 @@ import { LocalStrategy } from '@/auth/local.strategy';
 import { AuthService } from '@/services/Auth/AuthService';
 import { UsersRepository } from '@/repositories/UsersRepository';
 import { LoginController } from '@/controllers/Auth/LoginController';
-import { UniqueMail } from '@/decorators/validators/user/UniqueMail';
+import { UniqueMailDecoratos } from '@/decorators/validators/user/UniqueMail.decoratos';
 import { CreateUserService } from '@/services/Users/CreateUserService';
 import { RegisterController } from '@/controllers/Auth/RegisterController';
 
@@ -30,7 +30,7 @@ import { RegisterController } from '@/controllers/Auth/RegisterController';
         JwtStrategy,
         CreateUserService,
         UsersRepository,
-        UniqueMail
+        UniqueMailDecoratos
     ]
 })
 export class AuthModule {}

@@ -10,7 +10,7 @@ import * as isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 @ValidatorConstraint({ name: 'IsBefore', async: true })
 @Injectable()
-export class IsBeforeOrSame implements ValidatorConstraintInterface {
+export class IsBeforeOrSameDecoratos implements ValidatorConstraintInterface {
     async validate(inputDate: string, args: ValidationArguments) {
         const itemToValidate = args.object;
         const propertyName = args.constraints[0];

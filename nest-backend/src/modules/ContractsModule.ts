@@ -8,11 +8,12 @@ import { CreateContractService } from '@/services/Contracts/CreateContractServic
 import { IndexContractsController } from '@/controllers/Contracts/IndexContractsController';
 
 import { UsersRepository } from '@/repositories/UsersRepository';
-import { ExistingUser } from '@/decorators/validators/user/ExistingUser';
+import { ExistingUserDecoratos } from '@/decorators/validators/user/ExistingUser.decoratos';
 import { ShowController } from '@/controllers/Contracts/id/ShowController';
 import { IsOverLappingService } from '@/services/Contracts/IsOverLappingService';
-import { IsNotOverlapping } from '@/decorators/validators/contract/IsNotOverlapping';
+import { IsNotOverlappingDecoratos } from '@/decorators/validators/contract/IsNotOverlapping.decoratos';
 import { ShowContractsService } from '@/services/Contracts/ShowContractService';
+import { CaslAbilityFactory } from '@/abilities/CaslAbilityFactory';
 
 @Module({
     imports: [
@@ -25,14 +26,15 @@ import { ShowContractsService } from '@/services/Contracts/ShowContractService';
         ShowController
     ],
     providers: [
-        ExistingUser,
+        ExistingUserDecoratos,
         UsersRepository,
-        IsNotOverlapping,
+        IsNotOverlappingDecoratos,
         ContractsRepository,
         IndexContractService,
         IsOverLappingService,
         ShowContractsService,
-        CreateContractService
+        CreateContractService,
+        CaslAbilityFactory
     ]
 })
 export class ContractsModule {}

@@ -4,18 +4,18 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
 import { User } from '@/entities/User';
 import { UserDto } from '@/dto/User/UserDto';
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { IndexUsersService } from '@/services/Users/IndexUsersService';
-import { ApiPaginatedResponse } from '@/decorators/ApiPaginatedResponse';
+import { ApiPaginatedResponseDecoratos } from '@/decorators/ApiPaginatedResponse.decoratos';
 import { PaginationQueryDto } from '@/dto/Page/PaginationQueryDto';
 
-@ApiTags(Routes.USERS)
+@ApiTags(RoutesEnum.USERS)
 @Controller()
 export class IndexUsersController {
     constructor(private usersService: IndexUsersService) {}
 
-    @Get(Routes.USERS)
-    @ApiPaginatedResponse(UserDto)
+    @Get(RoutesEnum.USERS)
+    @ApiPaginatedResponseDecoratos(UserDto)
     @ApiExtraModels(UserDto)
     @ApiQuery({ type: PaginationQueryDto })
     invoke(@Paginate() query: PaginateQuery): Promise<Paginated<User>> {

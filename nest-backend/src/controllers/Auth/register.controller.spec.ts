@@ -6,12 +6,12 @@ import { faker } from '@faker-js/faker';
 
 import { conf } from '@/config';
 import { post } from '@test/methods/post';
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { UsersFactory } from '@test/factories/user.factory';
 import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-const url = `/${conf.api.prefix}/${Routes.REGISTER}`;
+const url = `/${conf.api.prefix}/${RoutesEnum.REGISTER}`;
 const { minLength } = conf.security;
 
 describe('Register Controller (e2e)', () => {

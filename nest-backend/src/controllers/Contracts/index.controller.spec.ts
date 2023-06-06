@@ -8,12 +8,12 @@ import * as dayjs from 'dayjs';
 
 import { conf } from '@/config';
 import { get } from '@test/methods/get';
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { UsersFactory } from '@test/factories/user.factory';
 import { emptyListAssertion } from '@test/assertion/emptyList';
 import { ContractsFactory } from '@test/factories/contracts.factory';
 
-const url = `/${conf.api.prefix}/${Routes.CONTRACTS}`;
+const url = `/${conf.api.prefix}/${RoutesEnum.CONTRACTS}`;
 
 const expectedCount = 10;
 const contracts = [];

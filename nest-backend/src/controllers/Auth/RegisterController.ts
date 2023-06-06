@@ -1,6 +1,6 @@
 import { Controller, Post, HttpCode, Body } from '@nestjs/common';
 
-import { Routes } from '@/types/enums/Routes';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { AuthService } from '@/services/Auth/AuthService';
 import { CreateUserDto } from '@/dto/User/CreateUserDto';
@@ -14,7 +14,7 @@ export class RegisterController {
         private usersService: CreateUserService
     ) {}
 
-    @Post(Routes.REGISTER)
+    @Post(RoutesEnum.REGISTER)
     @HttpCode(200)
     @ApiOkResponse({
         status: 200,

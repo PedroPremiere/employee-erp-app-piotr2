@@ -11,7 +11,7 @@ import { CreateContractDto } from '@/dto/Contract/CreateContractDto';
 
 @ValidatorConstraint({ name: 'IsNotOverlapping', async: true })
 @Injectable()
-export class IsNotOverlapping implements ValidatorConstraintInterface {
+export class IsNotOverlappingDecoratos implements ValidatorConstraintInterface {
     constructor(
         protected readonly isOverLappingService: IsOverLappingService
     ) {}

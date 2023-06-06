@@ -12,6 +12,9 @@ import { AppController } from './controllers/app.controller';
 import config from '@/config';
 import { MeModule } from '@/modules/MeModule';
 import { ContractsModule } from '@/modules/ContractsModule';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from '@/abilities/Roles.guard';
+import { CaslAbilityFactory } from '@/abilities/CaslAbilityFactory';
 
 @Module({
     imports: [
@@ -52,6 +55,14 @@ import { ContractsModule } from '@/modules/ContractsModule';
         MeModule
     ],
     controllers: [AppController],
-    providers: [AppService]
+    providers: [
+        AppService,
+        CaslAbilityFactory,
+        {
+            provide: APP_GUARD,
+            useClass: RolesGuard
+        }
+    ],
+    exports: [CaslAbilityFactory]
 })
 export class AppModule {}
