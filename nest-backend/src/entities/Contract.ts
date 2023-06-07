@@ -11,6 +11,8 @@ import {
 import { User } from '@/entities/User';
 import { ApiProperty } from '@nestjs/swagger';
 
+//todo add api Properties
+
 @Entity('contracts')
 export class Contract {
     @ApiProperty()

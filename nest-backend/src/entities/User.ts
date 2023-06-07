@@ -4,11 +4,16 @@ import {
     BeforeInsert,
     CreateDateColumn,
     UpdateDateColumn,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    JoinTable,
+    OneToMany,
+    JoinColumn
 } from 'typeorm';
 
 import * as argon2 from 'argon2';
-import { Role } from '@/types/enums/Role.enum';
+import { Role } from '@/entities/Role';
+import { UserRole } from '@/entities/UserRole';
 
 @Entity('users')
 export class User {
@@ -33,5 +38,17 @@ export class User {
     }
 
     //todo read role from db
-    roles: Role.User;
+    @ManyToMany(() => Role, role => role.users, { cascade: true })
+    @JoinTable({
+        name: 'user_roles',
+        joinColumn: {
+            name: 'userId',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'roleId',
+            referencedColumnName: 'id'
+        }
+    })
+    roles?: Role[];
 }

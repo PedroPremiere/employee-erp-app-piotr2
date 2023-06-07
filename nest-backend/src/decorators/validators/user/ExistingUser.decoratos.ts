@@ -13,8 +13,9 @@ export class ExistingUserDecoratos implements ValidatorConstraintInterface {
     constructor(protected readonly usersRepository: UsersRepository) {}
 
     async validate(user: User | undefined) {
+        //todo change in tests and dto
         if (!user) {
-            return false;
+            return true;
         }
 
         const { id } = user;

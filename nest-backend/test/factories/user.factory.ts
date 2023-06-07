@@ -16,18 +16,19 @@ export class UsersFactory {
         return user;
     }
 
-    static async create() {
+    static async create(user?) {
         const usersRepository = dataSource.getRepository(User);
-        const user = UsersFactory.generate();
+
+        const userData = user || UsersFactory.generate();
 
         const userToSave = new User();
 
-        userToSave.id = user.id;
-        userToSave.email = user.email;
-        userToSave.password = user.password;
+        userToSave.id = userData.id;
+        userToSave.email = userData.email;
+        userToSave.password = userData.password;
 
-        await usersRepository.save(userToSave);
+        const savedUser = await usersRepository.save(userToSave);
 
-        return user;
+        return savedUser;
     }
 }

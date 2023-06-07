@@ -14,9 +14,10 @@ const loginUrl = `/${conf.api.prefix}/${RoutesEnum.LOGIN}`;
 
 describe('User Profile Controller (e2e)', () => {
     beforeAll(async () => {
-        user = await UsersFactory.create();
+        const userData = UsersFactory.generate();
+        user = await UsersFactory.create(userData);
 
-        const payload = { email: user.email, password: user.password };
+        const payload = { email: user.email, password: userData.password };
 
         const { status, body } = await post({ url: loginUrl, payload });
 

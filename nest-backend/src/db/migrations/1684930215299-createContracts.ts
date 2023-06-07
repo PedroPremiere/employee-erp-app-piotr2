@@ -14,7 +14,8 @@ export class CreateContracts1684930215299 implements MigrationInterface {
                     {
                         name: 'id',
                         type: 'varchar',
-                        isPrimary: true
+                        isPrimary: true,
+                        generationStrategy: 'uuid'
                     },
 
                     {
@@ -59,18 +60,16 @@ export class CreateContracts1684930215299 implements MigrationInterface {
                         type: 'timestamp',
                         default: 'now()'
                     }
+                ],
+                foreignKeys: [
+                    {
+                        columnNames: ['userId'],
+                        referencedTableName: 'users',
+                        referencedColumnNames: ['id']
+                    }
                 ]
             }),
             true
-        );
-
-        await queryRunner.createForeignKey(
-            'contracts',
-            new TableForeignKey({
-                columnNames: ['userId'],
-                referencedTableName: 'users',
-                referencedColumnNames: ['id']
-            })
         );
     }
 

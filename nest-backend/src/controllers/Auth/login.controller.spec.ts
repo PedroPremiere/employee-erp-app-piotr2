@@ -10,9 +10,10 @@ const url = `/${conf.api.prefix}/${RoutesEnum.LOGIN}`;
 describe('Login Controller (e2e)', () => {
     describe(`${url} (POST)`, () => {
         it('Returns OK sending CORRECT DATA', async () => {
-            const user = await UsersFactory.create();
+            const userData = UsersFactory.generate();
+            const user = await UsersFactory.create(userData);
 
-            const payload = { email: user.email, password: user.password };
+            const payload = { email: user.email, password: userData.password };
 
             const { status, body } = await post({ url, payload });
 

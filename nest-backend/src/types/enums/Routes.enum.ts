@@ -4,5 +4,6 @@ export enum RoutesEnum {
     AUTH = 'auth',
     LOGIN = 'auth/login',
     REGISTER = 'auth/register',
-    CONTRACTS = 'contracts'
+    CONTRACTS = 'contracts',
+    ROLES = 'roles'
 }
