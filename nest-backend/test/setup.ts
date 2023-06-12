@@ -2,48 +2,31 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from '@/app.module';
-import dataSource from '@/ormconfig.config';
-
 import { truncate } from './helpers/truncate';
-import { ValidationError } from '@nestjs/common';
-import { conf } from '@/config';
-import { useContainer } from 'class-validator';
-import {
-    I18nService,
-    I18nValidationExceptionFilter,
-    I18nValidationPipe
-} from 'nestjs-i18n';
+import { I18nService } from 'nestjs-i18n';
+import { PrismaService } from '@/services/PrismaService.service';
+import { initI18 } from '@/config/boilerplate/i18n';
+import { setContainer } from '@/config/boilerplate/common/setContainer';
+import { setGlobalPrefix } from '@/config/boilerplate/common/setGlobalPrefix';
 
 beforeAll(async () => {
     global._request = request;
-    global.dataSource = dataSource;
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
         imports: [AppModule]
     }).compile();
 
     global.app = moduleFixture.createNestApplication();
-    useContainer(global.app.select(AppModule), { fallbackOnErrors: true });
 
-    app.setGlobalPrefix(conf.api.prefix);
-    app.useGlobalPipes(new I18nValidationPipe({ transform: true }));
-    app.useGlobalFilters(
-        new I18nValidationExceptionFilter({
-            errorFormatter: (validationErrors: ValidationError[] = []) => {
-                return validationErrors.map(error => ({
-                    field: error.property,
-                    error: Object.values(error.constraints).join(', ')
-                }));
-            }
-        })
-    );
+    setContainer(app);
+    setGlobalPrefix(app);
+    initI18(app);
 
     await global.app.init();
-    await global.dataSource.initialize();
 
     global.request = request(app.getHttpServer());
-
     global.i18nService = moduleFixture.get(I18nService);
+    global.prismaService = app.get<PrismaService>(PrismaService);
 
     await truncate();
 });

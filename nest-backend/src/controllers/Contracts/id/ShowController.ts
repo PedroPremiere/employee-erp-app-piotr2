@@ -23,7 +23,8 @@ export class ShowController {
     @CheckPolicies(new CanReadContract())
     
      */
-    invoke(@Param() params: any): Promise<Contract> {
+    //invoke(@Param() params: any): Promise<Contract> {
+    invoke(@Param() params: any) {
         return this.showContractsService.findOne(params.id);
     }
 }

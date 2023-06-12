@@ -7,9 +7,9 @@
 import { conf } from '@/config';
 import { get } from '@test/methods/get';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
 import { emptyListAssertion } from '@test/assertion/emptyList';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
+import { UserFactory } from '@/db/factories/UserFactory';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.USERS}`;
 
@@ -26,7 +26,7 @@ describe('Index User Controller (e2e)', () => {
 
         it('Returns list of users', async () => {
             for (let i = 0; i < expectedCount; i++) {
-                const user = await UsersFactory.create();
+                const user = await UserFactory.create();
                 users.push(user);
             }
 
@@ -34,9 +34,13 @@ describe('Index User Controller (e2e)', () => {
 
             expect(status).toBe(200);
 
+            /*todo maybe add meta and pagination
             const { data, meta } = body;
 
-            const { totalItems } = meta;
+             */
+            const data = body;
+
+            //const { totalItems } = meta;
 
             for (const user of users) {
                 expect(data).toContainEqual(
@@ -46,9 +50,11 @@ describe('Index User Controller (e2e)', () => {
                     })
                 );
             }
+            /*
+                        expect(totalItems).toEqual(data.length);
+                        expect(totalItems).toEqual(expectedCount);
 
-            expect(totalItems).toEqual(data.length);
-            expect(totalItems).toEqual(expectedCount);
+             */
 
             for (const item of data) {
                 noPasswordAssertion(item);

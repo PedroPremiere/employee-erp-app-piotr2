@@ -4,10 +4,10 @@ import { IsDateString, IsInt, IsNotEmpty, Validate } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
 import { User } from '@/entities/User';
-import { ExistingUserDecoratos } from '@/decorators/validators/user/ExistingUser.decoratos';
+import { ExistingUserDecorator } from '@/decorators/validators/user/existing-user-decorator.service';
 import { IsAfterOrSameDecoratos } from '@/decorators/validators/date/IsAfterOrSame.decoratos';
 import { IsBeforeOrSameDecoratos } from '@/decorators/validators/date/IsBeforeOrSame.decoratos';
-import { IsNotOverlappingDecoratos } from '@/decorators/validators/contract/IsNotOverlapping.decoratos';
+import { IsNotOverlappingDecorator } from '@/decorators/validators/contract/is-not-overlapping-decorator.service';
 
 export class CreateContractDto {
     @IsNotEmpty({
@@ -58,13 +58,13 @@ export class CreateContractDto {
     @ApiProperty({
         description: 'User Info (ID)'
     })
-    @Validate(ExistingUserDecoratos, {
+    @Validate(ExistingUserDecorator, {
         message: i18nValidationMessage('errors.userDoesntExist')
     })
-    @Validate(IsNotOverlappingDecoratos, {
+    @Validate(IsNotOverlappingDecorator, {
         message: i18nValidationMessage('errors.overlappingContract')
     })
-    user: User;
+    ownerId: string;
 
     @IsInt({
         message: i18nValidationMessage('errors.mustBeInteger')

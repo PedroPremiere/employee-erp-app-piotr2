@@ -26,11 +26,9 @@ export class ContractDto {
     endDate: Date;
 
     @ApiProperty({
-        description: 'User Info (ID)'
+        description: 'ownerId'
     })
-    user: {
-        id: string;
-    };
+    ownerId: string;
 
     @ApiProperty({
         description: 'Number of days per year',

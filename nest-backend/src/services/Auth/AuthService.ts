@@ -3,27 +3,34 @@ import { JwtService } from '@nestjs/jwt';
 
 import { Injectable } from '@nestjs/common';
 import { FindByEmailService } from '@/services/Users/FindByEmailService';
+import { PrismaService } from '@/services/PrismaService.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: FindByEmailService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private readonly prismaService: PrismaService
     ) {}
 
     async validateUser(email: string, password: string): Promise<any> {
-        const user = await this.usersService.findByEmail(email, {
-            selectPassword: true
-        });
+        const user = await this.usersService.findByEmail(email);
 
         if (!user) {
             return null;
         }
 
-        const isPasswordCorrect = await argon2.verify(user.password, password);
+        const passwordHash = await this.prismaService.password.findFirst({
+            where: { user }
+        });
+
+        const isPasswordCorrect = await argon2.verify(
+            passwordHash.password,
+            password
+        );
 
         if (isPasswordCorrect) {
-            const { password, ...result } = user;
+            const { ...result } = user;
 
             return result;
         }

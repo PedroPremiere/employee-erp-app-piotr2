@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { UsersRepository } from '@/repositories/UsersRepository';
 
 import { ProfileController } from '@/controllers/Me/ProfileController';
 import { IndexUsersService } from '@/services/Users/IndexUsersService';
+import { PrismaService } from '@/services/PrismaService.service';
+import { PrismaServiceFactory } from '@/services/PrismaServiceFactory.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([UsersRepository])],
     controllers: [ProfileController],
-    providers: [IndexUsersService, UsersRepository]
+    providers: [
+        IndexUsersService,
+        {
+            provide: PrismaService,
+            useValue: PrismaServiceFactory.create()
+        }
+    ]
 })
 export class MeModule {}

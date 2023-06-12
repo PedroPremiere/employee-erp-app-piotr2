@@ -18,8 +18,26 @@
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
         "paths": {
-            "@test/*": ["test/*"],
-            "@/*": ["src/*"]
+            "@test/*": [
+                "test/*"
+            ],
+            "@/*": [
+                "src/*"
+            ]
+        }
+    },
+    "ts-node": {
+        "transpileOnly": true,
+        "files": true,
+        "compilerOptions": {
+            "paths": {
+                "@test/*": [
+                    "test/*"
+                ],
+                "@/*": [
+                    "src/*"
+                ]
+            }
         }
     }
 }

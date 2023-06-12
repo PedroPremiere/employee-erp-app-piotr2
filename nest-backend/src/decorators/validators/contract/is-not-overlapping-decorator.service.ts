@@ -11,31 +11,26 @@ import { CreateContractDto } from '@/dto/Contract/CreateContractDto';
 
 @ValidatorConstraint({ name: 'IsNotOverlapping', async: true })
 @Injectable()
-export class IsNotOverlappingDecoratos implements ValidatorConstraintInterface {
+export class IsNotOverlappingDecorator implements ValidatorConstraintInterface {
     constructor(
         protected readonly isOverLappingService: IsOverLappingService
     ) {}
 
-    async validate(tmpUser: User | undefined, args: ValidationArguments) {
+    async validate(ownerId: string | undefined, args) {
         const itemToValidate = args.object;
 
-        const { startDate, endDate, user } =
-            itemToValidate as CreateContractDto;
+        const { startDate, endDate } = itemToValidate;
 
-        if (!startDate || !endDate || !user) {
+        if (!startDate || !endDate || !ownerId) {
             return true;
         }
 
         const contractInDB = await this.isOverLappingService.find({
-            userId: tmpUser.id,
+            ownerId,
             startDate,
             endDate
         });
 
-        return !contractInDB;
-    }
-
-    public defaultMessage() {
-        return 'User has already overlapping contract';
+        return contractInDB.length === 0;
     }
 }

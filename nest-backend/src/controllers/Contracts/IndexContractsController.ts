@@ -31,7 +31,8 @@ export class IndexContractsController {
     @CheckPolicies(new CanReadContract())
     
      */
-    invoke(@Paginate() query: PaginateQuery): Promise<Paginated<Contract>> {
+    //invoke(@Paginate() query: PaginateQuery): Promise<Paginated<Contract>> {
+    invoke(@Paginate() query: PaginateQuery) {
         return this.indexContractService.findAll(query);
     }
 }

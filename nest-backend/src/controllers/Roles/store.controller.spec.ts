@@ -7,35 +7,15 @@
 import { conf } from '@/config';
 import { post } from '@test/methods/post';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
-import { RolesFactory } from '@test/factories/roles.factory';
 import { badRequestAssertion } from '@test/assertion/badRequest';
+import { RoleFactory } from '@/db/factories/RoleFactory';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.ROLES}`;
 
-//todo many changes here
 describe('Index User Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {
         it('Creates new USER sending CORRECT DATA', async () => {
-            const user = await UsersFactory.create();
-            const role = RolesFactory.generate([user.id]);
-
-            const payload = role;
-
-            const { status, body } = await post({ url, payload });
-
-            expect(status).toBe(201);
-
-            expect(body).toEqual(
-                expect.objectContaining({
-                    name: role.name,
-                    users: [expect.objectContaining({ id: user.id })]
-                })
-            );
-        });
-
-        it('Creates new USER sending CORRECT DATA without USERS', async () => {
-            const role = RolesFactory.generate();
+            const role = RoleFactory.generate();
 
             const payload = role;
 

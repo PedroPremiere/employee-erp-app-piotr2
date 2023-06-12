@@ -14,7 +14,7 @@ import { UserRole } from '@/entities/UserRole';
 
 //todo add api Properties
 
-@Entity('roles')
+@Entity('Roles')
 export class Role {
     @PrimaryGeneratedColumn('uuid')
     id: string;

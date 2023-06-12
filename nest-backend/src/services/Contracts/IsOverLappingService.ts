@@ -1,39 +1,35 @@
 import { Injectable } from '@nestjs/common';
 
-import { Contract } from '@/entities/Contract';
-import { ContractsRepository } from '@/repositories/ContractsRepository';
-import { LessThan, MoreThan } from 'typeorm';
+import { PrismaService } from '@/services/PrismaService.service';
 
 @Injectable()
 export class IsOverLappingService {
-    constructor(private readonly contractsRepository: ContractsRepository) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
-    async find(contractData: {
-        userId: string;
-        startDate: Date;
-        endDate: Date;
-    }): Promise<Contract> {
-        const contract = await this.contractsRepository.findOne({
-            where: [
-                { user: { id: contractData.userId } },
-                {
-                    user: { id: contractData.userId },
-                    endDate: LessThan(contractData.startDate),
-                    startDate: MoreThan(contractData.startDate)
-                },
-                {
-                    user: { id: contractData.userId },
-                    endDate: MoreThan(contractData.startDate),
-                    startDate: LessThan(contractData.startDate)
-                },
-                {
-                    user: { id: contractData.userId },
-                    endDate: MoreThan(contractData.endDate),
-                    startDate: LessThan(contractData.endDate)
-                }
-            ]
+    /*
+todo add returned types
+     */
+    find(contractData: { ownerId: string; startDate: Date; endDate: Date }) {
+        return this.prismaService.contract.findMany({
+            where: {
+                OR: [
+                    {
+                        ownerId: contractData.ownerId,
+                        endDate: { lte: contractData.endDate },
+                        startDate: { gte: contractData.startDate }
+                    },
+                    {
+                        ownerId: contractData.ownerId,
+                        endDate: { gte: contractData.startDate },
+                        startDate: { lte: contractData.startDate }
+                    },
+                    {
+                        ownerId: contractData.ownerId,
+                        endDate: { gte: contractData.endDate },
+                        startDate: { lte: contractData.endDate }
+                    }
+                ]
+            }
         });
-
-        return contract;
     }
 }

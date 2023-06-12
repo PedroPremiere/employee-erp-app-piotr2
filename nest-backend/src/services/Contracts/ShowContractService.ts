@@ -1,22 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Contract } from '@/entities/Contract';
-import { ContractsRepository } from '@/repositories/ContractsRepository';
+import { PrismaService } from '@/services/PrismaService.service';
 
 @Injectable()
 export class ShowContractsService {
-    constructor(private readonly contractsRepository: ContractsRepository) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
-    async findOne(id: string): Promise<Contract> {
-        const contract = await this.contractsRepository.findOne({
-            where: { id },
-
-            select: {
-                user: {
-                    id: true
-                }
-            },
-            relations: ['user']
+    //todo add type async findOne(id: string): Promise<Contract> {
+    async findOne(id: string) {
+        const contract = await this.prismaService.contract.findFirst({
+            where: { id }
         });
 
         if (!contract) {

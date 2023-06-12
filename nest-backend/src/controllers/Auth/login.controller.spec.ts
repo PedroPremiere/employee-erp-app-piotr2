@@ -1,19 +1,28 @@
-import { post } from '@test/methods/post';
-import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
-import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
+/*
+ * @group login
+ * @group auth
+ * @group user
+ */
+
 import { conf } from '@/config';
+import { post } from '@test/methods/post';
+import { UserFactory } from '@/db/factories/UserFactory';
+import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
+import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.LOGIN}`;
 
 describe('Login Controller (e2e)', () => {
     describe(`${url} (POST)`, () => {
         it('Returns OK sending CORRECT DATA', async () => {
-            const userData = UsersFactory.generate();
-            const user = await UsersFactory.create(userData);
+            const userData = UserFactory.generate();
+            const user = await UserFactory.create(userData);
 
-            const payload = { email: user.email, password: userData.password };
+            const payload = {
+                email: userData.email,
+                password: userData.password
+            };
 
             const { status, body } = await post({ url, payload });
 
@@ -44,7 +53,7 @@ describe('Login Controller (e2e)', () => {
         });
 
         it('Returns Unauthorized sending WRONG PASSWORD', async () => {
-            const user = await UsersFactory.create();
+            const user = await UserFactory.create();
 
             const payload = { email: user.email, password: 'wrong password' };
 

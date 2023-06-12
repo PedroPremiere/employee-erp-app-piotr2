@@ -10,7 +10,7 @@ import { i18nValidationMessage } from 'nestjs-i18n';
 
 import { passwordPolicy } from '@/config/passwordPolicy';
 import { IsTheSameDecoratos } from '@/decorators/validators/IsTheSame.decoratos';
-import { UniqueMailDecoratos } from '@/decorators/validators/user/UniqueMail.decoratos';
+import { UniqueMailDecorator } from '@/decorators/validators/user/unique-mail-decorator.service';
 
 const { minLength } = passwordPolicy;
 
@@ -40,7 +40,7 @@ export class CreateUserDto {
     passwordRepeat: string;
 
     @IsEmail({}, { message: i18nValidationMessage('errors.notEmailError') })
-    @Validate(UniqueMailDecoratos, {
+    @Validate(UniqueMailDecorator, {
         message: i18nValidationMessage('errors.emailTaken')
     })
     @ApiProperty({

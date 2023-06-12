@@ -1,8 +1,15 @@
+/*
+ * @group me
+ * @group profile
+ * @group user
+ * @group userProfile
+ */
+
 import { conf } from '@/config';
 import { get } from '@test/methods/get';
 import { post } from '@test/methods/post';
+import { UserFactory } from '@/db/factories/UserFactory';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
 import { unAuthorizedAssertion } from '@test/assertion/unAuthorized';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
@@ -14,8 +21,8 @@ const loginUrl = `/${conf.api.prefix}/${RoutesEnum.LOGIN}`;
 
 describe('User Profile Controller (e2e)', () => {
     beforeAll(async () => {
-        const userData = UsersFactory.generate();
-        user = await UsersFactory.create(userData);
+        const userData = UserFactory.generate();
+        user = await UserFactory.create(userData);
 
         const payload = { email: user.email, password: userData.password };
 

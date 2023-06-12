@@ -12,7 +12,7 @@ import { Role } from '@/entities/Role';
 
 //todo add api Properties
 
-@Entity('user_roles')
+@Entity('User_roles')
 export class UserRole {
     @PrimaryGeneratedColumn('uuid')
     id: string;

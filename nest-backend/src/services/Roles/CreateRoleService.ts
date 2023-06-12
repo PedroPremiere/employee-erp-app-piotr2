@@ -1,38 +1,36 @@
 import { Injectable } from '@nestjs/common';
 
 import { Role } from '@/entities/Role';
-import { In } from 'typeorm';
 import { CreateRoleDto } from '@/dto/Role/CreateRoleDto';
-import { RolesRepository } from '@/repositories/RolesRepository';
-import { UsersRepository } from '@/repositories/UsersRepository';
+import { PrismaService } from '@/services/PrismaService.service';
 
 @Injectable()
 export class CreateRoleService {
-    constructor(
-        private readonly rolesRepository: RolesRepository,
-        private readonly usersRepository: UsersRepository
-    ) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
     async create(roleData: CreateRoleDto): Promise<Role> {
-        let users;
-        if (roleData.users) {
-            users = await this.usersRepository.find({
-                where: { id: In(roleData.users) }
-            });
+        /*todo : make 2 services : one to create empty group and one for adding users to group
+        find way to exclude all password fields
+         */
+
+        /*
+        todo: adding users like this :
+        const connectedUsers = [];
+
+        for (const user of roleData.users) {
+            connectedUsers.push({ id: user });
         }
 
-        const role = await this.rolesRepository.save({ ...roleData, users });
-
-        const roleAfterSave = await this.rolesRepository.findOne({
-            where: { id: role.id },
-            select: {
-                users: {
-                    id: true
-                }
-            },
-            relations: ['users']
+        const role = await this.prismaService.role.create({
+            data: { name: roleData.name, users: { connect: connectedUsers } }
         });
 
-        return roleAfterSave;
+         */
+
+        const role = await this.prismaService.role.create({
+            data: { name: roleData.name }
+        });
+
+        return role;
     }
 }

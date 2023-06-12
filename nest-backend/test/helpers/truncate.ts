@@ -1,13 +1,15 @@
+import { Prisma } from '@prisma/client';
+
 export async function truncate() {
-    const models = dataSource.entityMetadatas;
+    const tables = Prisma.ModelName;
 
-    for (const model of models) {
-        await dataSource.query('SET FOREIGN_KEY_CHECKS = 0');
+    await prismaService.$queryRawUnsafe('SET FOREIGN_KEY_CHECKS = 0');
 
-        const repository = dataSource.getRepository(model.name);
+    for (const table in tables) {
+        const tableToDelete = table.toLocaleLowerCase();
 
-        await repository.clear();
-
-        await dataSource.query('SET FOREIGN_KEY_CHECKS = 1');
+        await prismaService.$queryRawUnsafe(`TRUNCATE ${tableToDelete} ;`);
     }
+
+    await prismaService.$queryRawUnsafe('SET FOREIGN_KEY_CHECKS = 1');
 }

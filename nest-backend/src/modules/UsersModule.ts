@@ -1,7 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { UsersRepository } from '@/repositories/UsersRepository';
 import { ShowUsersService } from '@/services/Users/ShowUserService';
 import { StoreController } from '@/controllers/Users/StoreController';
 import { IndexUsersController } from '@/controllers/Users/IndexUsersController';
@@ -11,9 +8,10 @@ import { ShowController } from '@/controllers/Users/id/ShowController';
 import { DeleteUsersService } from '@/services/Users/DeleteUsersService';
 import { FindByEmailService } from '@/services/Users/FindByEmailService';
 import { DeleteController } from '@/controllers/Users/id/DestroyController';
+import { PrismaService } from '@/services/PrismaService.service';
+import { PrismaServiceFactory } from '@/services/PrismaServiceFactory.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([UsersRepository])],
     controllers: [
         IndexUsersController,
         ShowController,
@@ -24,9 +22,12 @@ import { DeleteController } from '@/controllers/Users/id/DestroyController';
         IndexUsersService,
         ShowUsersService,
         DeleteUsersService,
-        UsersRepository,
         CreateUserService,
-        FindByEmailService
+        FindByEmailService,
+        {
+            provide: PrismaService,
+            useValue: PrismaServiceFactory.create()
+        }
     ],
     exports: [FindByEmailService]
 })

@@ -7,7 +7,6 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 
-import { Contract } from '@/entities/Contract';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { ContractDto } from '@/dto/Contract/ContractDto';
 import { CheckPolicies } from '@/abilities/IPolicyHandler';
@@ -27,7 +26,8 @@ export class StoreContractController {
     @UseInterceptors(CountVacationDays)
     @UseGuards(PoliciesGuard)
     @CheckPolicies(new CanCreateContract())
-    async invoke(@Body() data: CreateContractDto): Promise<Contract> {
+    //todo add returned type
+    async invoke(@Body() data: CreateContractDto) {
         return this.createContractService.create(data);
     }
 }

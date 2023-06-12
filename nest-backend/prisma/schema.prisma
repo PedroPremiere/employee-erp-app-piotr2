@@ -1,0 +1,54 @@
+datasource database {
+  provider          = "mysql"
+  url               = "mysql://user:password@127.0.0.1:3306/demodb"
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
+}
+
+model Role {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+  users     User[]
+}
+
+model Password {
+  id        String    @id @default(uuid())
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  deletedAt DateTime?
+  roles     Role[]
+  contracts Contract[]
+  password  Password?
+}
+
+model Contract {
+  id                  String    @id @default(uuid())
+  position            String
+  startDate           DateTime
+  endDate             DateTime
+  vacationDaysPerYear Int
+  vacationDays        Int
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @default(now())
+  deletedAt           DateTime?
+  user                User      @relation(fields: [ownerId], references: [id])
+  ownerId             String
+}

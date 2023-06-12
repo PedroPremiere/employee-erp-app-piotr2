@@ -5,20 +5,22 @@
 import * as dayjs from 'dayjs';
 
 import { conf } from '@/config';
+import { faker } from '@faker-js/faker';
 import { post } from '@test/methods/post';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
+import { ContractsFactory } from '@/db/factories/ContractsFactory';
+import { badRequestAssertion } from '@test/assertion/badRequest';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
-import { ContractsFactory } from '@test/factories/contracts.factory';
 import { CountVacationDaysService } from '@/services/VacationDays/CountVacationDaysService';
+import { UserFactory } from '@/db/factories/UserFactory';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.CONTRACTS}`;
 
 describe('Index User Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {
         it('Creates new CONTRACT sending CORRECT DATA', async () => {
-            const user = await UsersFactory.create();
-            const contract = ContractsFactory.generate(user);
+            const user = await UserFactory.create();
+            const contract = ContractsFactory.generate(user.id);
 
             const { status, body } = await post({ url, payload: contract });
 
@@ -26,11 +28,8 @@ describe('Index User Controller (e2e)', () => {
 
             expect(body).toEqual(
                 expect.objectContaining({
-                    id: contract.id,
                     position: contract.position,
-                    user: {
-                        id: user.id
-                    },
+                    ownerId: user.id,
                     vacationDaysPerYear: contract.vacationDaysPerYear,
                     vacationDays: CountVacationDaysService.countVacationDays({
                         vacationDaysPerYear: contract.vacationDaysPerYear,
@@ -44,267 +43,262 @@ describe('Index User Controller (e2e)', () => {
             dayjs(body.endDate).isSame(contract.endDate, 'day');
 
             noPasswordAssertion(body);
-            noPasswordAssertion(body.user);
         });
-        /*
-                it('BAD REQUEST sending NOT EXISTING USER_ID', async () => {
-                    const user = UsersFactory.generate();
-                    const contract = ContractsFactory.generate(user);
 
-                    const { status, body } = await post({ url, payload: contract });
+        it('BAD REQUEST sending NOT EXISTING USER_ID', async () => {
+            const contract = ContractsFactory.generate('not existing id');
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({ url, payload: contract });
 
-                    const expectedMessage = [
-                        {
-                            field: 'user',
-                            error: i18nService.translate('errors.userDoesntExist')
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    field: 'ownerId',
+                    error: i18nService.translate('errors.userDoesntExist')
+                }
+            ];
 
-                it('BAD REQUEST sending NOT EXISTING USER_ID in Selected Language', async () => {
-                    const user = UsersFactory.generate();
-                    const contract = ContractsFactory.generate(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    const { status, body } = await post({
-                        url: `${url}?lang=pl`,
-                        payload: contract
-                    });
-                    expect(status).toBe(400);
+        it('BAD REQUEST sending NOT EXISTING USER_ID in Selected Language', async () => {
+            const contract = ContractsFactory.generate('not existing id');
 
-                    const expectedMessage = [
-                        {
-                            field: 'user',
-                            error: i18nService.translate('errors.userDoesntExist', {
-                                lang: 'pl'
-                            })
-                        }
-                    ];
+            const { status, body } = await post({
+                url: `${url}?lang=pl`,
+                payload: contract
+            });
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    field: 'ownerId',
+                    error: i18nService.translate('errors.userDoesntExist', {
+                        lang: 'pl'
+                    })
+                }
+            ];
 
-                it('BAD REQUEST when START_DATE is AFTER END_DATE', async () => {
-                    const user = await UsersFactory.create();
-                    const contract = ContractsFactory.generate(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    contract.endDate = faker.date.past();
-                    contract.startDate = faker.date.future();
+        it('BAD REQUEST when START_DATE is AFTER END_DATE', async () => {
+            const user = await UserFactory.create();
+            const contract = ContractsFactory.generate(user.id);
 
-                    const { status, body } = await post({ url, payload: contract });
+            contract.endDate = faker.date.past();
+            contract.startDate = faker.date.future();
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({ url, payload: contract });
 
-                    const expectedMessage = [
-                        {
-                            error: i18nService.translate(
-                                'errors.endDateShouldBeAfterStartDate'
-                            ),
-                            field: 'startDate'
-                        },
-                        {
-                            field: 'endDate',
-                            error: i18nService.translate(
-                                'errors.startDateShouldBeBeforeEndDate'
-                            )
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    error: i18nService.translate(
+                        'errors.endDateShouldBeAfterStartDate'
+                    ),
+                    field: 'startDate'
+                },
+                {
+                    field: 'endDate',
+                    error: i18nService.translate(
+                        'errors.startDateShouldBeBeforeEndDate'
+                    )
+                }
+            ];
 
-                it('BAD REQUEST when USER has overlapping contract with the same start and end dates', async () => {
-                    const user = await UsersFactory.create();
-                    const contract = await ContractsFactory.create(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    const { status, body } = await post({ url, payload: contract });
+        it('BAD REQUEST when USER has overlapping contract with the same start and end dates', async () => {
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({ url, payload: contract });
 
-                    const expectedMessage = [
-                        {
-                            error: i18nService.translate('errors.overlappingContract'),
-                            field: 'user'
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    error: i18nService.translate('errors.overlappingContract'),
+                    field: 'ownerId'
+                }
+            ];
 
-                it('BAD REQUEST when USER has overlapping contract with start date BEFORE and end date AFTER (Shorter Contract)', async () => {
-                    const user = await UsersFactory.create();
-                    const contract = await ContractsFactory.create(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    const startDate = dayjs(contract.startDate).subtract(2, 'day');
-                    const endDate = dayjs(contract.endDate).add(2, 'day');
+        it('BAD REQUEST when USER has overlapping contract with start date BEFORE and end date AFTER (Shorter Contract)', async () => {
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
-                    const { status, body } = await post({
-                        url,
-                        payload: { ...contract, startDate, endDate }
-                    });
+            const startDate = dayjs(contract.startDate).subtract(2, 'day');
+            const endDate = dayjs(contract.endDate).add(2, 'day');
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({
+                url,
+                payload: { ...contract, startDate, endDate }
+            });
 
-                    const expectedMessage = [
-                        {
-                            error: i18nService.translate('errors.overlappingContract'),
-                            field: 'user'
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    error: i18nService.translate('errors.overlappingContract'),
+                    field: 'ownerId'
+                }
+            ];
 
-                it('BAD REQUEST when USER has overlapping contract with start date AFTER and end date BEFORE (Longer Contract)', async () => {
-                    const user = await UsersFactory.create();
-                    const contract = await ContractsFactory.create(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    const startDate = dayjs(contract.startDate).add(2, 'day');
-                    const endDate = dayjs(contract.endDate).subtract(2, 'day');
+        it('BAD REQUEST when USER has overlapping contract with start date AFTER and end date BEFORE (Longer Contract)', async () => {
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
-                    const { status, body } = await post({
-                        url,
-                        payload: { ...contract, startDate, endDate }
-                    });
+            const startDate = dayjs(contract.startDate).add(2, 'day');
+            const endDate = dayjs(contract.endDate).subtract(2, 'day');
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({
+                url,
+                payload: { ...contract, startDate, endDate }
+            });
 
-                    const expectedMessage = [
-                        {
-                            error: i18nService.translate('errors.overlappingContract'),
-                            field: 'user'
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    error: i18nService.translate('errors.overlappingContract'),
+                    field: 'ownerId'
+                }
+            ];
 
-                it('BAD REQUEST when USER has overlapping contract (Only some days are overlapping)', async () => {
-                    const user = await UsersFactory.create();
-                    const contract = await ContractsFactory.create(user);
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    const startDate = dayjs(contract.startDate).subtract(2, 'day');
-                    const endDate = dayjs(contract.startDate).subtract(2, 'day');
+        it('BAD REQUEST when USER has overlapping contract (Only some days are overlapping)', async () => {
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
-                    const { status, body } = await post({
-                        url,
-                        payload: { ...contract, startDate, endDate }
-                    });
+            const startDate = dayjs(contract.startDate).subtract(2, 'day');
+            const endDate = dayjs(contract.startDate).add(2, 'day');
 
-                    expect(status).toBe(400);
+            const { status, body } = await post({
+                url,
+                payload: { ...contract, startDate, endDate }
+            });
 
-                    const expectedMessage = [
-                        {
-                            error: i18nService.translate('errors.overlappingContract'),
-                            field: 'user'
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    error: i18nService.translate('errors.overlappingContract'),
+                    field: 'ownerId'
+                }
+            ];
 
-                it('BAD REQUEST sending NO DATA', async () => {
-                    const { status, body } = await post({ url });
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    expect(status).toBe(400);
+        it('BAD REQUEST sending NO DATA', async () => {
+            const { status, body } = await post({ url });
 
-                    const expectedMessage = [
-                        {
-                            field: 'position',
-                            error: i18nService.translate('errors.notEmpty')
-                        },
-                        {
-                            field: 'startDate',
-                            error: [
-                                i18nService.translate('errors.notEmpty'),
-                                i18nService.translate('errors.mustBeValidDate')
-                            ].join(', ')
-                        },
-                        {
-                            field: 'endDate',
-                            error: [
-                                i18nService.translate('errors.notEmpty'),
-                                i18nService.translate('errors.mustBeValidDate')
-                            ].join(', ')
-                        },
-                        {
-                            field: 'user',
-                            error: i18nService.translate('errors.userDoesntExist')
-                        },
-                        {
-                            field: 'vacationDaysPerYear',
-                            error: [
-                                i18nService.translate('errors.notEmpty'),
-                                i18nService.translate('errors.mustBeInteger')
-                            ].join(', ')
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    field: 'position',
+                    error: i18nService.translate('errors.notEmpty')
+                },
+                {
+                    field: 'startDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeValidDate')
+                    ].join(', ')
+                },
+                {
+                    field: 'endDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeValidDate')
+                    ].join(', ')
+                },
+                {
+                    field: 'ownerId',
+                    error: i18nService.translate('errors.userDoesntExist')
+                },
+                {
+                    field: 'vacationDaysPerYear',
+                    error: [
+                        i18nService.translate('errors.notEmpty'),
+                        i18nService.translate('errors.mustBeInteger')
+                    ].join(', ')
+                }
+            ];
 
-                it('BAD REQUEST sending NO DATA, dialogs in SELECTED LANGUAGE', async () => {
-                    const selectedLanguage = 'pl';
-                    const { status, body } = await post({
-                        url: `${url}?lang=${selectedLanguage}`
-                    });
+            badRequestAssertion(status, body, expectedMessage);
+        });
 
-                    expect(status).toBe(400);
+        it('BAD REQUEST sending NO DATA, dialogs in SELECTED LANGUAGE', async () => {
+            const selectedLanguage = 'pl';
+            const { status, body } = await post({
+                url: `${url}?lang=${selectedLanguage}`
+            });
 
-                    const expectedMessage = [
-                        {
-                            field: 'position',
-                            error: i18nService.translate('errors.notEmpty', {
-                                lang: 'pl'
-                            })
-                        },
-                        {
-                            field: 'startDate',
-                            error: [
-                                i18nService.translate('errors.notEmpty', {
-                                    lang: 'pl'
-                                }),
-                                i18nService.translate('errors.mustBeValidDate', {
-                                    lang: 'pl'
-                                })
-                            ].join(', ')
-                        },
-                        {
-                            field: 'endDate',
-                            error: [
-                                i18nService.translate('errors.notEmpty', {
-                                    lang: 'pl'
-                                }),
-                                i18nService.translate('errors.mustBeValidDate', {
-                                    lang: 'pl'
-                                })
-                            ].join(', ')
-                        },
-                        {
-                            field: 'user',
-                            error: i18nService.translate('errors.userDoesntExist', {
-                                lang: 'pl'
-                            })
-                        },
-                        {
-                            field: 'vacationDaysPerYear',
-                            error: [
-                                i18nService.translate('errors.notEmpty', {
-                                    lang: 'pl'
-                                }),
-                                i18nService.translate('errors.mustBeInteger', {
-                                    lang: 'pl'
-                                })
-                            ].join(', ')
-                        }
-                    ];
+            expect(status).toBe(400);
 
-                    badRequestAssertion(status, body, expectedMessage);
-                });
+            const expectedMessage = [
+                {
+                    field: 'position',
+                    error: i18nService.translate('errors.notEmpty', {
+                        lang: 'pl'
+                    })
+                },
+                {
+                    field: 'startDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeValidDate', {
+                            lang: 'pl'
+                        })
+                    ].join(', ')
+                },
+                {
+                    field: 'endDate',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeValidDate', {
+                            lang: 'pl'
+                        })
+                    ].join(', ')
+                },
+                {
+                    field: 'ownerId',
+                    error: i18nService.translate('errors.userDoesntExist', {
+                        lang: 'pl'
+                    })
+                },
+                {
+                    field: 'vacationDaysPerYear',
+                    error: [
+                        i18nService.translate('errors.notEmpty', {
+                            lang: 'pl'
+                        }),
+                        i18nService.translate('errors.mustBeInteger', {
+                            lang: 'pl'
+                        })
+                    ].join(', ')
+                }
+            ];
 
-         */
+            badRequestAssertion(status, body, expectedMessage);
+        });
     });
 });

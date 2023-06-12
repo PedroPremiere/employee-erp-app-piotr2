@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
 import { AuthModule } from './modules/AuthModule';
@@ -10,12 +9,13 @@ import { AppService } from './services/app.service';
 import { AppController } from './controllers/app.controller';
 
 import config from '@/config';
-import { MeModule } from '@/modules/MeModule';
-import { ContractsModule } from '@/modules/ContractsModule';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from '@/abilities/Roles.guard';
-import { CaslAbilityFactory } from '@/abilities/CaslAbilityFactory';
+import { MeModule } from '@/modules/MeModule';
 import { RolesModule } from '@/modules/RolesModule';
+import { RolesGuard } from '@/abilities/Roles.guard';
+import { ContractsModule } from '@/modules/ContractsModule';
+import { PrismaService } from '@/services/PrismaService.service';
+import { CaslAbilityFactory } from '@/abilities/CaslAbilityFactory';
 
 @Module({
     imports: [
@@ -32,24 +32,6 @@ import { RolesModule } from '@/modules/RolesModule';
                 AcceptLanguageResolver
             ]
         }),
-
-        TypeOrmModule.forRootAsync({
-            inject: [ConfigService],
-            imports: [ConfigModule],
-
-            useFactory: async (configService: ConfigService) => {
-                const dbConfig = configService.get('db');
-
-                return {
-                    type: dbConfig.dialect,
-                    ...dbConfig,
-                    entities: [__dirname + '/entities/*.{ts,js}'],
-                    migrations: [__dirname + '/db/migrations/*.{ts,js}'],
-                    synchronize: false,
-                    autoLoadEntities: true
-                };
-            }
-        }),
         ContractsModule,
         UsersModule,
         AuthModule,
@@ -59,12 +41,13 @@ import { RolesModule } from '@/modules/RolesModule';
     controllers: [AppController],
     providers: [
         AppService,
+        PrismaService,
         CaslAbilityFactory,
         {
             provide: APP_GUARD,
             useClass: RolesGuard
         }
     ],
-    exports: [CaslAbilityFactory]
+    exports: [CaslAbilityFactory, PrismaService]
 })
 export class AppModule {}

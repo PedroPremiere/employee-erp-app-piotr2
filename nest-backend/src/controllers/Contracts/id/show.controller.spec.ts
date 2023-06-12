@@ -1,19 +1,23 @@
+/*
+ * @group showContract
+ */
+
 import * as dayjs from 'dayjs';
 
 import { conf } from '@/config';
 import { get } from '@test/methods/get';
+import { UserFactory } from '@/db/factories/UserFactory';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
 import { noFoundAssertion } from '@test/assertion/noFound';
-import { UsersFactory } from '@test/factories/user.factory';
-import { ContractsFactory } from '@test/factories/contracts.factory';
+import { ContractsFactory } from '@/db/factories/ContractsFactory';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.CONTRACTS}`;
 
 describe('Index CONTRACT Controller (e2e)', () => {
     describe(`${url} (GET)`, () => {
         it('Returns user DATA', async () => {
-            const user = await UsersFactory.create();
-            const contract = await ContractsFactory.create(user);
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
             const { status, body } = await get({
                 url: `${url}/${contract.id}`
@@ -27,9 +31,7 @@ describe('Index CONTRACT Controller (e2e)', () => {
                     position: contract.position,
                     vacationDaysPerYear: contract.vacationDaysPerYear,
                     vacationDays: contract.vacationDays,
-                    user: {
-                        id: contract.user.id
-                    }
+                    ownerId: user.id
                 })
             );
 
@@ -38,8 +40,8 @@ describe('Index CONTRACT Controller (e2e)', () => {
         });
 
         it('Returns NO FOUND sending NON EXISTING CONTRACT ID', async () => {
-            const user = await UsersFactory.create();
-            const contract = await ContractsFactory.create(user);
+            const user = await UserFactory.create();
+            const contract = await ContractsFactory.create(user.id);
 
             const { status, body } = await get({ url: `${url}/WrongId` });
 

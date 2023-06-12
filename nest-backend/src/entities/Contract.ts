@@ -1,19 +1,16 @@
 import {
     Entity,
     Column,
-    OneToOne,
-    JoinColumn,
     UpdateDateColumn,
     CreateDateColumn,
     PrimaryGeneratedColumn
 } from 'typeorm';
 
-import { User } from '@/entities/User';
 import { ApiProperty } from '@nestjs/swagger';
 
-//todo add api Properties
+//todo remove
 
-@Entity('contracts')
+@Entity('Contracts')
 export class Contract {
     @ApiProperty()
     @PrimaryGeneratedColumn('uuid')
@@ -28,9 +25,7 @@ export class Contract {
     @Column({ type: 'timestamp' })
     endDate: Date;
 
-    @OneToOne(() => User)
-    @JoinColumn({ name: 'userId' })
-    user: User;
+    ownerId: string;
 
     @Column()
     vacationDaysPerYear: number;

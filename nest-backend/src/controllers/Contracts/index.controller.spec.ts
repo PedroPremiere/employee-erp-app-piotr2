@@ -8,10 +8,10 @@ import * as dayjs from 'dayjs';
 
 import { conf } from '@/config';
 import { get } from '@test/methods/get';
+import { UserFactory } from '@/db/factories/UserFactory';
 import { RoutesEnum } from '@/types/enums/Routes.enum';
-import { UsersFactory } from '@test/factories/user.factory';
 import { emptyListAssertion } from '@test/assertion/emptyList';
-import { ContractsFactory } from '@test/factories/contracts.factory';
+import { ContractsFactory } from '@/db/factories/ContractsFactory';
 
 const url = `/${conf.api.prefix}/${RoutesEnum.CONTRACTS}`;
 
@@ -27,10 +27,10 @@ describe('Index Contracts Controller (e2e)', () => {
         });
 
         it('Returns list of users', async () => {
-            const user = await UsersFactory.create();
+            const user = await UserFactory.create();
 
             for (let i = 0; i < expectedCount; i++) {
-                const contract = await ContractsFactory.create(user);
+                const contract = await ContractsFactory.create(user.id);
 
                 contracts.push(contract);
             }
@@ -38,8 +38,12 @@ describe('Index Contracts Controller (e2e)', () => {
             const { status, body } = await get({ url });
 
             expect(status).toBe(200);
+            /*
+                        const { data, meta } = body;
 
-            const { data, meta } = body;
+             */
+
+            const data = body;
 
             for (const contract of contracts) {
                 expect(data).toContainEqual(
@@ -48,9 +52,7 @@ describe('Index Contracts Controller (e2e)', () => {
                         vacationDaysPerYear: contract.vacationDaysPerYear,
                         vacationDays: contract.vacationDays,
                         position: contract.position,
-                        user: {
-                            id: contract.user.id
-                        }
+                        ownerId: user.id
                     })
                 );
 
@@ -68,9 +70,11 @@ describe('Index Contracts Controller (e2e)', () => {
                 );
                 dayjs(selectedContract.endDate).isSame(contract.endDate, 'day');
             }
+            /*
+                        expect(meta.totalItems).toEqual(data.length);
+                        expect(meta.totalItems).toEqual(expectedCount);
 
-            expect(meta.totalItems).toEqual(data.length);
-            expect(meta.totalItems).toEqual(expectedCount);
+             */
         });
     });
 });

@@ -8,11 +8,12 @@ import { JwtStrategy } from '@/auth/jwt.strategy';
 import { UsersModule } from '@/modules/UsersModule';
 import { LocalStrategy } from '@/auth/local.strategy';
 import { AuthService } from '@/services/Auth/AuthService';
-import { UsersRepository } from '@/repositories/UsersRepository';
 import { LoginController } from '@/controllers/Auth/LoginController';
-import { UniqueMailDecoratos } from '@/decorators/validators/user/UniqueMail.decoratos';
 import { CreateUserService } from '@/services/Users/CreateUserService';
 import { RegisterController } from '@/controllers/Auth/RegisterController';
+import { UniqueMailDecorator } from '@/decorators/validators/user/unique-mail-decorator.service';
+import { PrismaService } from '@/services/PrismaService.service';
+import { PrismaServiceFactory } from '@/services/PrismaServiceFactory.service';
 
 @Module({
     imports: [
@@ -29,8 +30,11 @@ import { RegisterController } from '@/controllers/Auth/RegisterController';
         LocalStrategy,
         JwtStrategy,
         CreateUserService,
-        UsersRepository,
-        UniqueMailDecoratos
+        UniqueMailDecorator,
+        {
+            provide: PrismaService,
+            useValue: PrismaServiceFactory.create()
+        }
     ]
 })
 export class AuthModule {}
