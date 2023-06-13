@@ -3,22 +3,32 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
-import { AuthModule } from './modules/AuthModule';
-import { UsersModule } from './modules/UsersModule';
-import { AppService } from './services/app.service';
-import { AppController } from './controllers/app.controller';
+import { AuthModule } from './apps/Auth/AuthModule';
+import { UsersModule } from './apps/User/UsersModule';
+import { AppService } from './apps/app.service';
+import { AppController } from './apps/app.controller';
 
-import config from '@/config';
+import config from '@/project/config';
 import { APP_GUARD } from '@nestjs/core';
-import { MeModule } from '@/modules/MeModule';
-import { RolesModule } from '@/modules/RolesModule';
-import { RolesGuard } from '@/abilities/Roles.guard';
-import { ContractsModule } from '@/modules/ContractsModule';
-import { PrismaService } from '@/services/PrismaService.service';
-import { CaslAbilityFactory } from '@/abilities/CaslAbilityFactory';
+import { MeModule } from '@/apps/Me/MeModule';
+import { RolesModule } from '@/apps/Roles/RolesModule';
+import { RolesGuard } from '@/project/abilities/Roles.guard';
+import { ContractsModule } from '@/apps/Contracts/ContractsModule';
+import { PrismaService } from '@/apps/PrismaService.service';
+import { CaslAbilityFactory } from '@/project/abilities/CaslAbilityFactory';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
     imports: [
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+            driver: ApolloDriver,
+            autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
+            sortSchema: true,
+            context: ctx => ctx
+
+            //plugins: [ApolloServerPluginLandingPageLocalDefault()]
+        }),
         ConfigModule.forRoot({ load: [config], isGlobal: true }),
 
         I18nModule.forRoot({

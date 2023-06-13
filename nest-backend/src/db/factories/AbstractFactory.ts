@@ -1,4 +1,4 @@
-import { PrismaServiceFactory } from '@/services/PrismaServiceFactory.service';
+import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
 
 export class AbstractFactory {
     static prisma = PrismaServiceFactory.create();

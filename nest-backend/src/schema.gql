@@ -1,0 +1,64 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""user """
+type ContractDto {
+  """Creation date of item"""
+  createdAt: DateTime!
+
+  """End date of contract"""
+  endDate: DateTime!
+
+  """ID of item in Database as UUID"""
+  id: String!
+
+  """User Id of owner"""
+  ownerId: String!
+
+  """Name of position"""
+  position: String!
+
+  """Start date of contract"""
+  startDate: DateTime!
+
+  """Last update date of item"""
+  updatedAt: DateTime!
+
+  """User Id of owner"""
+  user: UserDto!
+
+  """Number of days employee can use"""
+  vacationDays: Float!
+
+  """Number of days per year"""
+  vacationDaysPerYear: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  contract(id: String!): ContractDto!
+  user(id: String!): UserDto!
+}
+
+"""user """
+type UserDto {
+  """User Contracts"""
+  contracts: [ContractDto!]
+
+  """Creation date of item"""
+  createdAt: DateTime!
+
+  """User Email"""
+  email: String!
+
+  """ID of item in Database as UUID"""
+  id: String!
+
+  """Last update date of item"""
+  updatedAt: DateTime!
+}

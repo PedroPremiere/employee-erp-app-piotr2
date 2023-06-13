@@ -1,6 +1,6 @@
 import { createSchema } from 'schemix';
 
-import { conf } from '../src/config';
+import { conf } from '../src/project/config';
 
 createSchema({
     // basePath should be a path to the folder containing models/, enums/, and mixins/.

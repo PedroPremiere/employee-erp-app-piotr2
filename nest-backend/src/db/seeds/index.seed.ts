@@ -1,5 +1,5 @@
 import { RoleFactory } from '@/db/factories/RoleFactory';
-import { UserFactory } from '@/db/factories/UserFactory';
+import { UserFactory } from '@/apps/User/factories/UserFactory';
 import { ContractsFactory } from '@/db/factories/ContractsFactory';
 
 function createUser() {

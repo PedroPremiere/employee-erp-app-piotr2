@@ -1,13 +1,14 @@
 import * as request from 'supertest';
-import { Test, TestingModule } from '@nestjs/testing';
+import * as graph from 'gql-query-builder';
 
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
 import { truncate } from './helpers/truncate';
 import { I18nService } from 'nestjs-i18n';
-import { PrismaService } from '@/services/PrismaService.service';
-import { initI18 } from '@/config/boilerplate/i18n';
-import { setContainer } from '@/config/boilerplate/common/setContainer';
-import { setGlobalPrefix } from '@/config/boilerplate/common/setGlobalPrefix';
+import { PrismaService } from '@/apps/PrismaService.service';
+import { initI18 } from '@/project/boilerplate/i18n';
+import { setContainer } from '@/project/boilerplate/common/setContainer';
+import { setGlobalPrefix } from '@/project/boilerplate/common/setGlobalPrefix';
 
 beforeAll(async () => {
     global._request = request;
@@ -27,6 +28,7 @@ beforeAll(async () => {
     global.request = request(app.getHttpServer());
     global.i18nService = moduleFixture.get(I18nService);
     global.prismaService = app.get<PrismaService>(PrismaService);
+    global.graph = graph;
 
     await truncate();
 });

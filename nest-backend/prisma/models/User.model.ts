@@ -12,6 +12,5 @@ export default createModel(UserModel => {
         .dateTime('deletedAt', { optional: true })
         .relation('roles', RoleModel, { list: true })
         .relation('contracts', ContractModel, { list: true })
-
         .relation('password', PasswordModel, { optional: true });
 });
