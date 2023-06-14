@@ -76,8 +76,5 @@ describe('Show User', () => {
                 i18nService.translate('errors.notFound', { lang: 'pl' })
             );
         });
-        /* todo add more tests
-
-         */
     });
 });
