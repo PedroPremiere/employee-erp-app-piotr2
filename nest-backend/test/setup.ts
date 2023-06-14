@@ -1,12 +1,12 @@
 import * as request from 'supertest';
+import { I18nService } from 'nestjs-i18n';
 import * as graph from 'gql-query-builder';
 
-import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
 import { truncate } from './helpers/truncate';
-import { I18nService } from 'nestjs-i18n';
-import { PrismaService } from '@/apps/PrismaService.service';
 import { initI18 } from '@/project/boilerplate/i18n';
+import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from '@/apps/PrismaService.service';
 import { setContainer } from '@/project/boilerplate/common/setContainer';
 import { setGlobalPrefix } from '@/project/boilerplate/common/setGlobalPrefix';
 

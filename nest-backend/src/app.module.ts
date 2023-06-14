@@ -25,9 +25,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
             driver: ApolloDriver,
             autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
             sortSchema: true,
-            context: ctx => ctx
-
-            //plugins: [ApolloServerPluginLandingPageLocalDefault()]
+            context: ({ req }) => ({ req })
         }),
         ConfigModule.forRoot({ load: [config], isGlobal: true }),
 

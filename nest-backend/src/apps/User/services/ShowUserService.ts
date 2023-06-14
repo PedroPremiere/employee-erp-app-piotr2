@@ -7,6 +7,10 @@ export class ShowUsersService {
     constructor(private readonly prismaService: PrismaService) {}
 
     async findOne(id: string) {
+        if (!id) {
+            throw new NotFoundException();
+        }
+
         const user = await this.prismaService.user.findFirst({
             where: { id }
         });

@@ -42,6 +42,7 @@ scalar DateTime
 
 type Query {
   contract(id: String!): ContractDto!
+  me: UserDto!
   user(id: String!): UserDto!
 }
 

@@ -11,5 +11,6 @@
     "emailTaken": "Email already taken",
     "passwordsTheSame": "password-repeat should be the same as password",
     "notEmailError": "should be an Email",
-    "notFound": "item doesn't exist"
+    "notFound": "item doesn't exist",
+    "unauthorized": "Unauthorized"
 }
