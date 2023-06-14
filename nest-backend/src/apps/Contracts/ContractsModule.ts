@@ -13,8 +13,11 @@ import { ShowContractsService } from '@/apps/Contracts/services/ShowContractServ
 import { CaslAbilityFactory } from '@/project/abilities/CaslAbilityFactory';
 import { PrismaService } from '@/apps/PrismaService.service';
 import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
-import { ShowContractResolver } from '@/apps/Contracts/resolvers/ShowContractResolver';
+
 import { ShowUsersService } from '@/apps/User/services/ShowUserService';
+import { ShowContractResolver } from '@/apps/Contracts/resolvers/show/ShowContractResolver';
+import { DeleteContractResolver } from '@/apps/Contracts/resolvers/delete/DeleteContractResolver';
+import { DeleteContractService } from '@/apps/Contracts/services/DeleteContractService';
 
 @Module({
     controllers: [IndexContractsController, StoreContractController],
@@ -28,6 +31,8 @@ import { ShowUsersService } from '@/apps/User/services/ShowUserService';
         CreateContractService,
         CaslAbilityFactory,
         ShowContractResolver,
+        DeleteContractResolver,
+        DeleteContractService,
         {
             provide: PrismaService,
             useValue: PrismaServiceFactory.create()

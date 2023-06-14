@@ -8,6 +8,7 @@ import { post } from '@test/methods/post';
 import { UserFactory } from '@/apps/User/factories/UserFactory';
 
 const url = `/graphql`;
+const operation = 'deleteUser';
 
 describe('Delete User', () => {
     describe(`${url} DELETE user`, () => {
@@ -15,7 +16,7 @@ describe('Delete User', () => {
             const user = await UserFactory.create();
 
             const payload = graph.mutation({
-                operation: 'deleteUser',
+                operation,
                 fields: ['message'],
                 variables: { id: { value: user.id, required: true } }
             });
@@ -42,7 +43,7 @@ describe('Delete User', () => {
             const user = await UserFactory.create();
 
             const payload = graph.mutation({
-                operation: 'deleteUser',
+                operation,
                 fields: ['message'],
                 variables: { id: { value: user.id, required: true } }
             });
@@ -72,7 +73,7 @@ describe('Delete User', () => {
 
         it('Returns NO FOUND sending NON EXISTING USER ID', async () => {
             const payload = graph.mutation({
-                operation: 'deleteUser',
+                operation,
                 fields: ['message'],
                 variables: { id: { value: 'not existing id', required: true } }
             });

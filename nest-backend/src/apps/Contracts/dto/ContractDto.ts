@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User } from '@prisma/client';
 import { UserDto } from '@/apps/User/dto/UserDto';
 
 @ObjectType({ description: 'user ' })

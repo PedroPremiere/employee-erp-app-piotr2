@@ -1,11 +1,11 @@
 import { Args, Query, ResolveField, Resolver, Root } from '@nestjs/graphql';
 import { Injectable, UseFilters } from '@nestjs/common';
 
-import { NotFoundExceptionCustom } from '@/project/exceptions/NotFound.exception';
-import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
-import { ShowContractsService } from '@/apps/Contracts/services/ShowContractService';
 import { UserDto } from '@/apps/User/dto/UserDto';
+import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
 import { ShowUsersService } from '@/apps/User/services/ShowUserService';
+import { NotFoundExceptionCustom } from '@/project/exceptions/NotFound.exception';
+import { ShowContractsService } from '@/apps/Contracts/services/ShowContractService';
 
 @Injectable()
 @UseFilters(NotFoundExceptionCustom)

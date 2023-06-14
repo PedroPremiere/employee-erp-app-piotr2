@@ -19,6 +19,18 @@ export class RoleFactory extends AbstractFactory {
     }
 
     static async save(role, users?: string[]) {
+        if (users) {
+            return RoleFactory.saveWithUsers(role, users);
+        }
+
+        return this.prisma.role.create({
+            data: {
+                name: role.name
+            }
+        });
+    }
+
+    static async saveWithUsers(role, users: string[]) {
         const connectedUsers = [];
 
         for (const user of users) {

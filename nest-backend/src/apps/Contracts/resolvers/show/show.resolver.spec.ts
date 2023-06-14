@@ -11,6 +11,7 @@ import { ContractsFactory } from '@/db/factories/ContractsFactory';
 import { post } from '@test/methods/post';
 
 const url = `/graphql`;
+const operation = 'contract';
 
 describe('Show CONTRACT', () => {
     describe(`${url} (GET) Contract`, () => {
@@ -19,7 +20,7 @@ describe('Show CONTRACT', () => {
             const contract = await ContractsFactory.create(user.id);
 
             const payload = graph.query({
-                operation: 'contract',
+                operation,
                 variables: { id: { value: contract.id, required: true } },
                 fields: [
                     'id',
@@ -62,7 +63,7 @@ describe('Show CONTRACT', () => {
             const contract = await ContractsFactory.create(user.id);
 
             const payload = graph.query({
-                operation: 'contract',
+                operation,
                 variables: { id: { value: 'WrongId', required: true } },
                 fields: [
                     'id',

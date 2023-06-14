@@ -47,6 +47,8 @@ type DeleteMessage {
 }
 
 type Mutation {
+  deleteContract(id: String!): DeleteMessage!
+  deleteRole(id: String!): DeleteMessage!
   deleteUser(id: String!): DeleteMessage!
 }
 
