@@ -15,6 +15,6 @@ export class RoleDto {
     @Field({ description: 'Last update date of item' })
     updatedAt: Date;
 
-    @Field(type => [UserDto], { description: 'User Id of owner' })
-    user?: [UserDto];
+    @Field(type => [UserDto], { description: 'User Ids of owners' })
+    users?: [UserDto];
 }

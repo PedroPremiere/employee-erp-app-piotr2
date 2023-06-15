@@ -55,7 +55,26 @@ type Mutation {
 type Query {
   contract(id: String!): ContractDto!
   me: UserDto!
+  role(id: String!): RoleDto!
   user(id: String!): UserDto!
+}
+
+"""Role """
+type RoleDto {
+  """Creation date of item"""
+  createdAt: DateTime!
+
+  """ID of item in Database as UUID"""
+  id: String!
+
+  """Name of item"""
+  name: String!
+
+  """Last update date of item"""
+  updatedAt: DateTime!
+
+  """User Ids of owners"""
+  users: [UserDto!]!
 }
 
 """user """

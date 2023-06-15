@@ -8,6 +8,8 @@ import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
 
 import { DeleteRoleResolver } from '@/apps/Roles/resolvers/delete/DeleteRoleResolver';
 import { DeleteRoleService } from '@/apps/Roles/services/DeleteRoleService';
+import { ShowRoleResolver } from '@/apps/Roles/resolvers/show/ShowRoleResolver';
+import { ShowRoleService } from '@/apps/Roles/services/ShowRoleService';
 
 @Module({
     controllers: [StoreController],
@@ -15,6 +17,8 @@ import { DeleteRoleService } from '@/apps/Roles/services/DeleteRoleService';
         CreateRoleService,
         DeleteRoleResolver,
         DeleteRoleService,
+        ShowRoleResolver,
+        ShowRoleService,
         {
             provide: PrismaService,
             useValue: PrismaServiceFactory.create()
