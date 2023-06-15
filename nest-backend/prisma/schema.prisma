@@ -9,6 +9,15 @@ generator client {
   previewFeatures = ["clientExtensions"]
 }
 
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output = "../prisma/ERD.png"
+}
+
 model Role {
   id        String    @id @default(uuid())
   name      String

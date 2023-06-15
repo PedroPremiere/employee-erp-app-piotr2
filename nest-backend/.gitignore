@@ -5,6 +5,9 @@
 .env
 .env.test
 
+prisma/docs/*
+prisma/migrations/*
+
 package-lock.json
 
 documentation
