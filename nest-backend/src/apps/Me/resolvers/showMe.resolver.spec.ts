@@ -84,9 +84,12 @@ describe('User Profile', () => {
 
             expect(status).toBe(200);
 
-            expect(body.errors[0].message).toBe(
-                i18nService.translate('errors.unauthorized')
-            );
+            const expectedDialog = i18nService.__({
+                phrase: 'Unauthorized',
+                locale: 'en'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
         });
 
         it('Returns Unauthorized as Not Logged in, in selected language', async () => {
@@ -108,9 +111,12 @@ describe('User Profile', () => {
 
             expect(status).toBe(200);
 
-            expect(body.errors[0].message).toBe(
-                i18nService.translate('errors.unauthorized', { lang: 'pl' })
-            );
+            const expectedDialog = i18nService.__({
+                phrase: 'Unauthorized',
+                locale: 'pl'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
         });
     });
 });

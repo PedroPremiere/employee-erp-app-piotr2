@@ -1,6 +1,5 @@
-import { I18n, I18nContext } from 'nestjs-i18n';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 
 import { RoleDto } from '@/apps/Roles/dto/RoleDto';
 import { DeleteMessage } from '@/project/dto/Messages/DeleteMessage';
@@ -15,12 +14,12 @@ export class DeleteRoleResolver {
 
     @Mutation(returns => DeleteMessage)
     async deleteRole(
-        @Args('id') id: string,
-        @I18n() i18n: I18nContext
+        @Context('req') req,
+        @Args('id') id: string
     ): Promise<DeleteMessage> {
         await this.deleteRoleService.delete(id);
 
-        const message = i18n.t('messages.DELETED');
+        const message = req.__('DELETED');
         return { message };
     }
 }

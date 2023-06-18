@@ -6,46 +6,47 @@ import {
     Validate
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { i18nValidationMessage } from 'nestjs-i18n';
+import { ArgsType, Field, InputType } from '@nestjs/graphql';
 
 import { passwordPolicy } from '@/project/config/passwordPolicy';
-import { IsTheSameDecoratos } from '@/project/validators/IsTheSame.decoratos';
+import { IsTheSameDecorator } from '@/project/validators/is-the-same-decorator.service';
 import { UniqueMailDecorator } from '@/apps/User/validators/unique-mail-decorator.service';
 
 const { minLength } = passwordPolicy;
 
+//todo : formating message like __mf
+
+@InputType()
+@ArgsType()
 export class CreateUserDto {
     @IsNotEmpty({
-        message: i18nValidationMessage('errors.notEmpty')
+        message: 'notEmpty'
     })
     @MinLength(minLength, {
-        message: i18nValidationMessage('errors.tooShort', { minLength })
+        message: 'tooShort'
     })
-    @IsStrongPassword(passwordPolicy, {
-        message: i18nValidationMessage('errors.tooWeakPasswordError')
-    })
-    @ApiProperty({
-        description: 'User Password',
-        example: '$passwordAa1'
-    })
+    @IsStrongPassword(passwordPolicy, { message: 'tooWeakPasswordError' })
+    @Field({ nullable: true })
     password: string;
 
-    @Validate(IsTheSameDecoratos, ['password'], {
-        message: i18nValidationMessage('errors.passwordsTheSame')
+    @Validate(IsTheSameDecorator, ['password'], {
+        message: 'passwordsNotTheSame'
     })
     @ApiProperty({
         description: 'User Password',
         example: '$passwordAa1'
     })
-    passwordRepeat: string;
+    @Field({ nullable: true })
+    passwordRepeat?: string;
 
-    @IsEmail({}, { message: i18nValidationMessage('errors.notEmailError') })
+    @IsEmail({}, { message: 'notEmailError' })
     @Validate(UniqueMailDecorator, {
-        message: i18nValidationMessage('errors.emailTaken')
+        message: 'emailTaken'
     })
     @ApiProperty({
         description: 'User Email',
         example: 'example@example.com'
     })
+    @Field({ nullable: true })
     email: string;
 }

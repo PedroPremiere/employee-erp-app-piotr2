@@ -26,9 +26,14 @@ describe('Delete User', () => {
             const { data } = body;
             expect(status).toBe(200);
 
+            const expectedDialog = i18nService.__({
+                phrase: 'DELETED',
+                locale: 'en'
+            });
+
             expect(data.deleteUser).toEqual(
                 expect.objectContaining({
-                    message: i18nService.translate('messages.DELETED')
+                    message: expectedDialog
                 })
             );
 
@@ -56,11 +61,14 @@ describe('Delete User', () => {
             const { data } = body;
             expect(status).toBe(200);
 
+            const expectedDialog = i18nService.__({
+                phrase: 'DELETED',
+                locale: 'pl'
+            });
+
             expect(data.deleteUser).toEqual(
                 expect.objectContaining({
-                    message: i18nService.translate('messages.DELETED', {
-                        lang: 'pl'
-                    })
+                    message: expectedDialog
                 })
             );
 
@@ -82,9 +90,34 @@ describe('Delete User', () => {
 
             expect(status).toBe(200);
 
-            expect(body.errors[0].message).toBe(
-                i18nService.translate('errors.notFound')
-            );
+            const expectedDialog = i18nService.__({
+                phrase: 'Not Found',
+                locale: 'en'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
+        });
+
+        it('Returns NO FOUND sending NON EXISTING USER ID in Selected Language', async () => {
+            const payload = graph.mutation({
+                operation,
+                fields: ['message'],
+                variables: { id: { value: 'not existing id', required: true } }
+            });
+
+            const { status, body } = await post({
+                url: `${url}?lang=pl`,
+                payload
+            });
+
+            expect(status).toBe(200);
+
+            const expectedDialog = i18nService.__({
+                phrase: 'Not Found',
+                locale: 'pl'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
         });
     });
 });

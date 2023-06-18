@@ -1,29 +1,18 @@
-import {
-    ArgumentsHost,
-    Catch,
-    Inject,
-    UnauthorizedException
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, UnauthorizedException } from '@nestjs/common';
 import { GqlArgumentsHost, GqlExceptionFilter } from '@nestjs/graphql';
-import { I18nService } from 'nestjs-i18n';
 
 @Catch(UnauthorizedException)
 export class UnauthorizedCustom implements GqlExceptionFilter {
-    @Inject()
-    private readonly translator: I18nService;
-
     catch(exception: UnauthorizedException, host: ArgumentsHost) {
         const gqlHost = GqlArgumentsHost.create(host);
 
-        const query = gqlHost?.getContext()?.req?.query;
+        const message = gqlHost?.getContext()?.req?.__(exception.message);
 
-        if (!query || !query.lang) {
+        if (!message) {
             return exception;
         }
 
-        exception.message = this.translator.translate('errors.unauthorized', {
-            lang: query.lang
-        });
+        exception.message = message;
 
         return exception;
     }

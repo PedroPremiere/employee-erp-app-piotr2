@@ -6,7 +6,6 @@ import { PrismaService } from '@/apps/PrismaService.service';
 export class FindByEmailService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    // todo add returned type
     async findByEmail(email: string) {
         const user = await this.prismaService.user.findFirst({
             where: { email }

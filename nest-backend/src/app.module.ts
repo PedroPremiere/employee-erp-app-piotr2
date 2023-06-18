@@ -1,11 +1,9 @@
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
 import { AuthModule } from './apps/Auth/AuthModule';
 import { UsersModule } from './apps/User/UsersModule';
-import { AppService } from './apps/app.service';
 import { AppController } from './apps/app.controller';
 
 import config from '@/project/config';
@@ -18,6 +16,7 @@ import { PrismaService } from '@/apps/PrismaService.service';
 import { CaslAbilityFactory } from '@/project/abilities/CaslAbilityFactory';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { formatError } from '@/project/boilerplate/graphql/formatError';
 
 @Module({
     imports: [
@@ -25,21 +24,18 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
             driver: ApolloDriver,
             autoSchemaFile: path.join(process.cwd(), 'src/schema.gql'),
             sortSchema: true,
-            context: ({ req }) => ({ req })
+            context: ({ req }) => ({ req }),
+            autoTransformHttpErrors: true,
+            status400ForVariableCoercionErrors: false,
+            includeStacktraceInErrorResponses: false,
+            introspection: true,
+            formatError,
+            buildSchemaOptions: {
+                numberScalarMode: 'integer'
+            },
+            fieldResolverEnhancers: ['interceptors']
         }),
         ConfigModule.forRoot({ load: [config], isGlobal: true }),
-
-        I18nModule.forRoot({
-            fallbackLanguage: 'en',
-            loaderOptions: {
-                path: path.join(__dirname, '/i18n/'),
-                watch: true
-            },
-            resolvers: [
-                { use: QueryResolver, options: ['lang'] },
-                AcceptLanguageResolver
-            ]
-        }),
         ContractsModule,
         UsersModule,
         AuthModule,
@@ -48,7 +44,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     ],
     controllers: [AppController],
     providers: [
-        AppService,
         PrismaService,
         CaslAbilityFactory,
         {

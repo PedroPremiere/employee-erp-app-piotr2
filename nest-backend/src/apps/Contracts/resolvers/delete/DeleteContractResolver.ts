@@ -1,5 +1,5 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+//import { I18n, I18nContext } from 'nestjs-i18n';
 import { Injectable, UseFilters } from '@nestjs/common';
 
 import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
@@ -18,11 +18,12 @@ export class DeleteContractResolver {
     @Mutation(returns => DeleteMessage)
     async deleteContract(
         @Args('id') id: string,
-        @I18n() i18n: I18nContext
+        @Context('req') req
     ): Promise<DeleteMessage> {
         await this.deleteContractService.delete(id);
 
-        const message = i18n.t('messages.DELETED');
+        const message = req.__('DELETED');
+
         return { message };
     }
 }

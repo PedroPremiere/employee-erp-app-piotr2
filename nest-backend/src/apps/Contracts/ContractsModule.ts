@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 
 import { IndexContractService } from '@/apps/Contracts/services/IndexContractService';
-import { StoreContractController } from '@/apps/Contracts/controllers/StoreController';
 import { CreateContractService } from '@/apps/Contracts/services/CreateContractService';
 import { IndexContractsController } from '@/apps/Contracts/controllers/IndexContractsController';
 
@@ -18,9 +17,10 @@ import { ShowUsersService } from '@/apps/User/services/ShowUserService';
 import { ShowContractResolver } from '@/apps/Contracts/resolvers/show/ShowContractResolver';
 import { DeleteContractResolver } from '@/apps/Contracts/resolvers/delete/DeleteContractResolver';
 import { DeleteContractService } from '@/apps/Contracts/services/DeleteContractService';
+import { StoreContractResolver } from '@/apps/Contracts/resolvers/store/StoreContractResolver';
 
 @Module({
-    controllers: [IndexContractsController, StoreContractController],
+    controllers: [IndexContractsController],
     providers: [
         ShowUsersService,
         ExistingUserDecorator,
@@ -33,6 +33,7 @@ import { DeleteContractService } from '@/apps/Contracts/services/DeleteContractS
         ShowContractResolver,
         DeleteContractResolver,
         DeleteContractService,
+        StoreContractResolver,
         {
             provide: PrismaService,
             useValue: PrismaServiceFactory.create()

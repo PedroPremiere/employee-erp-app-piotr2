@@ -1,5 +1,4 @@
-import { I18n, I18nContext } from 'nestjs-i18n';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 
 import { UserDto } from '@/apps/User/dto/UserDto';
 import { Injectable, UseFilters } from '@nestjs/common';
@@ -16,11 +15,12 @@ export class DeleteUserResolver {
     @Mutation(returns => DeleteMessage)
     async deleteUser(
         @Args('id') id: string,
-        @I18n() i18n: I18nContext
+        @Context('req') req
     ): Promise<DeleteMessage> {
         await this.deleteUsersService.delete(id);
 
-        const message = i18n.t('messages.DELETED');
+        const message = req.__('DELETED');
+
         return { message };
     }
 }

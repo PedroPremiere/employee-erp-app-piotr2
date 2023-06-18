@@ -6,9 +6,6 @@ import { PrismaService } from '@/apps/PrismaService.service';
 export class IsOverLappingService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    /*
-todo add returned types
-     */
     find(contractData: { ownerId: string; startDate: Date; endDate: Date }) {
         return this.prismaService.contract.findMany({
             where: {

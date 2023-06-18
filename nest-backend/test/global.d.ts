@@ -6,7 +6,7 @@ import { PrismaService } from '@/apps/PrismaService.service';
 declare global {
     var request: supertest;
     var app: INestApplication;
-    var i18nService: I18nService;
+    var i18nService;
     var prismaService: PrismaService;
     var graph;
 }

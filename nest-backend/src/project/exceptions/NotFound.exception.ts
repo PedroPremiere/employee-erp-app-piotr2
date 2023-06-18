@@ -6,13 +6,13 @@ export class NotFoundExceptionCustom implements GqlExceptionFilter {
     catch(exception: HttpException, host: ArgumentsHost) {
         const gqlHost = GqlArgumentsHost.create(host);
 
-        const i18n = gqlHost?.getContext()?.i18nContext;
+        const message = gqlHost?.getContext()?.req?.__(exception.message);
 
-        if (!i18n) {
+        if (!message) {
             return exception;
         }
 
-        exception.message = i18n.t('errors.notFound');
+        exception.message = message;
 
         return exception;
     }

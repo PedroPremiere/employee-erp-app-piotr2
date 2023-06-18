@@ -1,0 +1,19 @@
+{
+    "hello": "Server działa",
+    "Not Found": "Nie znaleziono",
+    "DELETED": "Skasowano",
+    "Unauthorized": "Tylko dla zalogowanych",
+    "tooWeakPasswordError": "Hasło jest za słabe",
+    "passwordsNotTheSame": "Pola 'Hasło' i 'Powtórz hasło' powinny być takie same",
+    "emailTaken": "Email już zajęty",
+    "notEmpty": "Nie może być puste",
+    "notEmailError": "Powinno być adresem Email",
+    "tooShort": "Za krótkie",
+    "Bad Request Exception": "Bad Request Exception",
+    "mustBeValidDate": "Powinno być poprawną datą",
+    "userDoesntExist": "Użytkownik nie istnieje",
+    "mustBeInteger": "Powinno być lidzbą",
+    "startDateShouldBeBeforeEndDate": "Data początkowa powinna być przed datą końcową",
+    "endDateShouldBeAfterStartDate": "Data końcową powinna być po dacie początkowej",
+    "overlappingContract": "Uzytkownik ma już kontrakt w tym czasie"
+}

@@ -1,3 +1,7 @@
+/*
+ * @group app
+ */
+
 import * as request from 'supertest';
 
 import { conf } from '@/project/config';
@@ -5,8 +9,9 @@ import { conf } from '@/project/config';
 describe('AppController', () => {
     describe('root', () => {
         it('should return "Api is working" dialog', () => {
-            const expectedDialog = i18nService.translate('hello.HELLO', {
-                lang: 'en'
+            const expectedDialog = i18nService.__({
+                phrase: 'hello',
+                locale: 'en'
             });
 
             return request(app.getHttpServer())
@@ -16,8 +21,9 @@ describe('AppController', () => {
         });
 
         it('should return "Api is working" dialog in selected Language', () => {
-            const expectedDialog = i18nService.translate('hello.HELLO', {
-                lang: 'pl'
+            const expectedDialog = i18nService.__({
+                phrase: 'hello',
+                locale: 'pl'
             });
 
             return request(app.getHttpServer())
@@ -27,8 +33,9 @@ describe('AppController', () => {
         });
 
         it('should return "Api is working" dialog in ENGLISH when SELECTED LANGUAGE doesnt exist', () => {
-            const expectedDialog = i18nService.translate('hello.HELLO', {
-                lang: 'en'
+            const expectedDialog = i18nService.__({
+                phrase: 'hello',
+                locale: 'en'
             });
 
             return request(app.getHttpServer())

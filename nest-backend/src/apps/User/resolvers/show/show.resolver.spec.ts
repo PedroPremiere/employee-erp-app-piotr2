@@ -54,9 +54,12 @@ describe('Show User', () => {
 
             expect(status).toBe(200);
 
-            expect(body.errors[0].message).toBe(
-                i18nService.translate('errors.notFound')
-            );
+            const expectedDialog = i18nService.__({
+                phrase: 'Not Found',
+                locale: 'en'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
         });
 
         it('Returns NO FOUND sending NON EXISTING USER ID in SELECTED LANGUAGE', async () => {
@@ -72,9 +75,12 @@ describe('Show User', () => {
             });
             expect(status).toBe(200);
 
-            expect(body.errors[0].message).toBe(
-                i18nService.translate('errors.notFound', { lang: 'pl' })
-            );
+            const expectedDialog = i18nService.__({
+                phrase: 'Not Found',
+                locale: 'pl'
+            });
+
+            expect(body.errors[0].message).toBe(expectedDialog);
         });
     });
 });

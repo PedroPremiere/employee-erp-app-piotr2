@@ -5,17 +5,17 @@ import {
     MinLength
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { i18nValidationMessage } from 'nestjs-i18n';
+
 import { passwordPolicy } from '@/project/config/passwordPolicy';
 
 const { minLength } = passwordPolicy;
 
 export class LoginDto {
     @IsNotEmpty({
-        message: i18nValidationMessage('errors.notEmpty')
+        message: "i18nValidationMessage('errors.notEmpty')"
     })
     @MinLength(minLength, {
-        message: i18nValidationMessage('errors.tooShort', { minLength })
+        message: "i18nValidationMessage('errors.tooShort', { minLength })"
     })
     @IsStrongPassword(passwordPolicy)
     @ApiProperty({
@@ -24,7 +24,7 @@ export class LoginDto {
     })
     password: string;
 
-    @IsEmail({}, { message: i18nValidationMessage('errors.notEmailError') })
+    @IsEmail({}, { message: "i18nValidationMessage('errors.notEmailError')" })
     @ApiProperty({
         description: 'User Email',
         example: 'example@example.com'

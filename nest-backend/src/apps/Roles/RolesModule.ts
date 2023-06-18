@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { StoreController } from '@/apps/Roles/controllers/StoreController';
 import { CreateRoleService } from '@/apps/Roles/services/CreateRoleService';
 
 import { PrismaService } from '@/apps/PrismaService.service';
@@ -10,15 +9,16 @@ import { DeleteRoleResolver } from '@/apps/Roles/resolvers/delete/DeleteRoleReso
 import { DeleteRoleService } from '@/apps/Roles/services/DeleteRoleService';
 import { ShowRoleResolver } from '@/apps/Roles/resolvers/show/ShowRoleResolver';
 import { ShowRoleService } from '@/apps/Roles/services/ShowRoleService';
+import { StoreRoleResolver } from '@/apps/Roles/resolvers/store/StoreRoleResolver';
 
 @Module({
-    controllers: [StoreController],
     providers: [
         CreateRoleService,
         DeleteRoleResolver,
         DeleteRoleService,
         ShowRoleResolver,
         ShowRoleService,
+        StoreRoleResolver,
         {
             provide: PrismaService,
             useValue: PrismaServiceFactory.create()

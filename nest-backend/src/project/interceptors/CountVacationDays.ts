@@ -5,14 +5,14 @@ import {
     NestInterceptor
 } from '@nestjs/common';
 
+import { RequestParser } from '@/project/helpers/RequestParser';
 import { CountVacationDaysService } from '@/apps/Contracts/services/CountVacationDaysService';
 
 @Injectable()
 export class CountVacationDays implements NestInterceptor {
     async intercept(context: ExecutionContext, next: CallHandler) {
-        const request = context.switchToHttp().getRequest();
+        const body = RequestParser.getBody(context);
 
-        const { body } = request;
         const { vacationDaysPerYear, startDate, endDate } = body;
 
         const vacationDays = CountVacationDaysService.countVacationDays({
@@ -21,7 +21,7 @@ export class CountVacationDays implements NestInterceptor {
             endDate
         });
 
-        request.body.vacationDays = vacationDays;
+        body['vacationDays'] = vacationDays;
 
         return next.handle();
     }

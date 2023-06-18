@@ -29,10 +29,10 @@ type ContractDto {
   user: UserDto!
 
   """Number of days employee can use"""
-  vacationDays: Float!
+  vacationDays: Int!
 
   """Number of days per year"""
-  vacationDaysPerYear: Float!
+  vacationDaysPerYear: Int!
 }
 
 """
@@ -50,6 +50,9 @@ type Mutation {
   deleteContract(id: String!): DeleteMessage!
   deleteRole(id: String!): DeleteMessage!
   deleteUser(id: String!): DeleteMessage!
+  storeContract(endDate: String, ownerId: String, position: String, startDate: String, vacationDaysPerYear: Int): ContractDto!
+  storeRole(name: String): RoleDto!
+  storeUser(email: String, password: String, passwordRepeat: String): UserDto!
 }
 
 type Query {
