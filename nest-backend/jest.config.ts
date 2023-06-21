@@ -1,3 +1,5 @@
+const isolatedModules = process.env.ISOLATED_MODULES === 'true';
+
 import type { JestConfigWithTsJest } from 'ts-jest';
 
 const config: JestConfigWithTsJest = {
@@ -6,7 +8,7 @@ const config: JestConfigWithTsJest = {
     moduleFileExtensions: ['js', 'json', 'ts'],
     testRegex: '.*\\.spec\\.ts$',
     transform: {
-        '^.+\\.(t|j)s$': 'ts-jest'
+        '^.+\\.(t|j)s$': ['ts-jest', { isolatedModules }]
     },
     coverageDirectory: '../coverage',
     moduleNameMapper: {
@@ -15,7 +17,7 @@ const config: JestConfigWithTsJest = {
     },
     runner: 'groups',
     roots: ['./src/', './test/'],
-    //globalSetup: './test/bootstrap.ts',
+    globalSetup: './test/bootstrap.ts',
     setupFilesAfterEnv: ['./test/setup.ts']
 };
 
