@@ -3,6 +3,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 import { conf } from '@/project/config';
 import { RabbitMessageSender } from '@/rabbit/services/RabbitMessageSender.service';
+import { RabbitIndicator } from '@/rabbit/indicators/rabbit-indicator';
 
 @Module({
     imports: [
@@ -17,7 +18,7 @@ import { RabbitMessageSender } from '@/rabbit/services/RabbitMessageSender.servi
             connectionInitOptions: { wait: false }
         })
     ],
-    providers: [RabbitMessageSender],
-    exports: [RabbitMessageSender]
+    providers: [RabbitMessageSender, RabbitIndicator],
+    exports: [RabbitMessageSender, RabbitIndicator]
 })
 export class RabbitModule {}

@@ -1,5 +1,7 @@
 import { Global, Module } from '@nestjs/common';
+
 import { PrismaService } from '@/project/prisma/services/PrismaService.service';
+import { PrismaIndicator } from '@/project/prisma/indicators/prisma-indicator.service';
 import { PrismaServiceFactory } from '@/project/prisma/factories/PrismaServiceFactory.service';
 
 @Global()
@@ -8,8 +10,9 @@ import { PrismaServiceFactory } from '@/project/prisma/factories/PrismaServiceFa
         {
             provide: PrismaService,
             useValue: PrismaServiceFactory.create()
-        }
+        },
+        PrismaIndicator
     ],
-    exports: [PrismaService]
+    exports: [PrismaService, PrismaIndicator]
 })
 export class PrismaModule {}

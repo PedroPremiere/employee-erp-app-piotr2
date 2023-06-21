@@ -20,6 +20,7 @@ import { RabbitModule } from './rabbit/rabbit.module';
 import { I18nModule } from './i18n/i18n.module';
 import { PrismaModule } from './project/prisma/prisma.module';
 import { LoggerModule } from '@/logger/logger.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
     imports: [
@@ -47,7 +48,8 @@ import { LoggerModule } from '@/logger/logger.module';
         RabbitModule,
         I18nModule,
         PrismaModule,
-        LoggerModule
+        LoggerModule,
+        HealthModule
     ],
     controllers: [AppController],
     providers: [
