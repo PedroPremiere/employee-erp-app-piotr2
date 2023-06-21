@@ -10,8 +10,8 @@ import { IsOverLappingService } from '@/apps/Contracts/services/IsOverLappingSer
 import { IsNotOverlappingDecorator } from '@/project/validators/contract/is-not-overlapping-decorator.service';
 import { ShowContractsService } from '@/apps/Contracts/services/ShowContractService';
 import { CaslAbilityFactory } from '@/project/abilities/CaslAbilityFactory';
-import { PrismaService } from '@/apps/PrismaService.service';
-import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
+import { PrismaServiceFactory } from '@/project/prisma/factories/PrismaServiceFactory.service';
 
 import { ShowUsersService } from '@/apps/User/services/ShowUserService';
 import { ShowContractResolver } from '@/apps/Contracts/resolvers/show/ShowContractResolver';
@@ -33,11 +33,7 @@ import { StoreContractResolver } from '@/apps/Contracts/resolvers/store/StoreCon
         ShowContractResolver,
         DeleteContractResolver,
         DeleteContractService,
-        StoreContractResolver,
-        {
-            provide: PrismaService,
-            useValue: PrismaServiceFactory.create()
-        }
+        StoreContractResolver
     ]
 })
 export class ContractsModule {}

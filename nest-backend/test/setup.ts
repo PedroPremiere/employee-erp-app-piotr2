@@ -6,7 +6,7 @@ import { i18nService } from '@/project/boilerplate/i18n/setI18n';
 import { AppModule } from '@/app.module';
 import { truncate } from './helpers/truncate';
 import { initI18 } from '@/project/boilerplate/i18n';
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 import { setContainer } from '@/project/boilerplate/common/setContainer';
 import { setGlobalPrefix } from '@/project/boilerplate/common/setGlobalPrefix';
 

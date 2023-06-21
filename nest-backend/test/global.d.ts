@@ -1,7 +1,7 @@
 /* eslint-disable no-var */
 
 import * as supertest from 'supertest';
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 
 declare global {
     var request: supertest;

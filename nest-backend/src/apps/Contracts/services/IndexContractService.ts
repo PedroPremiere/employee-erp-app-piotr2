@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 
 @Injectable()
 export class IndexContractService {

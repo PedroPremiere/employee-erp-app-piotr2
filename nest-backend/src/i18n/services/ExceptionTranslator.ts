@@ -1,24 +1,23 @@
 import { ArgumentsHost, BadRequestException } from '@nestjs/common';
 import { GqlArgumentsHost } from '@nestjs/graphql';
-import { Logger } from '@/project/helpers/Logger';
+import { Logger } from '@/logger/services/Logger';
 
 export class ExceptionTranslator {
-    static translate(
-        exception: BadRequestException,
-        host: ArgumentsHost
-    ): string[] {
-        const request = ExceptionTranslator.getRequest(host);
+    constructor(private readonly logger: Logger) {}
+
+    translate(exception: BadRequestException, host: ArgumentsHost): string[] {
+        const request = this.getRequest(host);
 
         if (!request) {
-            Logger.error('something went wrong');
+            this.logError('Request is null');
 
             return [];
         }
 
-        const errors = ExceptionTranslator.getErrors(exception);
+        const errors = this.getErrors(exception);
 
         if (!errors) {
-            Logger.error('something went wrong');
+            this.logError('Exception error is null');
 
             return [];
         }
@@ -33,23 +32,30 @@ export class ExceptionTranslator {
         return errors;
     }
 
-    static getRequest(host: ArgumentsHost) {
+    getRequest(host: ArgumentsHost) {
         const gqlHost = GqlArgumentsHost.create(host);
         const request = gqlHost?.getContext()?.req;
 
         return request;
     }
 
-    static getResponse(exception: BadRequestException) {
+    getResponse(exception: BadRequestException) {
         const response = exception.getResponse();
 
         return response;
     }
 
-    static getErrors(exception: BadRequestException) {
-        const response = ExceptionTranslator.getResponse(exception);
+    getErrors(exception: BadRequestException) {
+        const response = this.getResponse(exception);
         const errors = response['errors'] || [];
 
         return errors;
+    }
+
+    logError(short_message: string) {
+        const _class = this.constructor.name;
+        const level = 1;
+
+        this.logger.error({ short_message, level, _class });
     }
 }

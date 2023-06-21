@@ -4,7 +4,7 @@ import {
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 
 @ValidatorConstraint({ name: 'DoesUserExist', async: true })
 @Injectable()

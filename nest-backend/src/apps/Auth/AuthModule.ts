@@ -12,8 +12,6 @@ import { LoginController } from '@/apps/Auth/controllers/LoginController';
 import { CreateUserService } from '@/apps/User/services/CreateUserService';
 import { RegisterController } from '@/apps/Auth/controllers/RegisterController';
 import { UniqueMailDecorator } from '@/apps/User/validators/unique-mail-decorator.service';
-import { PrismaService } from '@/apps/PrismaService.service';
-import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
 
 @Module({
     imports: [
@@ -30,11 +28,7 @@ import { PrismaServiceFactory } from '@/apps/Auth/PrismaServiceFactory.service';
         LocalStrategy,
         JwtStrategy,
         CreateUserService,
-        UniqueMailDecorator,
-        {
-            provide: PrismaService,
-            useValue: PrismaServiceFactory.create()
-        }
+        UniqueMailDecorator
     ]
 })
 export class AuthModule {}

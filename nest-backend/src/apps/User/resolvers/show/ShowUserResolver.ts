@@ -19,8 +19,6 @@ export class ShowUserResolver {
 
     @Query(returns => UserDto)
     async user(@Args('id') id: string): Promise<UserDto> {
-        const user = await this.showUsersService.findOne(id);
-
-        return user;
+        return await this.showUsersService.findOne(id);
     }
 }

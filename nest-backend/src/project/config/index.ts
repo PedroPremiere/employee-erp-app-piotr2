@@ -26,14 +26,16 @@ if (!possibleEnvs.includes(currentEnv)) {
 export const conf = {
     info: {
         name: env('npm_package_name'),
-        description: env('npm_package_description')
+        version: env('npm_package_version'),
+        description: env('npm_package_description'),
+        host: env('APP_BASEURL')
     },
     api: {
         prefix: env('API_PREFIX', 'api')
     },
     app: {
         env: env('NODE_ENV'),
-        serverPort: parseInt(env('PORT', 3001)),
+        serverPort: parseInt(env('PORT', 3000)),
         frontendUrl: env('APP_FRONTEND_URL')
     },
     security: {
@@ -71,6 +73,12 @@ export const conf = {
             collate: 'utf8mb4_unicode_ci',
             timestamps: true
         }
+    },
+    rabbit: {
+        user: env('RABBITMQ_USER'),
+        password: env('RABBITMQ_PASS'),
+        port: env('RABBITMQ_PORT'),
+        host: env('RABBITMQ_HOST', 'localhost')
     }
 };
 

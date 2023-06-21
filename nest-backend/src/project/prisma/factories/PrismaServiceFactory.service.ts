@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HashPassword } from '@/db/extentions/HashPassword';
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 
 @Injectable()
 export class PrismaServiceFactory {

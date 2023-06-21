@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { Injectable } from '@nestjs/common';
 import { FindByEmailService } from '@/apps/User/services/FindByEmailService';
-import { PrismaService } from '@/apps/PrismaService.service';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 
 @Injectable()
 export class AuthService {

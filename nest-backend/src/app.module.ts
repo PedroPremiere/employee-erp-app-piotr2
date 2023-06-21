@@ -12,11 +12,14 @@ import { MeModule } from '@/apps/Me/MeModule';
 import { RolesModule } from '@/apps/Roles/RolesModule';
 import { RolesGuard } from '@/project/abilities/Roles.guard';
 import { ContractsModule } from '@/apps/Contracts/ContractsModule';
-import { PrismaService } from '@/apps/PrismaService.service';
 import { CaslAbilityFactory } from '@/project/abilities/CaslAbilityFactory';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { formatError } from '@/project/boilerplate/graphql/formatError';
+import { RabbitModule } from './rabbit/rabbit.module';
+import { I18nModule } from './i18n/i18n.module';
+import { PrismaModule } from './project/prisma/prisma.module';
+import { LoggerModule } from '@/logger/logger.module';
 
 @Module({
     imports: [
@@ -40,17 +43,20 @@ import { formatError } from '@/project/boilerplate/graphql/formatError';
         UsersModule,
         AuthModule,
         MeModule,
-        RolesModule
+        RolesModule,
+        RabbitModule,
+        I18nModule,
+        PrismaModule,
+        LoggerModule
     ],
     controllers: [AppController],
     providers: [
-        PrismaService,
         CaslAbilityFactory,
         {
             provide: APP_GUARD,
             useClass: RolesGuard
         }
     ],
-    exports: [CaslAbilityFactory, PrismaService]
+    exports: [CaslAbilityFactory]
 })
 export class AppModule {}
