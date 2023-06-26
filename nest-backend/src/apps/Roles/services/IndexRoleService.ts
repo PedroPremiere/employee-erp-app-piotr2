@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
-import { PrismaService } from '@/project/prisma/services/PrismaService.service';
-import { PaginationQueryDto } from '@/project/dto/Page/PaginationQueryDto';
 import { OrderEnum } from '@/project/types/enums/Order.enum';
-import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
+import { PaginationQueryDto } from '@/project/dto/Page/PaginationQueryDto';
+import { PrismaService } from '@/project/prisma/services/PrismaService.service';
+import { RoleDto } from '@/apps/Roles/dto/RoleDto';
 
 @Injectable()
-export class IndexContractService {
+export class IndexRoleService {
     constructor(private readonly prismaService: PrismaService) {}
-
-    async findAll(): Promise<ContractDto[]> {
-        return this.prismaService.contract.findMany();
-    }
 
     findMany(
         query: PaginationQueryDto = {
@@ -21,7 +16,7 @@ export class IndexContractService {
             orderBy: 'createdAt',
             orderDirection: OrderEnum.DESC
         }
-    ): Promise<ContractDto[]> {
+    ): Promise<RoleDto[]> {
         const orderByField = query.orderBy || 'createdAt';
         const orderDirection = query.orderDirection || OrderEnum.DESC;
 
@@ -31,10 +26,14 @@ export class IndexContractService {
         const take = query.perPage;
         const skip = (query.page - 1) * take;
 
-        return this.prismaService.contract.findMany({
+        return this.prismaService.role.findMany({
             take,
             skip,
             orderBy
         });
+    }
+
+    findAll(): Promise<RoleDto[]> {
+        return this.prismaService.role.findMany();
     }
 }

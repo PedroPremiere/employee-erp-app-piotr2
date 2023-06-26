@@ -15,5 +15,7 @@
     "mustBeInteger": "Powinno być lidzbą",
     "startDateShouldBeBeforeEndDate": "Data początkowa powinna być przed datą końcową",
     "endDateShouldBeAfterStartDate": "Data końcową powinna być po dacie początkowej",
-    "overlappingContract": "Uzytkownik ma już kontrakt w tym czasie"
+    "overlappingContract": "Uzytkownik ma już kontrakt w tym czasie",
+    "notSortableField": "Nie mozesz sortować po tym polu",
+    "moreThan0": "Powinno być więcej niż 0"
 }

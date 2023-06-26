@@ -6,90 +6,67 @@
 
 import * as dayjs from 'dayjs';
 
+import { graphQlQuery } from '@test/methods/graphQlQuery';
 import { UserFactory } from '@/apps/User/factories/UserFactory';
 import { ContractsFactory } from '@/db/factories/ContractsFactory';
-import { post } from '@test/methods/post';
 
-const url = `/graphql`;
 const operation = 'contract';
+const fields = [
+    'id',
+    'ownerId',
+    'position',
+    'vacationDays',
+    'vacationDaysPerYear',
+    {
+        user: ['id']
+    }
+];
 
 describe('Show CONTRACT', () => {
-    describe(`${url} (GET) Contract`, () => {
-        it('Returns contract DATA', async () => {
-            const user = await UserFactory.create();
-            const contract = await ContractsFactory.create(user.id);
+    it('Returns contract DATA', async () => {
+        const user = await UserFactory.create();
+        const contract = await ContractsFactory.create(user.id);
 
-            const payload = graph.query({
-                operation,
-                variables: { id: { value: contract.id, required: true } },
-                fields: [
-                    'id',
-                    'ownerId',
-                    'position',
-                    'vacationDays',
-                    'vacationDaysPerYear',
-                    {
-                        user: ['id']
-                    }
-                ]
-            });
-
-            const { status, body } = await post({
-                url,
-                payload
-            });
-
-            const { data } = body;
-
-            expect(status).toBe(200);
-
-            expect(data.contract).toEqual(
-                expect.objectContaining({
-                    id: contract.id,
-                    position: contract.position,
-                    vacationDaysPerYear: contract.vacationDaysPerYear,
-                    vacationDays: contract.vacationDays,
-                    ownerId: user.id,
-                    user: { id: user.id }
-                })
-            );
-
-            dayjs(body.startDate).isSame(contract.startDate, 'day');
-            dayjs(body.endDate).isSame(contract.endDate, 'day');
+        const { status, body } = await graphQlQuery({
+            operation,
+            variables: { id: { value: contract.id, required: true } },
+            fields
         });
 
-        it('Returns NO FOUND sending NON EXISTING CONTRACT ID', async () => {
-            const user = await UserFactory.create();
-            const contract = await ContractsFactory.create(user.id);
+        const { data } = body;
 
-            const payload = graph.query({
-                operation,
-                variables: { id: { value: 'WrongId', required: true } },
-                fields: [
-                    'id',
-                    'ownerId',
-                    'position',
-                    'vacationDays',
-                    'vacationDaysPerYear',
-                    {
-                        user: ['id']
-                    }
-                ]
-            });
+        expect(status).toBe(200);
 
-            const { status, body } = await post({
-                url,
-                payload
-            });
+        expect(data.contract).toEqual(
+            expect.objectContaining({
+                id: contract.id,
+                position: contract.position,
+                vacationDaysPerYear: contract.vacationDaysPerYear,
+                vacationDays: contract.vacationDays,
+                ownerId: user.id,
+                user: { id: user.id }
+            })
+        );
 
-            expect(status).toBe(200);
+        dayjs(body.startDate).isSame(contract.startDate, 'day');
+        dayjs(body.endDate).isSame(contract.endDate, 'day');
+    });
 
-            const expectedDialog = i18nService.__({
-                phrase: 'Not Found',
-                locale: 'pl'
-            });
-
-            expect(body.errors[0].message).toBe(expectedDialog);
+    it('Returns NO FOUND sending NON EXISTING CONTRACT ID', async () => {
+        const { status, body } = await graphQlQuery({
+            operation,
+            variables: { id: { value: 'WrongId', required: true } },
+            fields,
+            lang: 'pl'
         });
+
+        expect(status).toBe(200);
+
+        const expectedDialog = i18nService.__({
+            phrase: 'Not Found',
+            locale: 'pl'
+        });
+
+        expect(body.errors[0].message).toBe(expectedDialog);
     });
 });

@@ -1,13 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ArgsType, Field, InputType } from '@nestjs/graphql';
+import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
+import { OrderEnum } from '@/project/types/enums/Order.enum';
 
+@InputType()
+@ArgsType()
 export class PaginationQueryDto {
-    @ApiProperty({
-        description: 'Page Number',
-        example: 2,
-        default: 1,
-        required: false
+    @IsInt({
+        message: 'mustBeInteger'
     })
-    page: number;
+    @Field({ nullable: true })
+    @Min(0, { message: 'moreThan0' })
+    page?: number = 1;
 
     @ApiProperty({
         description: 'Number of items on page',
@@ -15,33 +19,19 @@ export class PaginationQueryDto {
         default: 20,
         required: false
     })
-    limit: number;
-
-    @ApiProperty({
-        description: 'Name of property used for sorting',
-        example: 'createdAt',
-        required: false
+    @IsInt({
+        message: 'mustBeInteger'
     })
-    sortBy: string;
+    @Min(0, { message: 'moreThan0' })
+    @Field({ nullable: true })
+    perPage?: number = 10;
 
-    @ApiProperty({
-        description: 'Searched Keyword',
-        example: 'John',
-        required: false
-    })
-    search: string;
+    @IsOptional()
+    @Field({ nullable: true })
+    orderBy: string;
 
-    @ApiProperty({
-        description: 'Keyword used for filtering. Use like filter.property=',
-        example: 'filter.age=$gte:3',
-        required: false
-    })
-    filter: string;
-
-    @ApiProperty({
-        description: 'Optionally you can list properties you want to select',
-        example: 'id,name,color,age',
-        required: false
-    })
-    select: string;
+    @IsOptional()
+    @IsEnum(OrderEnum)
+    @Field({ nullable: true })
+    orderDirection?: OrderEnum;
 }

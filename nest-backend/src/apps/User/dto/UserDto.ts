@@ -20,4 +20,6 @@ export class UserDto {
 
     @Field({ description: 'Last update date of item' })
     updatedAt: Date;
+
+    static sortable = ['updatedAt', 'createdAt', 'id'];
 }

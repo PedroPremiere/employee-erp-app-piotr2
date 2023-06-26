@@ -9,6 +9,7 @@ import { initI18 } from '@/project/boilerplate/i18n';
 import { i18nService } from '@/project/boilerplate/i18n/setI18n';
 import { PrismaService } from '@/project/prisma/services/PrismaService.service';
 import * as graph from 'gql-query-builder';
+import { truncate } from '@test/helpers/truncate';
 
 export default async () => {
     global._request = request;
@@ -30,4 +31,6 @@ export default async () => {
     global.i18nService = i18nService;
     global.prismaService = app.get<PrismaService>(PrismaService);
     global.graph = graph;
+
+    await truncate();
 };

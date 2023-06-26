@@ -1,5 +1,5 @@
 import { truncate } from './helpers/truncate';
 
-beforeAll(async () => {
+afterAll(async () => {
     await truncate();
 });

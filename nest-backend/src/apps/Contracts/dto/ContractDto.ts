@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UserDto } from '@/apps/User/dto/UserDto';
 
-@ObjectType({ description: 'user ' })
+@ObjectType({ description: 'contract ' })
 export class ContractDto {
     @Field({ description: 'ID of item in Database as UUID' })
     id: string;
@@ -32,4 +32,6 @@ export class ContractDto {
 
     @Field({ description: 'Last update date of item' })
     updatedAt: Date;
+
+    static sortable = ['updatedAt', 'createdAt', 'id'];
 }

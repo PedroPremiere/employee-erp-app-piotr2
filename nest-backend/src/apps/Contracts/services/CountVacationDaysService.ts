@@ -2,10 +2,10 @@ import * as dayjs from 'dayjs';
 
 export class CountVacationDaysService {
     static countVacationDays(parameters: {
-        vacationDaysPerYear;
-        startDate;
-        endDate;
-    }) {
+        vacationDaysPerYear: number;
+        startDate: Date;
+        endDate: Date;
+    }): number {
         const { vacationDaysPerYear, startDate, endDate } = parameters;
 
         if (!vacationDaysPerYear || !startDate || !endDate) {

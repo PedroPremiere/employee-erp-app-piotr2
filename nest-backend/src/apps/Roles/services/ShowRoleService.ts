@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '@/project/prisma/services/PrismaService.service';
+import { RoleDto } from '@/apps/Roles/dto/RoleDto';
+import { UserDto } from '@/apps/User/dto/UserDto';
 
 @Injectable()
 export class ShowRoleService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async findOne(id: string) {
+    async findOne(id: string): Promise<RoleDto> {
         if (!id) {
             throw new NotFoundException();
         }
@@ -22,13 +24,11 @@ export class ShowRoleService {
         return user;
     }
 
-    async findUsers(id: string) {
-        const users = await this.prismaService.role
+    findUsers(id: string): Promise<UserDto[]> {
+        return this.prismaService.role
             .findFirst({
                 where: { id }
             })
             .users();
-
-        return users;
     }
 }

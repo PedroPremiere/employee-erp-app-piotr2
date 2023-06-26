@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""user """
+"""contract """
 type ContractDto {
   """Creation date of item"""
   createdAt: DateTime!
@@ -57,6 +57,9 @@ type Mutation {
 
 type Query {
   contract(id: String!): ContractDto!
+  listContracts(orderBy: String, orderDirection: String, page: Int = 1, perPage: Int = 10): [ContractDto!]!
+  listRoles(orderBy: String, orderDirection: String, page: Int = 1, perPage: Int = 10): [RoleDto!]!
+  listUsers(orderBy: String, orderDirection: String, page: Int = 1, perPage: Int = 10): [UserDto!]!
   me: UserDto!
   role(id: String!): RoleDto!
   user(id: String!): UserDto!

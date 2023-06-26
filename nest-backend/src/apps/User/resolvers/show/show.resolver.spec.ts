@@ -4,83 +4,75 @@
  * @group userShow
  */
 
-import { post } from '@test/methods/post';
+import { graphQlQuery } from '@test/methods/graphQlQuery';
 import { UserFactory } from '@/apps/User/factories/UserFactory';
 import { noPasswordAssertion } from '@test/assertion/noPassword';
 
-const url = `/graphql`;
+const operation = 'user';
+const fields = [
+    'id',
+    'email',
+    {
+        contracts: ['id']
+    }
+];
 
 describe('Show User', () => {
-    describe(`${url} (GET) User`, () => {
-        it('Returns user DATA sending correct data', async () => {
-            const user = await UserFactory.create();
+    it('Returns user DATA sending correct data', async () => {
+        const user = await UserFactory.create();
 
-            const payload = graph.query({
-                operation: 'user',
-                variables: { id: { value: user.id, required: true } },
-                fields: [
-                    'id',
-                    'email',
-                    {
-                        contracts: ['id']
-                    }
-                ]
-            });
-
-            const { status, body } = await post({ url, payload });
-
-            const { data } = body;
-
-            expect(status).toBe(200);
-
-            expect(data.user).toEqual(
-                expect.objectContaining({
-                    id: user.id,
-                    email: user.email
-                })
-            );
-
-            noPasswordAssertion(body);
+        const { status, body } = await graphQlQuery({
+            operation,
+            variables: { id: { value: user.id, required: true } },
+            fields
         });
 
-        it('Returns NO FOUND sending NON EXISTING USER ID', async () => {
-            const payload = graph.query({
-                operation: 'user',
-                variables: { id: { value: 'wrongId', required: true } },
-                fields: ['id', 'email']
-            });
+        const { data } = body;
 
-            const { status, body } = await post({ url, payload });
+        expect(status).toBe(200);
 
-            expect(status).toBe(200);
+        expect(data.user).toEqual(
+            expect.objectContaining({
+                id: user.id,
+                email: user.email
+            })
+        );
 
-            const expectedDialog = i18nService.__({
-                phrase: 'Not Found',
-                locale: 'en'
-            });
+        noPasswordAssertion(body);
+    });
 
-            expect(body.errors[0].message).toBe(expectedDialog);
+    it('Returns NO FOUND sending NON EXISTING USER ID', async () => {
+        const { status, body } = await graphQlQuery({
+            operation,
+            variables: { id: { value: 'wrongId', required: true } },
+            fields
         });
 
-        it('Returns NO FOUND sending NON EXISTING USER ID in SELECTED LANGUAGE', async () => {
-            const payload = graph.query({
-                operation: 'user',
-                variables: { id: { value: 'wrongId', required: true } },
-                fields: ['id', 'email']
-            });
+        expect(status).toBe(200);
 
-            const { status, body } = await post({
-                url: `${url}?lang=pl`,
-                payload
-            });
-            expect(status).toBe(200);
-
-            const expectedDialog = i18nService.__({
-                phrase: 'Not Found',
-                locale: 'pl'
-            });
-
-            expect(body.errors[0].message).toBe(expectedDialog);
+        const expectedDialog = i18nService.__({
+            phrase: 'Not Found',
+            locale: 'en'
         });
+
+        expect(body.errors[0].message).toBe(expectedDialog);
+    });
+
+    it('Returns NO FOUND sending NON EXISTING USER ID in SELECTED LANGUAGE', async () => {
+        const { status, body } = await graphQlQuery({
+            operation,
+            variables: { id: { value: 'wrongId', required: true } },
+            fields,
+            lang: 'pl'
+        });
+
+        expect(status).toBe(200);
+
+        const expectedDialog = i18nService.__({
+            phrase: 'Not Found',
+            locale: 'pl'
+        });
+
+        expect(body.errors[0].message).toBe(expectedDialog);
     });
 });

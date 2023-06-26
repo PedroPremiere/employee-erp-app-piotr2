@@ -17,4 +17,6 @@ export class RoleDto {
 
     @Field(type => [UserDto], { description: 'User Ids of owners' })
     users?: [UserDto];
+
+    static sortable = ['updatedAt', 'createdAt', 'id', 'name'];
 }
