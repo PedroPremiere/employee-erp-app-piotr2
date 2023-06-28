@@ -1,8 +1,9 @@
 import { post } from '@test/methods/post';
 
 export type variable = {
-    value: string | number;
+    value: string | number | string[] | number[];
     required?: boolean;
+    type?: string;
 };
 
 export type queryPayload = {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
 import { CreateContractDto } from '@/apps/Contracts/dto/CreateContractDto';
 import { PrismaService } from '@/project/prisma/services/PrismaService.service';
-import { ContractDto } from '@/apps/Contracts/dto/ContractDto';
 
 @Injectable()
 export class CreateContractService {

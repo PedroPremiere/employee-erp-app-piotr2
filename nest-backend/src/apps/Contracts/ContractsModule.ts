@@ -16,6 +16,8 @@ import { DeleteContractResolver } from '@/apps/Contracts/resolvers/delete/Delete
 import { DeleteContractService } from '@/apps/Contracts/services/DeleteContractService';
 import { StoreContractResolver } from '@/apps/Contracts/resolvers/store/StoreContractResolver';
 import { ListContractsResolver } from '@/apps/Contracts/resolvers/list/ListResolver';
+import { UpdateContractResolver } from '@/apps/Contracts/resolvers/update/UpdateContractResolver';
+import { UpdateContractService } from '@/apps/Contracts/services/UpdateContractService';
 
 @Module({
     providers: [
@@ -31,7 +33,9 @@ import { ListContractsResolver } from '@/apps/Contracts/resolvers/list/ListResol
         DeleteContractResolver,
         DeleteContractService,
         StoreContractResolver,
-        ListContractsResolver
+        ListContractsResolver,
+        UpdateContractResolver,
+        UpdateContractService
     ]
 })
 export class ContractsModule {}

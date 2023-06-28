@@ -40,19 +40,41 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-"""Message after delete item"""
-type DeleteMessage {
+"""Message"""
+type MessageDto {
   """message text"""
   message: String!
 }
 
 type Mutation {
-  deleteContract(id: String!): DeleteMessage!
-  deleteRole(id: String!): DeleteMessage!
-  deleteUser(id: String!): DeleteMessage!
+  addUserToRole(roleIds: [String!], userIds: [String!]): MessageDto!
+  deleteContract(id: String!): MessageDto!
+  deleteRole(id: String!): MessageDto!
+  deleteUser(id: String!): MessageDto!
   storeContract(endDate: String, ownerId: String, position: String, startDate: String, vacationDaysPerYear: Int): ContractDto!
   storeRole(name: String): RoleDto!
   storeUser(email: String, password: String, passwordRepeat: String): UserDto!
+  updateContract(
+    endDate: String
+
+    """ID of item in Database as UUID"""
+    id: String
+    ownerId: String
+    position: String
+    startDate: String
+    vacationDaysPerYear: Int
+  ): ContractDto!
+  updateRole(
+    """ID of item in Database as UUID"""
+    id: String
+    name: String
+  ): RoleDto!
+  updateUser(
+    email: String
+
+    """ID of item in Database as UUID"""
+    id: String
+  ): UserDto!
 }
 
 type Query {

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType({ description: 'Message after delete item' })
-export class DeleteMessage {
+@ObjectType({ description: 'Message' })
+export class MessageDto {
     @Field({ description: 'message text' })
     message: string;
 }

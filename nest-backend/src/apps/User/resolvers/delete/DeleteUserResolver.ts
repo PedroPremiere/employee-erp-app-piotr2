@@ -2,7 +2,7 @@ import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 
 import { UserDto } from '@/apps/User/dto/UserDto';
 import { Injectable, UseFilters } from '@nestjs/common';
-import { DeleteMessage } from '@/project/dto/Messages/DeleteMessage';
+import { MessageDto } from '@/project/dto/Messages/MessageDto';
 import { DeleteUsersService } from '@/apps/User/services/DeleteUsersService';
 import { NotFoundExceptionCustom } from '@/project/exceptions/NotFound.exception';
 
@@ -12,11 +12,11 @@ import { NotFoundExceptionCustom } from '@/project/exceptions/NotFound.exception
 export class DeleteUserResolver {
     constructor(private readonly deleteUsersService: DeleteUsersService) {}
 
-    @Mutation(returns => DeleteMessage)
+    @Mutation(returns => MessageDto)
     async deleteUser(
         @Args('id') id: string,
         @Context('req') req
-    ): Promise<DeleteMessage> {
+    ): Promise<MessageDto> {
         await this.deleteUsersService.delete(id);
 
         const message = req.__('DELETED');

@@ -9,6 +9,9 @@ import { FindByEmailService } from '@/apps/User/services/FindByEmailService';
 import { ShowUserResolver } from '@/apps/User/resolvers/show/ShowUserResolver';
 import { StoreUserResolver } from '@/apps/User/resolvers/store/StoreUserResolver';
 import { DeleteUserResolver } from '@/apps/User/resolvers/delete/DeleteUserResolver';
+import { UpdateUserResolver } from '@/apps/User/resolvers/update/UpdateRoleResolver';
+import { UpdateUserService } from '@/apps/User/services/UpdateUserService';
+import { ExistingUsersArrayDecorator } from '@/apps/User/validators/existing-users-array-decorator.service';
 
 @Module({
     providers: [
@@ -20,7 +23,10 @@ import { DeleteUserResolver } from '@/apps/User/resolvers/delete/DeleteUserResol
         ShowUserResolver,
         StoreUserResolver,
         FindByEmailService,
-        ListUsersResolver
+        ListUsersResolver,
+        UpdateUserService,
+        UpdateUserResolver,
+        ExistingUsersArrayDecorator
     ],
     exports: [FindByEmailService]
 })

@@ -14,8 +14,6 @@ import { UniqueMailDecorator } from '@/apps/User/validators/unique-mail-decorato
 
 const { minLength } = passwordPolicy;
 
-//todo : formating message like __mf
-
 @InputType()
 @ArgsType()
 export class CreateUserDto {
