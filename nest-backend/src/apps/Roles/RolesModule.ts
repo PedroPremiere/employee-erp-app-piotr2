@@ -12,23 +12,27 @@ import { DeleteRoleResolver } from '@/apps/Roles/resolvers/delete/DeleteRoleReso
 import { UpdateRoleService } from '@/apps/Roles/services/UpdateRoleService';
 import { UpdateRoleResolver } from '@/apps/Roles/resolvers/update/UpdateRoleResolver';
 import { AddUserToRoleService } from '@/apps/Roles/services/add-user-to-role.service';
-import { AddUserToRoleResolver } from '@/apps/Roles/resolvers/addUser/edit-user-to-role-resolver.service';
+import { RemoveUserFromRoleResolver } from '@/apps/Roles/resolvers/removeUser/remove-user-to-role-resolver.service';
 import { ExistingRolesArrayDecorator } from '@/apps/Roles/validators/existing-roles-array-decorator.service';
+import { RemoveUserFromRoleService } from '@/apps/Roles/services/remove-user-to-role.service';
+import { AddUserToRoleResolver } from '@/apps/Roles/resolvers/addUser/add-user-to-role-resolver.service';
 
 @Module({
     providers: [
-        CreateRoleService,
-        DeleteRoleResolver,
-        DeleteRoleService,
-        ShowRoleResolver,
         ShowRoleService,
-        StoreRoleResolver,
+        ShowRoleResolver,
         IndexRoleService,
         ListRoleResolver,
+        CreateRoleService,
+        DeleteRoleService,
         UpdateRoleService,
+        StoreRoleResolver,
+        DeleteRoleResolver,
         UpdateRoleResolver,
         AddUserToRoleService,
         AddUserToRoleResolver,
+        RemoveUserFromRoleService,
+        RemoveUserFromRoleResolver,
         ExistingRolesArrayDecorator
     ]
 })

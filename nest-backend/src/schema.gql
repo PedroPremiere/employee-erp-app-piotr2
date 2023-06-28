@@ -51,6 +51,7 @@ type Mutation {
   deleteContract(id: String!): MessageDto!
   deleteRole(id: String!): MessageDto!
   deleteUser(id: String!): MessageDto!
+  removeUserFromRole(roleIds: [String!], userIds: [String!]): MessageDto!
   storeContract(endDate: String, ownerId: String, position: String, startDate: String, vacationDaysPerYear: Int): ContractDto!
   storeRole(name: String): RoleDto!
   storeUser(email: String, password: String, passwordRepeat: String): UserDto!

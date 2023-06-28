@@ -2,11 +2,11 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Injectable, UseFilters } from '@nestjs/common';
 
 import { RoleDto } from '@/apps/Roles/dto/RoleDto';
+import { MessageDto } from '@/project/dto/Messages/MessageDto';
 import { EditUserToRoleDto } from '@/apps/Roles/dto/EditUserToRoleDto';
 import { NotFoundExceptionCustom } from '@/project/exceptions/NotFound.exception';
 import { BadRequestExceptionCustom } from '@/project/exceptions/BadRequest.exception';
 import { AddUserToRoleService } from '@/apps/Roles/services/add-user-to-role.service';
-import { MessageDto } from '@/project/dto/Messages/MessageDto';
 
 @Injectable()
 @UseFilters(BadRequestExceptionCustom)

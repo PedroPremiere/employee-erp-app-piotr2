@@ -57,6 +57,8 @@ describe('Update Role (e2e)', () => {
                 })
                 .users();
 
+            expect(usersOfRoleInDb.length).toBe(userCount);
+
             for (const user of usersOfRoleInDb) {
                 expect(users).toContainEqual(user.id);
             }
