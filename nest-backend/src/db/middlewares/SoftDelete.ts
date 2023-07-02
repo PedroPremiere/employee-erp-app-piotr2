@@ -34,7 +34,7 @@ function preventReadingMany(
     return params;
 }
 
-export function SoftDelete<
+export function softDelete<
     T extends Prisma.BatchPayload = Prisma.BatchPayload
 >(): Prisma.Middleware {
     return async (

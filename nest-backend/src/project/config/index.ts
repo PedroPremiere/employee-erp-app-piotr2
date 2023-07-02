@@ -79,6 +79,11 @@ export const conf = {
         password: env('RABBITMQ_PASS'),
         port: env('RABBITMQ_PORT'),
         host: env('RABBITMQ_HOST', 'localhost')
+    },
+    redis: {
+        password: env('CACHE_REDIS_PASS'),
+        port: env('CACHE_REDIS_PORT'),
+        host: env('CACHE_REDIS_HOST', 'localhost')
     }
 };
 

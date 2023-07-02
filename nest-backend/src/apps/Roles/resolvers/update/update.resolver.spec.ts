@@ -2,11 +2,15 @@
  * @group update
  * @group Role
  * @group updateRole
+ * @group chomik
  */
 
 import { translate } from '@test/helpers/translate';
 import { RoleFactory } from '@/db/factories/RoleFactory';
 import { graphQlMutation } from '@test/methods/graphQlMutation';
+
+import waitForExpect from 'wait-for-expect';
+import { graphQlQuery } from '@test/methods/graphQlQuery';
 
 const operation = 'updateRole';
 
@@ -31,7 +35,25 @@ describe('Update Role (e2e)', () => {
 
         const { data } = body;
 
-        expect(status).toBe(200);
+        await waitForExpect(() => {
+            expect(data[operation].id).toBe(role.id);
+            expect(data[operation].name).toBe(newRoleData.name);
+            expect(status).toBe(200);
+        });
+
+        const { status: getStatus, body: getBody } = await graphQlQuery({
+            operation: 'role',
+            variables: { id: { value: role.id, required: true } },
+            fields: ['id', 'name']
+        });
+
+        const { data: getData } = getBody;
+
+        await waitForExpect(() => {
+            expect(getData['role'].id).toBe(role.id);
+            expect(getData['role'].name).toBe(newRoleData.name);
+            expect(getStatus).toBe(200);
+        });
 
         const roleInDb = await prismaService.role.findFirst({
             where: { id: data[operation].id }

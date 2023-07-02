@@ -11,6 +11,7 @@ import { graphQlQuery } from '@test/methods/graphQlQuery';
 import { paginationPageIsStringBadRequest } from '@test/commonTests/PaginationErrors/PageIsString';
 import { paginationPageIsNegativeBadRequest } from '@test/commonTests/PaginationErrors/NegativePage';
 import { wrongSortableFieldBadRequest } from '@test/commonTests/PaginationErrors/WrongSortableField';
+import { truncate } from '@test/helpers/truncate';
 
 const expectedCount = 10;
 
@@ -31,16 +32,8 @@ async function seed() {
 }
 
 describe('Index Contracts Controller (e2e)', () => {
-    it('Returns empty list when NO DATA', async () => {
-        const { status, body } = await graphQlQuery({
-            operation,
-            fields: ['id']
-        });
-
-        const { data } = body;
-
-        expect(status).toBe(200);
-        expect(data.listContracts).toEqual([]);
+    beforeEach(async () => {
+        await truncate();
     });
 
     it('Returns list of users', async () => {
@@ -137,6 +130,18 @@ describe('Index Contracts Controller (e2e)', () => {
                 })
             );
         }
+    });
+
+    it('Returns empty list when NO DATA', async () => {
+        const { status, body } = await graphQlQuery({
+            operation,
+            fields: ['id']
+        });
+
+        const { data } = body;
+
+        expect(status).toBe(200);
+        expect(data.listContracts).toEqual([]);
     });
 
     it('Returns Bad Request when wrong Sortable Field', async () => {
